@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
@@ -12,7 +11,6 @@ namespace ApplicazioneCondivisione
         private string nome;
         private string cognome;
         private string stato;
-        //CheckBox c;
 
         public Person(string n, string c, string s)
         {
