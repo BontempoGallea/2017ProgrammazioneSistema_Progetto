@@ -42,5 +42,15 @@ namespace ApplicazioneCondivisione
         {
             Application.Exit();
         }
+
+        private void labelannulla(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void condividionclick(object sender, EventArgs e)
+        {
+
+        }
     }
 }
