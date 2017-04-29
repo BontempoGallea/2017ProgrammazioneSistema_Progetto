@@ -43,14 +43,23 @@ namespace ApplicazioneCondivisione
             Application.Exit();
         }
 
-        private void labelannulla(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            if (listView1.CheckedIndices.Count > 0)
+            {
+                Form2 f2 = new Form2();
+                f2.Show();
+                f2.sendFile();
+            }
+            else
+            {
+                MessageBox.Show("Non ha selezionato nessun utente!");
+            }
         }
 
-        private void condividionclick(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-
+            Application.Exit();
         }
     }
 }
