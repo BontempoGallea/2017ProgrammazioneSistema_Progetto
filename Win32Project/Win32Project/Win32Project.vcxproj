@@ -156,6 +156,7 @@
     <ResourceCompile Include="Win32Project.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap1.bmp" />
     <Image Include="small.ico" />
     <Image Include="Win32Project.ico" />
   </ItemGroup>
