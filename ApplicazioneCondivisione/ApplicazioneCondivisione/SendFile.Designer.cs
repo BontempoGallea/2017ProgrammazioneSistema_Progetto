@@ -1,6 +1,6 @@
 ﻿namespace ApplicazioneCondivisione
 {
-    partial class Form2
+    partial class SendFile
     {
         /// <summary>
         /// Required designer variable.
@@ -80,6 +80,7 @@
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
             this.Name = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);

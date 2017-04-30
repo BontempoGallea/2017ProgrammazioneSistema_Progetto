@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
-    public partial class Form2 : Form
+    public partial class SendFile : Form
     {
-        public Form2()
+        public SendFile()
         {
             InitializeComponent();
         }
