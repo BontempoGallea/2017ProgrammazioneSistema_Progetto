@@ -40,6 +40,8 @@
             this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.labelAdmin = new System.Windows.Forms.Label();
+            this.iconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,9 +96,9 @@
             // listaUsers
             // 
             this.listaUsers.AccessibleName = "UsersList";
-            this.listaUsers.Location = new System.Drawing.Point(0, 43);
+            this.listaUsers.Location = new System.Drawing.Point(0, 153);
             this.listaUsers.Name = "listaUsers";
-            this.listaUsers.Size = new System.Drawing.Size(1177, 562);
+            this.listaUsers.Size = new System.Drawing.Size(1177, 452);
             this.listaUsers.TabIndex = 1;
             this.listaUsers.UseCompatibleStateImageBehavior = false;
             // 
@@ -132,11 +134,30 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.annullaButton_Click);
             // 
+            // labelAdmin
+            // 
+            this.labelAdmin.AccessibleName = "labelAdmin";
+            this.labelAdmin.AutoSize = true;
+            this.labelAdmin.Font = new System.Drawing.Font("Lucida Console", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAdmin.Location = new System.Drawing.Point(511, 63);
+            this.labelAdmin.Name = "labelAdmin";
+            this.labelAdmin.Size = new System.Drawing.Size(114, 27);
+            this.labelAdmin.TabIndex = 4;
+            this.labelAdmin.Text = "label1";
+            this.labelAdmin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // iconContextMenu
+            // 
+            this.iconContextMenu.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.iconContextMenu.Name = "iconContextMenu";
+            this.iconContextMenu.Size = new System.Drawing.Size(270, 48);
+            // 
             // ApplicazioneCondivisione
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1185, 695);
+            this.Controls.Add(this.labelAdmin);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listaUsers);
@@ -166,6 +187,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         public System.Windows.Forms.ListView listaUsers;
+        public System.Windows.Forms.Label labelAdmin;
+        private System.Windows.Forms.ContextMenuStrip iconContextMenu;
     }
 }
 
