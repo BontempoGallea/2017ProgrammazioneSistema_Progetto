@@ -36,16 +36,7 @@ namespace ApplicazioneCondivisione
 
         private void condividiButton_Click(object sender, EventArgs e)
         {
-            if (selectedlist.Count > 0)
-            {
-                SendFile f2 = new SendFile();
-                f2.Show();
-                f2.sendFile();
-            }
-            else
-            {
-                MessageBox.Show("Non ha selezionato nessun utente!");
-            }
+            luh.condividiButtonClick();
         }
 
         private void annullaButton_Click(object sender, EventArgs e)
@@ -108,52 +99,11 @@ namespace ApplicazioneCondivisione
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
-        MetroFramework.Controls.MetroTile btn;
-        int i = 0;
-        int j = 0;
-        List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
-        List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+
         private void refresh_Click(object sender, EventArgs e)
         {
-           
-            btn = new MetroFramework.Controls.MetroTile();
-            btn.Location = new Point(60 + i, 150+j);
-            btn.Size = new Size(70, 70);
-            btn.Name = "BTN";
-            btn.Style = MetroFramework.MetroColorStyle.Green;
-            btn.Click += new EventHandler(changeState2_Click);
-            btn.Text = "ciao";
-            listBTN.Add(btn);
-            flowLayoutPanel1.Controls.Add(btn);
-            i = i + 80;
-            if (i > 400)
-            {
-                i = 0;
-                j = j + 80;
-            }
-           // foreach (MetroFramework.Controls.MetroTile b in listBTN)
-          //  {
-               // this.Controls.AddRange(new MetroFramework.Controls.MetroTile[] { b });
-           // }
-
+            luh.refreshButtonClick();
         }
-        
-        private void changeState2_Click(object sender, EventArgs e)
-        {
-            MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
-            if (changeState.Style== MetroFramework.MetroColorStyle.Green)
-            {
-                selectedlist.Add(changeState);
-                changeState.Style = MetroFramework.MetroColorStyle.Blue;
-                
-            }
-            else
-            {
-                selectedlist.Remove(changeState);
-                changeState.Style = MetroFramework.MetroColorStyle.Green;
-            }
-        }
-
        
     }
 }
