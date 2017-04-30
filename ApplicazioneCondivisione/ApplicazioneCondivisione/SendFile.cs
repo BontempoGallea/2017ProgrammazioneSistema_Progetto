@@ -9,9 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ApplicazioneCondivisione
+namespace ApplicazioneCondivisione 
 {
-    public partial class SendFile : Form
+    public partial class SendFile : MetroFramework.Forms.MetroForm
     {
         public SendFile()
         {
@@ -20,8 +20,8 @@ namespace ApplicazioneCondivisione
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            progressBar1.Value = 0;
-            label2.Text = "Percentale inviata: " + progressBar1.Value + "%";
+            metroProgressBar1.Value = 0;
+            label2.Text = "Percentale inviata: " + metroProgressBar1.Value + "%";
             button1.Text = "Interrompi";
         }
 
@@ -32,12 +32,17 @@ namespace ApplicazioneCondivisione
 
         public void sendFile()
         {
-            while(progressBar1.Value < 100) {
-                progressBar1.Value = progressBar1.Value + 1;
-                label2.Text = "Percentale inviata: " + progressBar1.Value + "%";
+            while(metroProgressBar1.Value < 100) {
+                metroProgressBar1.Value = metroProgressBar1.Value + 1;
+                label2.Text = "Percentale inviata: " + metroProgressBar1.Value + "%";
             }
 
-            button1.Text = "Fine";
+           button1.Text = "Fine";
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
