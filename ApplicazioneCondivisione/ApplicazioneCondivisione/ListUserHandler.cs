@@ -38,13 +38,20 @@ namespace ApplicazioneCondivisione
             f.listaUsers.Items.Add(item1);
             f.listaUsers.Items.Add(item2);
 
-            f.labelAdmin.Text = "Nome: " + admin.getNome() + "\nCognome: " + admin.getCognome() + "\nStato: " + admin.getStato();
+            f.nome.Text = admin.getNome();
+            f.cognome.Text = admin.getCognome();
+            f.stato.Text = admin.getStato();
         }
 
         public void changeAdminState(string s)
         {
             this.admin.setStato(s);
-            frame.labelAdmin.Text = "Nome: " + admin.getNome() + "\nCognome: " + admin.getCognome() + "\nStato: " + admin.getStato();
+            frame.stato.Text = s;
+        }
+
+        public string getAdminState()
+        {
+            return this.admin.getStato();
         }
     }
 }

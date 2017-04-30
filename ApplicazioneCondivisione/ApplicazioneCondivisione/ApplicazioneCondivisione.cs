@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
-    public partial class ApplicazioneCondivisione : Form
+    public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         private ListUserHandler luh;
 
@@ -24,6 +24,7 @@ namespace ApplicazioneCondivisione
         {
             luh.listaUsersInit(this);
             taskbarIcon.ContextMenuStrip = this.iconContextMenu;
+            metroLabel4.Text = "Le tue credenziali: ";
         }
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
@@ -88,6 +89,14 @@ namespace ApplicazioneCondivisione
         private void onlineOptionIconContextMenu_Click(object sender, EventArgs e)
         {
             luh.changeAdminState("online");
+        }
+
+        private void changeState_Click(object sender, EventArgs e)
+        {
+            if (luh.getAdminState().Equals("online"))
+                luh.changeAdminState("offline");
+            else
+                luh.changeAdminState("online");
         }
     }
 }
