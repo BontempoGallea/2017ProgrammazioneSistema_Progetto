@@ -45,6 +45,11 @@
             this.cognome = new MetroFramework.Controls.MetroLabel();
             this.stato = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+<<<<<<< HEAD
+=======
+            this.listaUsers = new System.Windows.Forms.ListView();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+>>>>>>> refs/remotes/origin/master
             this.iconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -184,12 +189,40 @@
             this.metroLabel4.TabIndex = 9;
             this.metroLabel4.Text = "metroLabel4";
             // 
+<<<<<<< HEAD
+=======
+            // listaUsers
+            // 
+            this.listaUsers.AccessibleName = "UsersList";
+            this.listaUsers.Location = new System.Drawing.Point(452, 834);
+            this.listaUsers.Margin = new System.Windows.Forms.Padding(4);
+            this.listaUsers.Name = "listaUsers";
+            this.listaUsers.Size = new System.Drawing.Size(10, 10);
+            this.listaUsers.TabIndex = 1;
+            this.listaUsers.UseCompatibleStateImageBehavior = false;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(31, 298);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1491, 431);
+            this.flowLayoutPanel1.TabIndex = 11;
+            // 
+>>>>>>> refs/remotes/origin/master
             // ApplicazioneCondivisione
             // 
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1225, 754);
+=======
+            this.ClientSize = new System.Drawing.Size(1575, 874);
+            this.Controls.Add(this.flowLayoutPanel1);
+>>>>>>> refs/remotes/origin/master
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.stato);
             this.Controls.Add(this.cognome);
@@ -224,6 +257,11 @@
         public MetroFramework.Controls.MetroLabel nome;
         public MetroFramework.Controls.MetroLabel cognome;
         public MetroFramework.Controls.MetroLabel stato;
+<<<<<<< HEAD
+=======
+        public System.Windows.Forms.ListView listaUsers;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+>>>>>>> refs/remotes/origin/master
     }
 }
 
