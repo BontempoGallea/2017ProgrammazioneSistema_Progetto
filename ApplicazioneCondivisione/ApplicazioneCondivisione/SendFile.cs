@@ -39,5 +39,10 @@ namespace ApplicazioneCondivisione
 
            button1.Text = "Fine";
         }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

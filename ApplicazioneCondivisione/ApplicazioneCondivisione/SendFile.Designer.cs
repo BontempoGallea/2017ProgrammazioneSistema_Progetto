@@ -80,16 +80,15 @@
             this.ClientSize = new System.Drawing.Size(1144, 350);
             this.Controls.Add(this.metroProgressBar1);
             this.Controls.Add(this.button1);
-
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SendFile";
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
-
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -98,7 +97,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
-
         private System.Windows.Forms.Button button1;
     }
 }
