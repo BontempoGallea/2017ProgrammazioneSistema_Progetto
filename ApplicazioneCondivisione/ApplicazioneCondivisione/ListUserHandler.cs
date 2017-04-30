@@ -12,6 +12,7 @@ namespace ApplicazioneCondivisione
         private Person p1 = new Person("Eugenio", "Gallea", "offline");
         private Person p2 = new Person("Gianpaolo", "Bontempo", "online");
         private Person admin = new Person("Mario", "Rossi", "offline");
+        private ApplicazioneCondivisione frame;
 
         public ListUserHandler()
         {
@@ -20,6 +21,8 @@ namespace ApplicazioneCondivisione
 
         public void listaUsersInit(ApplicazioneCondivisione f)
         {
+            this.frame = f;
+
             int w = f.listaUsers.Width / 5;
 
             f.listaUsers.View = View.Details;
@@ -35,7 +38,20 @@ namespace ApplicazioneCondivisione
             f.listaUsers.Items.Add(item1);
             f.listaUsers.Items.Add(item2);
 
-            f.labelAdmin.Text = "Nome: " + admin.getNome() + "\nCognome: " + admin.getCognome() + "\nStato: " + admin.getStato();
+            f.nome.Text = admin.getNome();
+            f.cognome.Text = admin.getCognome();
+            f.stato.Text = admin.getStato();
+        }
+
+        public void changeAdminState(string s)
+        {
+            this.admin.setStato(s);
+            frame.stato.Text = s;
+        }
+
+        public string getAdminState()
+        {
+            return this.admin.getStato();
         }
     }
 }
