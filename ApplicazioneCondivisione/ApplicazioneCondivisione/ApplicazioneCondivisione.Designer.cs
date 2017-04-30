@@ -42,7 +42,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.labelAdmin = new System.Windows.Forms.Label();
             this.iconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.statoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.esciToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
+            this.iconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -53,7 +59,7 @@
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1185, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1181, 40);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -149,14 +155,53 @@
             // iconContextMenu
             // 
             this.iconContextMenu.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.iconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statoToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.esciToolStripMenuItem1});
             this.iconContextMenu.Name = "iconContextMenu";
-            this.iconContextMenu.Size = new System.Drawing.Size(270, 48);
+            this.iconContextMenu.Size = new System.Drawing.Size(270, 130);
+            // 
+            // statoToolStripMenuItem
+            // 
+            this.statoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.onlineToolStripMenuItem,
+            this.offlineToolStripMenuItem});
+            this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
+            this.statoToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.statoToolStripMenuItem.Text = "Stato";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(266, 6);
+            // 
+            // esciToolStripMenuItem1
+            // 
+            this.esciToolStripMenuItem1.Name = "esciToolStripMenuItem1";
+            this.esciToolStripMenuItem1.Size = new System.Drawing.Size(269, 38);
+            this.esciToolStripMenuItem1.Text = "Esci";
+            this.esciToolStripMenuItem1.Click += new System.EventHandler(this.esciOptionIconContextMenu_Click);
+            // 
+            // onlineToolStripMenuItem
+            // 
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.onlineToolStripMenuItem.Text = "online";
+            this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
+            // 
+            // offlineToolStripMenuItem
+            // 
+            this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
+            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.offlineToolStripMenuItem.Text = "offline";
+            this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
             // 
             // ApplicazioneCondivisione
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1185, 695);
+            this.ClientSize = new System.Drawing.Size(1181, 705);
             this.Controls.Add(this.labelAdmin);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -170,6 +215,7 @@
             this.Resize += new System.EventHandler(this.applicazioneCondivisione_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.iconContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,6 +235,11 @@
         public System.Windows.Forms.ListView listaUsers;
         public System.Windows.Forms.Label labelAdmin;
         private System.Windows.Forms.ContextMenuStrip iconContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem statoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
     }
 }
 

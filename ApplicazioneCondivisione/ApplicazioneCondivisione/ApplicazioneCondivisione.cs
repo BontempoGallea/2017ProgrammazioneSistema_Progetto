@@ -74,5 +74,20 @@ namespace ApplicazioneCondivisione
             taskbarIcon.Visible = false;
             this.WindowState = FormWindowState.Normal;
         }
+
+        private void esciOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void offlineOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            luh.changeAdminState("offline");
+        }
+
+        private void onlineOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            luh.changeAdminState("online");
+        }
     }
 }
