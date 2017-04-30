@@ -13,11 +13,16 @@ namespace ApplicazioneCondivisione
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         private ListUserHandler luh;
-
+        private MetroFramework.Controls.MetroTile btn;
+        int i = 0;
+        int j = 0;
+        private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
+        private List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+        
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
-           luh = new ListUserHandler();
+            luh = new ListUserHandler();
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
@@ -105,11 +110,7 @@ namespace ApplicazioneCondivisione
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
-        MetroFramework.Controls.MetroTile btn;
-        int i = 0;
-        int j = 0;
-        List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
-        List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+
         private void refresh_Click(object sender, EventArgs e)
         {
             
@@ -141,8 +142,7 @@ namespace ApplicazioneCondivisione
             if (changeState.Style== MetroFramework.MetroColorStyle.Green)
             {
                 selectedlist.Add(changeState);
-                changeState.Style = MetroFramework.MetroColorStyle.Blue;
-                
+                changeState.Style = MetroFramework.MetroColorStyle.Blue;  
             }
             else
             {

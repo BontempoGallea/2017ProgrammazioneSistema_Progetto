@@ -28,18 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-<<<<<<< HEAD
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
-            this.SuspendLayout();
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(88, 134);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(668, 42);
-            this.progressBar1.TabIndex = 1;
-=======
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
@@ -72,7 +60,6 @@
             this.metroProgressBar1.Name = "metroProgressBar1";
             this.metroProgressBar1.Size = new System.Drawing.Size(843, 60);
             this.metroProgressBar1.TabIndex = 5;
->>>>>>> refs/remotes/origin/master
             // 
             // button1
             // 
@@ -93,16 +80,13 @@
             this.ClientSize = new System.Drawing.Size(1144, 350);
             this.Controls.Add(this.metroProgressBar1);
             this.Controls.Add(this.button1);
-<<<<<<< HEAD
-            this.Controls.Add(this.progressBar1);
-            this.Name = "SendFile";
-=======
+
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SendFile";
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
->>>>>>> refs/remotes/origin/master
+
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
@@ -110,14 +94,11 @@
         }
 
         #endregion
-<<<<<<< HEAD
-        private System.Windows.Forms.ProgressBar progressBar1;
-=======
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
->>>>>>> refs/remotes/origin/master
+
         private System.Windows.Forms.Button button1;
     }
 }
