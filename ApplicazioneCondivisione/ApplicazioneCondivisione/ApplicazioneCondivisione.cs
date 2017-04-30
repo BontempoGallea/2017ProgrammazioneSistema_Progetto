@@ -24,9 +24,11 @@ namespace ApplicazioneCondivisione
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
             int w = listaUsers.Width / 5;
-
+            
             listaUsers.View = View.Details;
+            imageList1.ImageSize = new Size(32, 32);
 
+            imageList1.Images.Add("key", Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user.bmp"));
             listaUsers.Columns.Add("Nome", w*2, HorizontalAlignment.Center);
             listaUsers.Columns.Add("Cognome", w*2, HorizontalAlignment.Center);
             listaUsers.Columns.Add("Stato", w, HorizontalAlignment.Center);
@@ -37,6 +39,7 @@ namespace ApplicazioneCondivisione
 
             listaUsers.Items.Add(item1);
             listaUsers.Items.Add(item2);
+            listaUsers.StateImageList = this.imageList1;
         }
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
@@ -46,7 +49,7 @@ namespace ApplicazioneCondivisione
 
         private void condividiButton_Click(object sender, EventArgs e)
         {
-            if (listaUsers.CheckedIndices.Count > 0)
+            if (listaUsers.SelectedIndices.Count > 0)
             {
                 SendFile f2 = new SendFile();
                 f2.Show();

@@ -56,6 +56,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="finestraserver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="finestraserver.Designer.cs">
+      <DependentUpon>finestraserver.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListViewExtender.cs" />
     <Compile Include="SendFile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +80,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ApplicazioneCondivisione.resx">
       <DependentUpon>ApplicazioneCondivisione.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="finestraserver.resx">
+      <DependentUpon>finestraserver.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SendFile.resx">
       <DependentUpon>SendFile.cs</DependentUpon>
