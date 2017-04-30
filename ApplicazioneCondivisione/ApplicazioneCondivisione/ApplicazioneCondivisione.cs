@@ -27,7 +27,6 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
-           
             luh.listaUsersInit(this);
             taskbarIcon.ContextMenuStrip = this.iconContextMenu;
             metroLabel4.Text = "Le tue credenziali: ";
@@ -54,7 +53,6 @@ namespace ApplicazioneCondivisione
 
         private void annullaButton_Click(object sender, EventArgs e)
         {
-            
             Application.Exit();
         }
 
@@ -124,17 +122,17 @@ namespace ApplicazioneCondivisione
             btn.Click += new EventHandler(changeState2_Click);
             btn.Text = "ciao";
             listBTN.Add(btn);
-            flowLayoutPanel1.Controls.Add(btn);
+
             i = i + 80;
             if (i > 400)
             {
                 i = 0;
                 j = j + 80;
             }
-           // foreach (MetroFramework.Controls.MetroTile b in listBTN)
-          //  {
-               // this.Controls.AddRange(new MetroFramework.Controls.MetroTile[] { b });
-           // }
+            foreach (MetroFramework.Controls.MetroTile b in listBTN)
+            {
+                this.Controls.AddRange(new MetroFramework.Controls.MetroTile[] { b });
+            }
 
         }
         
@@ -153,6 +151,5 @@ namespace ApplicazioneCondivisione
             }
         }
 
-       
     }
 }
