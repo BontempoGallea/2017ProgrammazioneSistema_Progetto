@@ -115,7 +115,7 @@ namespace ApplicazioneCondivisione
         List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
         private void refresh_Click(object sender, EventArgs e)
         {
-          
+           
             btn = new MetroFramework.Controls.MetroTile();
             btn.Location = new Point(60 + i, 150+j);
             btn.Size = new Size(70, 70);
