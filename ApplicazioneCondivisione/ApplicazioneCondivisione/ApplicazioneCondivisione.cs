@@ -13,17 +13,21 @@ namespace ApplicazioneCondivisione
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         private ListUserHandler luh;
-
+        private MetroFramework.Controls.MetroTile btn;
+        int i = 0;
+        int j = 0;
+        private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
+        private List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+        
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
-           luh = new ListUserHandler();
 
+           luh = new ListUserHandler();
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
-           
             luh.listaUsersInit(this);
             taskbarIcon.ContextMenuStrip = this.iconContextMenu;
             metroLabel4.Text = "Le tue credenziali: ";
@@ -50,7 +54,6 @@ namespace ApplicazioneCondivisione
 
         private void annullaButton_Click(object sender, EventArgs e)
         {
-            
             Application.Exit();
         }
 
@@ -108,11 +111,7 @@ namespace ApplicazioneCondivisione
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
-        MetroFramework.Controls.MetroTile btn;
-        int i = 0;
-        int j = 0;
-        List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
-        List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+
         private void refresh_Click(object sender, EventArgs e)
         {
             
@@ -124,17 +123,17 @@ namespace ApplicazioneCondivisione
             btn.Click += new EventHandler(changeState2_Click);
             btn.Text = "ciao";
             listBTN.Add(btn);
-            flowLayoutPanel1.Controls.Add(btn);
+
             i = i + 80;
             if (i > 400)
             {
                 i = 0;
                 j = j + 80;
             }
-           // foreach (MetroFramework.Controls.MetroTile b in listBTN)
-          //  {
-               // this.Controls.AddRange(new MetroFramework.Controls.MetroTile[] { b });
-           // }
+            foreach (MetroFramework.Controls.MetroTile b in listBTN)
+            {
+                this.Controls.AddRange(new MetroFramework.Controls.MetroTile[] { b });
+            }
 
         }
         
@@ -144,8 +143,7 @@ namespace ApplicazioneCondivisione
             if (changeState.Style== MetroFramework.MetroColorStyle.Green)
             {
                 selectedlist.Add(changeState);
-                changeState.Style = MetroFramework.MetroColorStyle.Blue;
-                
+                changeState.Style = MetroFramework.MetroColorStyle.Blue;  
             }
             else
             {
@@ -154,6 +152,5 @@ namespace ApplicazioneCondivisione
             }
         }
 
-       
     }
 }
