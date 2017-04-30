@@ -46,6 +46,7 @@
             this.stato = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.listaUsers = new System.Windows.Forms.ListView();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.iconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -203,12 +204,23 @@
             this.listaUsers.TabIndex = 1;
             this.listaUsers.UseCompatibleStateImageBehavior = false;
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(31, 298);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1491, 431);
+            this.flowLayoutPanel1.TabIndex = 11;
+            // 
             // ApplicazioneCondivisione
             // 
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1575, 874);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.stato);
             this.Controls.Add(this.cognome);
@@ -247,6 +259,7 @@
         public MetroFramework.Controls.MetroLabel cognome;
         public MetroFramework.Controls.MetroLabel stato;
         public System.Windows.Forms.ListView listaUsers;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 
