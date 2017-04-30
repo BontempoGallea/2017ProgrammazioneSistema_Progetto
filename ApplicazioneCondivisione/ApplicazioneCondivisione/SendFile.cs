@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
-    public partial class SendFile : Form
+    public partial class SendFile : MetroFramework.Forms.MetroForm
     {
         public SendFile()
         {
@@ -34,7 +34,6 @@ namespace ApplicazioneCondivisione
         {
             while(progressBar1.Value < 100) {
                 progressBar1.Value = progressBar1.Value + 1;
-                label2.Text = "Percentale inviata: " + progressBar1.Value + "%";
             }
 
             button1.Text = "Fine";
