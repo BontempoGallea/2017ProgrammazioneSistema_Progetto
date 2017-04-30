@@ -1,6 +1,6 @@
 ﻿namespace ApplicazioneCondivisione
 {
-    partial class Form1
+    partial class ApplicazioneCondivisione
     {
         /// <summary>
         /// Variabile di progettazione necessaria.
@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApplicazioneCondivisione));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connettiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.esciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.informazioniSuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.listaUsers = new System.Windows.Forms.ListView();
+            this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
@@ -91,20 +91,24 @@
             this.informazioniSuToolStripMenuItem.Size = new System.Drawing.Size(295, 38);
             this.informazioniSuToolStripMenuItem.Text = "Informazioni su...";
             // 
-            // listView1
+            // listaUsers
             // 
-            this.listView1.AccessibleName = "UsersList";
-            this.listView1.Location = new System.Drawing.Point(0, 43);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1177, 562);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listaUsers.AccessibleName = "UsersList";
+            this.listaUsers.Location = new System.Drawing.Point(0, 43);
+            this.listaUsers.Name = "listaUsers";
+            this.listaUsers.Size = new System.Drawing.Size(1177, 562);
+            this.listaUsers.TabIndex = 1;
+            this.listaUsers.UseCompatibleStateImageBehavior = false;
             // 
-            // notifyIcon1
+            // taskbarIcon
             // 
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
+            this.taskbarIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.taskbarIcon.BalloonTipText = "L\'applicazione è stata minimizzata!";
+            this.taskbarIcon.BalloonTipTitle = "Fai doppio clic su questa icona per riaprire.";
+            this.taskbarIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("taskbarIcon.Icon")));
+            this.taskbarIcon.Text = "Applicazione Sharing";
+            this.taskbarIcon.Visible = true;
+            this.taskbarIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.taskbarIcon_MouseDoubleClick);
             // 
             // button1
             // 
@@ -115,7 +119,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Condividi";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.condividiButton_Click);
             // 
             // button2
             // 
@@ -126,21 +130,23 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Annulla";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.annullaButton_Click);
             // 
-            // Form1
+            // ApplicazioneCondivisione
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1185, 695);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listaUsers);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "ApplicazioneCondivisione";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.applicazioneCondivisione_Load);
+            this.Resize += new System.EventHandler(this.applicazioneCondivisione_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -156,10 +162,10 @@
         private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem informazioniSuToolStripMenuItem;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.NotifyIcon taskbarIcon;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.ListView listaUsers;
     }
 }
 
