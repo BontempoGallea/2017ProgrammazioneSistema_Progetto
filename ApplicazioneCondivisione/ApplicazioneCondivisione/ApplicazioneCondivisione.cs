@@ -22,7 +22,8 @@ namespace ApplicazioneCondivisione
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
-            luh = new ListUserHandler();
+
+           luh = new ListUserHandler();
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
