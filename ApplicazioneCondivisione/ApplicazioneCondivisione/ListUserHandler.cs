@@ -5,6 +5,9 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ApplicazioneCondivisione
 {
@@ -13,11 +16,11 @@ namespace ApplicazioneCondivisione
         /*
          * Questa è la classe che si occupa di gestire la lista degli utenti attivi nella nostra LAN.  
         */
-        private Person admin = new Person("Mario", "Rossi", "offline"); // Dove sta girando l'applicazione
+        private Person admin; // Dove sta girando l'applicazione
         private ApplicazioneCondivisione frame; // Il frame della UI
         private List<Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
-
+        private Dictionary<string, Person> personeselezionate = new Dictionary<string, Person>();
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
         private int i = 0;
         private int j = 0;
@@ -28,6 +31,7 @@ namespace ApplicazioneCondivisione
         {
             users = new List<Person>();
             lastRefresh = -1;
+            admin = new Person("Mario", "Rossi", "online", GetLocalIPAddress(), "3000");
         }
 
         public void listaUsersInit(ApplicazioneCondivisione f)
@@ -40,8 +44,8 @@ namespace ApplicazioneCondivisione
 
             this.frame = f;
 
-            users.Add(new Person("Eugenio", "Gallea", "offline"));
-            users.Add(new Person("Gianpaolo", "Bontempo", "online"));
+            users.Add(new Person("Eugenio", "Gallea", "offline", "192.168.55.2", "1000"));
+            users.Add(new Person("Gianpaolo", "Bontempo", "online", "192.168.55.3", "1000"));
 
             f.nome.Text = admin.getNome();
             f.cognome.Text = admin.getCognome();
@@ -85,7 +89,7 @@ namespace ApplicazioneCondivisione
                         p.setOld(); //Setto l'utente come OLD, ossia uno che è già stato visualizzato nella UI
                         btn = new MetroFramework.Controls.MetroTile();
                         btn.Size = new Size(70, 70);
-                        btn.Name = "BTN";
+                        btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
                         btn.Style = MetroFramework.MetroColorStyle.Green;
                         btn.Click += new EventHandler(changeState2_Click);
                         btn.Text = p.getNome() + "\n" + p.getCognome();
@@ -118,17 +122,24 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        public void condividiButtonClick()
+        public void condividiButtonClick(Client c)
         {
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
-            
+
             if (selectedlist.Count > 0)
             {
-                SendFile f2 = new SendFile();
-                f2.Show();
-                f2.sendFile();
+                SendFile sd = new SendFile();
+
+                foreach(MetroFramework.Controls.MetroTile m in selectedlist)
+                {
+                    Thread clientThread = new Thread(() => c.entryPoint(m.Name));
+                    clientThread.Start();
+                    clientThread.Join();
+
+                    sd.progressBar.Value += 100 / selectedlist.Count; 
+                }
             }
             else
             {
@@ -143,6 +154,28 @@ namespace ApplicazioneCondivisione
             */
             
             users.Add(p);
+        }
+
+        public Person getAdmin()
+        {
+            return admin;
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            /*
+             * Funzione per trovare il mio indirizzo IPv4
+             */
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("indirizzo non trovato");
         }
     }
 }
