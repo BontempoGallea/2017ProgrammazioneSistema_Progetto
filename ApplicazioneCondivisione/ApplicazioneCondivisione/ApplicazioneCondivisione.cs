@@ -33,6 +33,12 @@ namespace ApplicazioneCondivisione
             Thread clientThread = new Thread(() => client.entryPoint(luh));
             clientThread.Name = "clientThread"; // Rinomino il thread
             clientThread.Start();
+
+            // Creo la classe server che verrà fatta girare nel rispettivo thread
+            Server server = new Server();
+            Thread serverThread = new Thread(server.entryPoint);
+            serverThread.Name = "serverThread";
+            serverThread.Start();
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
