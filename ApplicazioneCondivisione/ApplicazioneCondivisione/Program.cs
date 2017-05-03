@@ -11,7 +11,7 @@ namespace ApplicazioneCondivisione
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
-        [STAThread]
+        [MTAThread]
         static void Main()
         {
             Application.EnableVisualStyles();

@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="ListUserHandler.cs" />
     <Compile Include="SendFile.cs">
       <SubType>Form</SubType>
@@ -99,7 +100,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="serversocket.cs" />
+=======
+    <Compile Include="Server.cs" />
+>>>>>>> refs/remotes/origin/master
     <EmbeddedResource Include="ApplicazioneCondivisione.resx">
       <DependentUpon>ApplicazioneCondivisione.cs</DependentUpon>
     </EmbeddedResource>
