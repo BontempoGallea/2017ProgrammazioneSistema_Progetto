@@ -14,6 +14,8 @@ namespace ApplicazioneCondivisione
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         static ListUserHandler luh; // Per gestire la lista di utenti
+        static Client client;
+        static Server server;
 
         public ApplicazioneCondivisione()
         {
@@ -29,13 +31,10 @@ namespace ApplicazioneCondivisione
             luh.listaUsersInit(this);
 
             // Creo la classe client che verrà fatta girare nel rispettivo thread
-            Client client = new Client();
-            Thread clientThread = new Thread(() => client.entryPoint(luh));
-            clientThread.Name = "clientThread"; // Rinomino il thread
-            clientThread.Start();
+            client = new Client(luh);
 
             // Creo la classe server che verrà fatta girare nel rispettivo thread
-            Server server = new Server();
+            server = new Server(luh.getAdmin());
             Thread serverThread = new Thread(server.entryPoint);
             serverThread.Name = "serverThread";
             serverThread.Start();
@@ -62,7 +61,7 @@ namespace ApplicazioneCondivisione
              * Funzione per gestire gli eventi derivanti dal click sul tasto condividi
             */
             
-            luh.condividiButtonClick();
+            luh.condividiButtonClick(client);
         }
 
         private void annullaButton_Click(object sender, EventArgs e)
