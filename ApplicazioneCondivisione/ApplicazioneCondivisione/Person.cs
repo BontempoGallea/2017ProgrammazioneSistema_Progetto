@@ -8,15 +8,21 @@ namespace ApplicazioneCondivisione
 {
     public class Person
     {
+        /*
+         * Classe per descrivere un utente
+        */
+        
         private string nome;
         private string cognome;
         private string stato;
+        private bool imNew;
 
         public Person(string n, string c, string s)
         {
             this.nome = n;
             this.cognome = c;
             this.stato = s;
+            this.imNew = true;
         }
 
         public string getNome()
@@ -47,6 +53,18 @@ namespace ApplicazioneCondivisione
         public void setStato(string s)
         {
             this.stato = s;
+        }
+
+        public bool isNew()
+        {
+            // L'utente è una nuova aggiunta?
+            return imNew;
+        }
+
+        public void setOld()
+        {
+            // L'utente non è più una nuova aggiunta
+            imNew = false;
         }
     }
 }
