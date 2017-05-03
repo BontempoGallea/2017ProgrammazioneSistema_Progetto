@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="ListUserHandler.cs" />
     <Compile Include="SendFile.cs">
       <SubType>Form</SubType>
