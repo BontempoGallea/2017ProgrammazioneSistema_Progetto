@@ -30,7 +30,7 @@ namespace ApplicazioneCondivisione
             users = new Dictionary<string, Person>();
             lastRefresh = -1;
 
-            admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");
+            admin = new Person("Eugenio", "Gallea", "online", GetLocalIPAddress(), "3000");
 
         }
 
