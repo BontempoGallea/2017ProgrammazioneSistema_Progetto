@@ -94,5 +94,13 @@ namespace ApplicazioneCondivisione
         {
             return nome + "," + cognome + "," + stato + "," + ip.ToString() + "," + port;
         }
+
+        public bool isEqual(Person p)
+        {
+            return (p.getCognome().CompareTo(cognome) == 0) 
+                && (p.getNome().CompareTo(nome) == 0) 
+                && (p.getIp().ToString().CompareTo(ip.ToString()) == 0) 
+                && (p.getPort() == port);
+        }
     }
 }
