@@ -95,7 +95,6 @@ namespace ApplicazioneCondivisione
        
         private void udpImOnline(Person p)
         {
-
             // Broadcast the message to the listener.
             BroadcastMessage(admin.getString());
         }
@@ -104,13 +103,13 @@ namespace ApplicazioneCondivisione
 
         static void BroadcastMessage(string message)
         {
-             IPEndPoint endPoint;
             IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);
             try
             {
                 //Send multicast packets to the listener.
                 clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length,ipEP);
                 Console.WriteLine("Multicast data sent.....");
+                Thread.Sleep(5000);
             }
             catch (Exception e)
             {
