@@ -26,9 +26,10 @@ namespace ApplicazioneCondivisione
         public static IPAddress clientlocalip = IPAddress.Parse(GetLocalIPAddress());
         public static int clientlocalport = 2000;
 
-        public Server(Person a)
+        public Server(Person a, ListUserHandler luhandler)
         {
             this.admin = a;
+            luh = luhandler;
         }
 
         public void entryPoint()
@@ -37,7 +38,7 @@ namespace ApplicazioneCondivisione
             mcastPort = 11000;
 
             // Start a multicast group.
-            StartMulticast();
+            
 
             Thread ramoUDP = new Thread(entryUDP);
             ramoUDP.Start();
@@ -82,7 +83,7 @@ namespace ApplicazioneCondivisione
         {
             while (admin.isOnline())
             {
-
+                receiveFile();
             }
         }
 
@@ -118,10 +119,15 @@ namespace ApplicazioneCondivisione
             {
                 while (!done)
                 {
-                    mcastSocket.ReceiveFrom(bytes, ref remoteEP);
-                    string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
-                    Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
-                    luh.addUser(p);
+                    var a = mcastSocket.Available;
+                    if ( a> 0)
+                    {
+                        mcastSocket.ReceiveFrom(bytes, ref remoteEP);
+                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
+                        Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
+                        luh.addUser(p);
+                        done = true;
+                    }
                 }
             
             }
@@ -172,7 +178,7 @@ namespace ApplicazioneCondivisione
             BroadcastMessage(admin.getString());
         }
 
-        static void JoinMulticastGroup()
+        public void JoinMulticastGroup()
         {
             try
             {
@@ -184,7 +190,7 @@ namespace ApplicazioneCondivisione
                 // Get the local IP address used by the listener and the sender to
                 // exchange multicast messages. 
                 Console.Write("\nEnter local IPAddress for sending multicast packets: ");
-                IPAddress localIPAddr = IPAddress.Parse(Console.ReadLine());
+                IPAddress localIPAddr = this.admin.getIp();
 
                 // Create an IPEndPoint object. 
                 IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
@@ -228,13 +234,14 @@ namespace ApplicazioneCondivisione
 
         public void receiveFile()
         {
-            var listener = new TcpListener(admin.getIp(), 4000);
+            var listener = new TcpListener(admin.getIp(),admin.getPort());
             listener.Start();
+            Thread.Sleep(2000);
             while (true)
             {
                 using (var client = listener.AcceptTcpClient())
                 using (var stream = client.GetStream())
-                using (var output = File.Create("result.dat"))
+                using (var output = File.Create("result.txt"))
                 {
                     // read the file in chunks of 1KB
                     var buffer = new byte[1024];
