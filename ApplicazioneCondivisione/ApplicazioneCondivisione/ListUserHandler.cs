@@ -31,7 +31,7 @@ namespace ApplicazioneCondivisione
         {
             users = new Dictionary<string, Person>();
             lastRefresh = -1;
-            admin = new Person("Gino", "Bianchi", "online", GetLocalIPAddress(), "3000");
+            admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");
         }
 
         public void listaUsersInit(ApplicazioneCondivisione f)
@@ -44,9 +44,7 @@ namespace ApplicazioneCondivisione
 
             this.frame = f;
 
-            users.Add("EugenioGallea",new Person("Eugenio", "Gallea", "offline", "192.168.55.2", "1000"));
-            users.Add("GianpaoloBontempo",new Person("Gianpaolo", "Bontempo", "online", "192.168.55.3", "1000"));
-
+           
             f.nome.Text = admin.getNome();
             f.cognome.Text = admin.getCognome();
             f.stato.Text = admin.getStato();

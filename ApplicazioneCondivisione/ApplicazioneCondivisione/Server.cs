@@ -49,7 +49,10 @@ namespace ApplicazioneCondivisione
         public void entryTalk()
         {
             while (true)
+            {
                 udpImOnline(this.admin);
+                //Thread.Sleep(10);
+            }
         }
 
         public void entryListen()
