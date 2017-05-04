@@ -31,6 +31,7 @@ namespace ApplicazioneCondivisione
         public void entryPoint(string user)
         {
             string[] cred = user.Split(',');
+            if(luh.getlist().ContainsKey(cred[0]+cred[1]))
             SendFileTo(cred[2], cred[3]);
         }
 
