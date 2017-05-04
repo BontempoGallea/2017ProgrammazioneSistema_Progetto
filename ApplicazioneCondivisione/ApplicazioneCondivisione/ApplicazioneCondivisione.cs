@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using Microsoft.Win32;
 
 namespace ApplicazioneCondivisione
 {
@@ -17,25 +18,10 @@ namespace ApplicazioneCondivisione
         static ListUserHandler luh; // Per gestire la lista di utenti
         static Client client;
         static Server server;
-<<<<<<< HEAD
-        private bool allowVisible;     // ContextMenu's Show command used
-        private bool allowClose;       // ContextMenu's Exit command used
 
-=======
-        
->>>>>>> refs/remotes/origin/master
         public ApplicazioneCondivisione()
         {
-            /*
-             * Per settare tutte la situazione iniziale di user interface e dei thread per client
-             * e server.
-            */
-            
             InitializeComponent();
-            taskbarIcon.ContextMenuStrip = iconContextMenu;
-            
-            ShowInTaskbar = false;
-            taskbarIcon.Visible = true;
 
             // Creo il list users handler
             luh = new ListUserHandler();
@@ -57,13 +43,8 @@ namespace ApplicazioneCondivisione
             timer.Interval = (10 * 1000); // 10 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
-            /*
-             * Funzione che setta l'aspetto della UI quando viene fatta partire
-            */
 
-            taskbarIcon.ContextMenuStrip = this.iconContextMenu;
             metroLabel4.Text = "Le tue credenziali: ";
-            this.WindowState = FormWindowState.Minimized;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -122,11 +103,9 @@ namespace ApplicazioneCondivisione
             luh.refreshButtonClick();
         }
 
-        private void apriApplicazione_Click(object sender, EventArgs e)
+        protected override void SetVisibleCore(bool value)
         {
-            ShowInTaskbar = true;
-            taskbarIcon.Visible = false;
-            this.WindowState = FormWindowState.Normal;
+            base.SetVisibleCore(false);
         }
     }
 }

@@ -33,12 +33,6 @@
             this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.iconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.statoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.esciToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new MetroFramework.Controls.MetroTile();
             this.changeState = new MetroFramework.Controls.MetroTile();
             this.nome = new MetroFramework.Controls.MetroLabel();
@@ -46,9 +40,7 @@
             this.stato = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.apriToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.didascalia = new MetroFramework.Controls.MetroLabel();
-            this.iconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // taskbarIcon
@@ -83,52 +75,6 @@
             this.button2.Text = "Annulla";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.annullaButton_Click);
-            // 
-            // iconContextMenu
-            // 
-            this.iconContextMenu.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.iconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.apriToolStripMenu,
-            this.statoToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.esciToolStripMenuItem1});
-            this.iconContextMenu.Name = "iconContextMenu";
-            this.iconContextMenu.Size = new System.Drawing.Size(170, 124);
-            // 
-            // statoToolStripMenuItem
-            // 
-            this.statoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.onlineToolStripMenuItem,
-            this.offlineToolStripMenuItem});
-            this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
-            this.statoToolStripMenuItem.Size = new System.Drawing.Size(169, 38);
-            this.statoToolStripMenuItem.Text = "Stato";
-            // 
-            // onlineToolStripMenuItem
-            // 
-            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
-            this.onlineToolStripMenuItem.Text = "online";
-            this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
-            // 
-            // offlineToolStripMenuItem
-            // 
-            this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
-            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
-            this.offlineToolStripMenuItem.Text = "offline";
-            this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
-            // 
-            // esciToolStripMenuItem1
-            // 
-            this.esciToolStripMenuItem1.Name = "esciToolStripMenuItem1";
-            this.esciToolStripMenuItem1.Size = new System.Drawing.Size(169, 38);
-            this.esciToolStripMenuItem1.Text = "Esci";
-            this.esciToolStripMenuItem1.Click += new System.EventHandler(this.esciOptionIconContextMenu_Click);
             // 
             // refresh
             // 
@@ -200,13 +146,6 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1101, 302);
             this.flowLayoutPanel1.TabIndex = 11;
             // 
-            // apriToolStripMenu
-            // 
-            this.apriToolStripMenu.Name = "apriToolStripMenu";
-            this.apriToolStripMenu.Size = new System.Drawing.Size(169, 38);
-            this.apriToolStripMenu.Text = "Apri";
-            this.apriToolStripMenu.Click += new System.EventHandler(this.apriApplicazione_Click);
-            // 
             // didascalia
             // 
             this.didascalia.AutoSize = true;
@@ -235,7 +174,6 @@
             this.Name = "ApplicazioneCondivisione";
             this.Text = "Condividi con...";
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
-            this.iconContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -245,12 +183,6 @@
         private System.Windows.Forms.NotifyIcon taskbarIcon;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ContextMenuStrip iconContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem statoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
         private MetroFramework.Controls.MetroTile refresh;
         private MetroFramework.Controls.MetroTile changeState;
         private MetroFramework.Controls.MetroLabel metroLabel4;
@@ -258,7 +190,6 @@
         public MetroFramework.Controls.MetroLabel cognome;
         public MetroFramework.Controls.MetroLabel stato;
         public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.ToolStripMenuItem apriToolStripMenu;
         private MetroFramework.Controls.MetroLabel didascalia;
     }
 }
