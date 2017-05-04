@@ -41,6 +41,14 @@
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.didascalia = new MetroFramework.Controls.MetroLabel();
+            this.contextMenuStripTaskbarIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.apriToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.esciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripTaskbarIcon.SuspendLayout();
             this.SuspendLayout();
             // 
             // taskbarIcon
@@ -51,6 +59,7 @@
             this.taskbarIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("taskbarIcon.Icon")));
             this.taskbarIcon.Text = "Applicazione Sharing";
             this.taskbarIcon.Visible = true;
+            this.taskbarIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.taskbarIcon_MouseDoubleClick);
             // 
             // button1
             // 
@@ -155,6 +164,59 @@
             this.didascalia.TabIndex = 12;
             this.didascalia.Text = "Seleziona chi vuoi inviare il file:";
             // 
+            // contextMenuStripTaskbarIcon
+            // 
+            this.contextMenuStripTaskbarIcon.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.contextMenuStripTaskbarIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.apriToolStripMenuItem,
+            this.statoToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.esciToolStripMenuItem});
+            this.contextMenuStripTaskbarIcon.Name = "contextMenuStripTaskbarIcon";
+            this.contextMenuStripTaskbarIcon.Size = new System.Drawing.Size(170, 124);
+            // 
+            // apriToolStripMenuItem
+            // 
+            this.apriToolStripMenuItem.Name = "apriToolStripMenuItem";
+            this.apriToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.apriToolStripMenuItem.Text = "Apri";
+            this.apriToolStripMenuItem.Click += new System.EventHandler(this.apriOptionIconContextMenu_Click);
+            // 
+            // statoToolStripMenuItem
+            // 
+            this.statoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.onlineToolStripMenuItem,
+            this.offlineToolStripMenuItem});
+            this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
+            this.statoToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.statoToolStripMenuItem.Text = "Stato";
+            // 
+            // onlineToolStripMenuItem
+            // 
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.onlineToolStripMenuItem.Text = "Online";
+            this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
+            // 
+            // offlineToolStripMenuItem
+            // 
+            this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
+            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.offlineToolStripMenuItem.Text = "Offline";
+            this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            // 
+            // esciToolStripMenuItem
+            // 
+            this.esciToolStripMenuItem.Name = "esciToolStripMenuItem";
+            this.esciToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.esciToolStripMenuItem.Text = "Esci";
+            this.esciToolStripMenuItem.Click += new System.EventHandler(this.esciToolStripMenuItem_Click);
+            // 
             // ApplicazioneCondivisione
             // 
             this.AccessibleName = "";
@@ -174,6 +236,7 @@
             this.Name = "ApplicazioneCondivisione";
             this.Text = "Condividi con...";
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
+            this.contextMenuStripTaskbarIcon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,6 +254,13 @@
         public MetroFramework.Controls.MetroLabel stato;
         public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MetroFramework.Controls.MetroLabel didascalia;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTaskbarIcon;
+        private System.Windows.Forms.ToolStripMenuItem apriToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem;
     }
 }
 
