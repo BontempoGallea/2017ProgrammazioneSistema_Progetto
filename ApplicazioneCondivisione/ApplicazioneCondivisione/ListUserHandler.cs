@@ -22,8 +22,6 @@ namespace ApplicazioneCondivisione
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
         private Dictionary<string, Person> personeselezionate = new Dictionary<string, Person>();
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
-        private int i = 0;
-        private int j = 0;
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
         private List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
 
@@ -31,7 +29,11 @@ namespace ApplicazioneCondivisione
         {
             users = new Dictionary<string, Person>();
             lastRefresh = -1;
+<<<<<<< HEAD
             admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");
+=======
+            admin = new Person("Luca", "Rossi", "online", GetLocalIPAddress(), "3000");
+>>>>>>> refs/remotes/origin/master
         }
 
         public void listaUsersInit(ApplicazioneCondivisione f)
@@ -43,8 +45,11 @@ namespace ApplicazioneCondivisione
             */ 
 
             this.frame = f;
+<<<<<<< HEAD
 
            
+=======
+>>>>>>> refs/remotes/origin/master
             f.nome.Text = admin.getNome();
             f.cognome.Text = admin.getCognome();
             f.stato.Text = admin.getStato();
@@ -58,7 +63,9 @@ namespace ApplicazioneCondivisione
             this.admin.setStato(s);
             frame.stato.Text = s;
         }
+
         public Dictionary<String,Person> getlist() { return users; }
+
         public string getAdminState()
         {
             /*
@@ -74,7 +81,6 @@ namespace ApplicazioneCondivisione
             */
             
             int l = users.Count(); // Lunghezza attuale della lista, dopo il click
-
             if (l > lastRefresh)
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
@@ -101,7 +107,9 @@ namespace ApplicazioneCondivisione
                             frame.flowLayoutPanel1.Controls.Add(btn);
                         }
                     }
-                }catch(Exception e) { }
+                }catch(Exception e) {
+                    Console.WriteLine(e.ToString());
+                }
                 lastRefresh = l; //Aggiorno la lunghezza della lista all'ultimo refresh
             }
         }
@@ -113,7 +121,6 @@ namespace ApplicazioneCondivisione
             {
                 selectedlist.Add(changeState);
                 changeState.Style = MetroFramework.MetroColorStyle.Blue;
-
             }
             else
             {

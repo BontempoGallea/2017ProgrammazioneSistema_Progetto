@@ -34,7 +34,7 @@ namespace ApplicazioneCondivisione
             client = new Client(luh);
 
             // Creo la classe server che verrà fatta girare nel rispettivo thread
-            server = new Server(luh.getAdmin(), luh);
+            server = new Server(luh);
             Thread serverThread = new Thread(server.entryPoint);
             serverThread.Name = "serverThread";
             serverThread.Start();
