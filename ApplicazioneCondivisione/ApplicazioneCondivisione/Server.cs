@@ -119,11 +119,15 @@ namespace ApplicazioneCondivisione
             {
                 while (!done)
                 {
-                    mcastSocket.ReceiveFrom(bytes, ref remoteEP);
-                    string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
-                    Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
-                    luh.addUser(p);
-                    done = true;
+                    var a = mcastSocket.Available;
+                    if ( a> 0)
+                    {
+                        mcastSocket.ReceiveFrom(bytes, ref remoteEP);
+                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
+                        Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
+                        luh.addUser(p);
+                        done = true;
+                    }
                 }
             
             }
@@ -232,11 +236,12 @@ namespace ApplicazioneCondivisione
         {
             var listener = new TcpListener(admin.getIp(),admin.getPort());
             listener.Start();
+            Thread.Sleep(2000);
             while (true)
             {
                 using (var client = listener.AcceptTcpClient())
                 using (var stream = client.GetStream())
-                using (var output = File.Create("result.dat"))
+                using (var output = File.Create("result.txt"))
                 {
                     // read the file in chunks of 1KB
                     var buffer = new byte[1024];
