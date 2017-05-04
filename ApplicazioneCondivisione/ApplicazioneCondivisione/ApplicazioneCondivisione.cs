@@ -18,10 +18,12 @@ namespace ApplicazioneCondivisione
         static ListUserHandler luh; // Per gestire la lista di utenti
         static Client client;
         static Server server;
+        static Thread serverThread;
 
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
+            this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
 
             // Creo il list users handler
             luh = new ListUserHandler();
@@ -32,7 +34,7 @@ namespace ApplicazioneCondivisione
 
             // Creo la classe server che verrà fatta girare nel rispettivo thread
             server = new Server(luh);
-            Thread serverThread = new Thread(server.entryPoint);
+            serverThread = new Thread(server.entryPoint);
             serverThread.Name = "serverThread";
             serverThread.Start();
         }
@@ -53,11 +55,6 @@ namespace ApplicazioneCondivisione
             //throw new NotImplementedException();
         }
 
-        private void esciToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
         private void condividiButton_Click(object sender, EventArgs e)
         {
             luh.condividiButtonClick(client);
@@ -65,22 +62,8 @@ namespace ApplicazioneCondivisione
 
         private void annullaButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
-        }
-
-        private void esciOptionIconContextMenu_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void offlineOptionIconContextMenu_Click(object sender, EventArgs e)
-        {
-            luh.changeAdminState("offline");
-        }
-
-        private void onlineOptionIconContextMenu_Click(object sender, EventArgs e)
-        {
-            luh.changeAdminState("online");
+            base.SetVisibleCore(false);
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void changeState_Click(object sender, EventArgs e)
@@ -106,6 +89,40 @@ namespace ApplicazioneCondivisione
         protected override void SetVisibleCore(bool value)
         {
             base.SetVisibleCore(false);
+        }
+
+        private void taskbarIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            base.SetVisibleCore(true);
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void esciOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void offlineOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            luh.changeAdminState("offline");
+        }
+
+        private void onlineOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            luh.changeAdminState("online");
+        }
+
+        private void esciToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            server.closeAllThreads();
+            serverThread.Abort();
+            Application.Exit();
+        }
+
+        private void apriOptionIconContextMenu_Click(object sender, EventArgs e)
+        {
+            base.SetVisibleCore(true);
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }
