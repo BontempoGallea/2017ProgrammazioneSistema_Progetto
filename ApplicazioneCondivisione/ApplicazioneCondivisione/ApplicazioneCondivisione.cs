@@ -11,12 +11,13 @@ using System.Threading;
 
 namespace ApplicazioneCondivisione
 {
+    
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         static ListUserHandler luh; // Per gestire la lista di utenti
         static Client client;
         static Server server;
-
+        
         public ApplicazioneCondivisione()
         {
             /*
@@ -42,12 +43,22 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = (10 * 1000); // 10 secs
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
             /*
              * Funzione che setta l'aspetto della UI quando viene fatta partire
             */
-            
+
             taskbarIcon.ContextMenuStrip = this.iconContextMenu;
             metroLabel4.Text = "Le tue credenziali: ";
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            luh.refreshButtonClick();
+            //throw new NotImplementedException();
         }
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
