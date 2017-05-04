@@ -18,7 +18,7 @@ namespace ApplicazioneCondivisione
         */
         private Person admin; // Dove sta girando l'applicazione
         private ApplicazioneCondivisione frame; // Il frame della UI
-        private List<Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
+        private Dictionary<string,Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
         private Dictionary<string, Person> personeselezionate = new Dictionary<string, Person>();
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
@@ -29,7 +29,7 @@ namespace ApplicazioneCondivisione
 
         public ListUserHandler()
         {
-            users = new List<Person>();
+            users = new Dictionary<string, Person>();
             lastRefresh = -1;
             admin = new Person("Mario", "Rossi", "online", GetLocalIPAddress(), "3000");
         }
@@ -44,8 +44,8 @@ namespace ApplicazioneCondivisione
 
             this.frame = f;
 
-            users.Add(new Person("Eugenio", "Gallea", "offline", "192.168.55.2", "1000"));
-            users.Add(new Person("Gianpaolo", "Bontempo", "online", "192.168.55.3", "1000"));
+            users.Add("EugenioGallea",new Person("Eugenio", "Gallea", "offline", "192.168.55.2", "1000"));
+            users.Add("GianpaoloBontempo",new Person("Gianpaolo", "Bontempo", "online", "192.168.55.3", "1000"));
 
             f.nome.Text = admin.getNome();
             f.cognome.Text = admin.getCognome();
@@ -60,7 +60,7 @@ namespace ApplicazioneCondivisione
             this.admin.setStato(s);
             frame.stato.Text = s;
         }
-
+        public Dictionary<String,Person> getlist() { return users; }
         public string getAdminState()
         {
             /*
@@ -81,27 +81,29 @@ namespace ApplicazioneCondivisione
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
                 // utenti.
-                foreach(Person p in users)
+                try
                 {
-                    if (p.isNew())
+                    foreach (Person p in users.Values)
                     {
-                        //Controllo se l'utente è una nuova aggiunta o meno
-                        p.setOld(); //Setto l'utente come OLD, ossia uno che è già stato visualizzato nella UI
-                        btn = new MetroFramework.Controls.MetroTile();
-                        btn.Size = new Size(70, 70);
-                        btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
-                        btn.Style = MetroFramework.MetroColorStyle.Green;
-                        btn.Click += new EventHandler(changeState2_Click);
-                        btn.Text = p.getNome() + "\n" + p.getCognome();
-                        btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
-                        btn.TileImageAlign = ContentAlignment.TopCenter;
-                        btn.UseTileImage = true;
+                        if (p.isNew())
+                        {
+                            //Controllo se l'utente è una nuova aggiunta o meno
+                            p.setOld(); //Setto l'utente come OLD, ossia uno che è già stato visualizzato nella UI
+                            btn = new MetroFramework.Controls.MetroTile();
+                            btn.Size = new Size(70, 70);
+                            btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
+                            btn.Style = MetroFramework.MetroColorStyle.Green;
+                            btn.Click += new EventHandler(changeState2_Click);
+                            btn.Text = p.getNome() + "\n" + p.getCognome();
+                            btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
+                            btn.TileImageAlign = ContentAlignment.TopCenter;
+                            btn.UseTileImage = true;
 
-                        listBTN.Add(btn);
-                        frame.flowLayoutPanel1.Controls.Add(btn);
+                            listBTN.Add(btn);
+                            frame.flowLayoutPanel1.Controls.Add(btn);
+                        }
                     }
-                }
-
+                }catch(Exception e) { }
                 lastRefresh = l; //Aggiorno la lunghezza della lista all'ultimo refresh
             }
         }
@@ -152,8 +154,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per aggiungere un utente alla lista degli user
             */
-            
-            users.Add(p);
+            if(!users.ContainsKey(p.getCognome()+p.getNome()))
+            users.Add(p.getCognome() + p.getNome(), p);
         }
 
         public Person getAdmin()
