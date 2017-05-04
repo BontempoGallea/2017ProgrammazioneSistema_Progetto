@@ -17,13 +17,10 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-       
-        private static int receiverPort=15000;
         private static int senderPort = 16000;
         private static ListUserHandler luh;
         private Person admin;
-        public static IPAddress clientLocalip = IPAddress.Parse(GetLocalIPAddress());
-        public static int clientLocalPort = 2000;
+        private static UdpClient clientUDP = new UdpClient(senderPort);
 
         public Server(Person a, ListUserHandler luhandler)
         {
@@ -74,15 +71,14 @@ namespace ApplicazioneCondivisione
             */
             bool done = false;
             byte[] bytes = new Byte[100];
-            UdpClient client2 = new UdpClient(receiverPort);
             IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort);
             try
             {
                 while (!done)
                 {
-                    if ( client2.Available> 0)
+                    if ( clientUDP.Available> 0)
                     {
-                       bytes=client2.Receive(ref ipEp);
+                        bytes = clientUDP.Receive(ref ipEp);
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
                         Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
                         luh.addUser(p);
@@ -109,12 +105,11 @@ namespace ApplicazioneCondivisione
         static void BroadcastMessage(string message)
         {
              IPEndPoint endPoint;
-            UdpClient client = new UdpClient();
             IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);
             try
             {
                 //Send multicast packets to the listener.
-               client.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length,ipEP);
+                clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length,ipEP);
                 Console.WriteLine("Multicast data sent.....");
             }
             catch (Exception e)
