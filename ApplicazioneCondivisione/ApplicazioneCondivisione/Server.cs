@@ -17,14 +17,13 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-        private static IPAddress mcastAddress;
-        private static int mcastPort;
-        private static Socket mcastSocket;
-        private static MulticastOption mcastOption;
+       
+        private static int receiverPort=15000;
+        private static int senderPort = 16000;
         private static ListUserHandler luh;
         private Person admin;
-        public static IPAddress clientlocalip = IPAddress.Parse(GetLocalIPAddress());
-        public static int clientlocalport = 2000;
+        public static IPAddress clientLocalip = IPAddress.Parse(GetLocalIPAddress());
+        public static int clientLocalPort = 2000;
 
         public Server(Person a, ListUserHandler luhandler)
         {
@@ -34,12 +33,6 @@ namespace ApplicazioneCondivisione
 
         public void entryPoint()
         {
-            mcastAddress = IPAddress.Parse("224.168.100.2");
-            mcastPort = 11000;
-
-            // Start a multicast group.
-            
-
             Thread ramoUDP = new Thread(entryUDP);
             ramoUDP.Start();
 
@@ -58,50 +51,20 @@ namespace ApplicazioneCondivisione
 
         public void entryTalk()
         {
-            // Join the listener multicast group.
-            JoinMulticastGroup();
-
             while (true)
-            {
                 udpImOnline(this.admin);
-            }
-
-            mcastSocket.Close();
         }
 
         public void entryListen()
         {
-            StartMulticast();
-            while(true)
-                // Receive broadcast messages.
+            while (true) 
                 ReceiveBroadcastMessages();
-
-            mcastSocket.Close();
         }
 
         public void entryTCP()
         {
             while (admin.isOnline())
-            {
                 receiveFile();
-            }
-        }
-
-        public static string GetLocalIPAddress()
-        {
-            /*
-             * Funzione per trovare il mio indirizzo IPv4
-             */
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("indirizzo non trovato");
         }
 
         private static void ReceiveBroadcastMessages()
@@ -109,27 +72,23 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per ricevere un messaggio in broadcast
             */
-
             bool done = false;
             byte[] bytes = new Byte[100];
-            IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
-            EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
-
+            UdpClient client2 = new UdpClient(receiverPort);
+            IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort);
             try
             {
                 while (!done)
                 {
-                    var a = mcastSocket.Available;
-                    if ( a> 0)
+                    if ( client2.Available> 0)
                     {
-                        mcastSocket.ReceiveFrom(bytes, ref remoteEP);
+                       bytes=client2.Receive(ref ipEp);
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
                         Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
                         luh.addUser(p);
                         done = true;
                     }
                 }
-            
             }
             catch (Exception e)
             {
@@ -137,93 +96,25 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        private static void StartMulticast()
-        {
-            /*
-             * Mi aggiungo il gruppo multicast
-            */
-
-            try
-            {
-                mcastSocket = new Socket(AddressFamily.InterNetwork,
-                                         SocketType.Dgram,
-                                         ProtocolType.Udp);
-
-                EndPoint localEP = (EndPoint)new IPEndPoint(clientlocalip, mcastPort);
-
-                mcastSocket.Bind(localEP);
-
-                // Define a MulticastOption object specifying the multicast group 
-                // address and the local IPAddress.
-                // The multicast group address is the same as the address used by the server.
-                mcastOption = new MulticastOption(mcastAddress, clientlocalip);
-
-                mcastSocket.SetSocketOption(SocketOptionLevel.IP,
-                                            SocketOptionName.AddMembership,
-                                            mcastOption);
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
+       
         private void udpImOnline(Person p)
         {
-            mcastAddress = IPAddress.Parse("224.168.100.2");
-            mcastPort = 11000;
 
             // Broadcast the message to the listener.
             BroadcastMessage(admin.getString());
         }
 
-        public void JoinMulticastGroup()
-        {
-            try
-            {
-                // Create a multicast socket.
-                mcastSocket = new Socket(AddressFamily.InterNetwork,
-                                         SocketType.Dgram,
-                                         ProtocolType.Udp);
-
-                // Get the local IP address used by the listener and the sender to
-                // exchange multicast messages. 
-                Console.Write("\nEnter local IPAddress for sending multicast packets: ");
-                IPAddress localIPAddr = this.admin.getIp();
-
-                // Create an IPEndPoint object. 
-                IPEndPoint IPlocal = new IPEndPoint(localIPAddr, 0);
-
-                // Bind this endpoint to the multicast socket.
-                mcastSocket.Bind(IPlocal);
-
-                // Define a MulticastOption object specifying the multicast group 
-                // address and the local IP address.
-                // The multicast group address is the same as the address used by the listener.
-                MulticastOption mcastOption;
-                mcastOption = new MulticastOption(mcastAddress, localIPAddr);
-
-                mcastSocket.SetSocketOption(SocketOptionLevel.IP,
-                                            SocketOptionName.AddMembership,
-                                            mcastOption);
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("\n" + e.ToString());
-            }
-        }
+      
 
         static void BroadcastMessage(string message)
         {
-            IPEndPoint endPoint;
-
+             IPEndPoint endPoint;
+            UdpClient client = new UdpClient();
+            IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);
             try
             {
                 //Send multicast packets to the listener.
-                endPoint = new IPEndPoint(mcastAddress, mcastPort);
-                mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
+               client.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length,ipEP);
                 Console.WriteLine("Multicast data sent.....");
             }
             catch (Exception e)
@@ -252,6 +143,22 @@ namespace ApplicazioneCondivisione
                     }
                 }
             }
+        }
+        public static string GetLocalIPAddress()
+        {
+            /*
+             * Funzione per trovare il mio indirizzo IPv4
+             */
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("indirizzo non trovato");
         }
     }
 }
