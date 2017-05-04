@@ -11,14 +11,19 @@ using System.Threading;
 
 namespace ApplicazioneCondivisione
 {
+    
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         static ListUserHandler luh; // Per gestire la lista di utenti
         static Client client;
         static Server server;
+<<<<<<< HEAD
         private bool allowVisible;     // ContextMenu's Show command used
         private bool allowClose;       // ContextMenu's Exit command used
 
+=======
+        
+>>>>>>> refs/remotes/origin/master
         public ApplicazioneCondivisione()
         {
             /*
@@ -48,13 +53,23 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = (10 * 1000); // 10 secs
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
             /*
              * Funzione che setta l'aspetto della UI quando viene fatta partire
             */
-            
+
             taskbarIcon.ContextMenuStrip = this.iconContextMenu;
             metroLabel4.Text = "Le tue credenziali: ";
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            luh.refreshButtonClick();
+            //throw new NotImplementedException();
         }
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
