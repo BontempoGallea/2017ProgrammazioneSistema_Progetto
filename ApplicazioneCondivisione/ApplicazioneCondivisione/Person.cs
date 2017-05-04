@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Timers;
 namespace ApplicazioneCondivisione
 {
     public class Person
@@ -19,15 +19,25 @@ namespace ApplicazioneCondivisione
         private IPAddress ip;
         private int port;
         private bool imNew;
-
+        private Timer t;
+        
         public Person(string n, string c, string s, string ip, string port)
         {
+            t = new Timer(5);
             this.nome = n;
             this.cognome = c;
             this.stato = s;
             this.imNew = true;
             this.ip = IPAddress.Parse(ip);
             this.port = int.Parse(port);
+            t.Interval = 2;
+            t.Elapsed += Ontimeelapse;
+        }
+
+        private void Ontimeelapse(object sender, ElapsedEventArgs e)
+        {
+            imNew = false;
+           
         }
 
         public string getNome()
@@ -62,6 +72,8 @@ namespace ApplicazioneCondivisione
 
         public bool isNew()
         {
+           
+
             // L'utente è una nuova aggiunta?
             return imNew;
         }

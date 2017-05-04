@@ -46,12 +46,7 @@ namespace ApplicazioneCondivisione
         {
             while (true)
             {
-<<<<<<< HEAD
-                udpImOnline(this.admin);
-                //Thread.Sleep(10);
-=======
                 BroadcastMessage(luh.getAdmin().getString());
->>>>>>> refs/remotes/origin/master
             }
         }
 

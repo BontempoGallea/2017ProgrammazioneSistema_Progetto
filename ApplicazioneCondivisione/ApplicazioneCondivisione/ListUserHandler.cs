@@ -29,11 +29,9 @@ namespace ApplicazioneCondivisione
         {
             users = new Dictionary<string, Person>();
             lastRefresh = -1;
-<<<<<<< HEAD
+
             admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");
-=======
-            admin = new Person("Luca", "Rossi", "online", GetLocalIPAddress(), "3000");
->>>>>>> refs/remotes/origin/master
+
         }
 
         public void listaUsersInit(ApplicazioneCondivisione f)
@@ -45,11 +43,6 @@ namespace ApplicazioneCondivisione
             */ 
 
             this.frame = f;
-<<<<<<< HEAD
-
-           
-=======
->>>>>>> refs/remotes/origin/master
             f.nome.Text = admin.getNome();
             f.cognome.Text = admin.getCognome();
             f.stato.Text = admin.getStato();
@@ -81,7 +74,7 @@ namespace ApplicazioneCondivisione
             */
             
             int l = users.Count(); // Lunghezza attuale della lista, dopo il click
-            if (l > lastRefresh)
+            if (l >= lastRefresh)
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
                 // utenti.
@@ -105,6 +98,11 @@ namespace ApplicazioneCondivisione
 
                             listBTN.Add(btn);
                             frame.flowLayoutPanel1.Controls.Add(btn);
+                        }
+                        else
+                        {
+                            users.Remove(p.getCognome() + p.getNome());
+                            frame.flowLayoutPanel1.Controls.RemoveByKey("");
                         }
                     }
                 }catch(Exception e) {
