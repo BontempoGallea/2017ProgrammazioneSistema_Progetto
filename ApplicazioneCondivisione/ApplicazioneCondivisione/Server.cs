@@ -89,11 +89,19 @@ namespace ApplicazioneCondivisione
                     {
                         bytes = clientUDP.Receive(ref ipEp);
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
-                        Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
-                        if (!p.isEqual(luh.getAdmin()))
-                        {
-                            luh.addUser(p);
+                        if (luh.ispresent(cred[1] + cred[0])) {
+                            luh.resettimer(cred[1]+cred[0]);
                             done = true;
+                        }
+                        else
+                        { 
+                            Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
+                            if (!p.isEqual(luh.getAdmin()))
+                            {
+                            
+                                luh.addUser(p);
+                                done = true;
+                            }
                         }
                     }
                 }

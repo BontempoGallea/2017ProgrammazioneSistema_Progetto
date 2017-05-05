@@ -5,6 +5,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
+using MetroFramework.Controls;
+
 namespace ApplicazioneCondivisione
 {
     public class Person
@@ -12,32 +15,50 @@ namespace ApplicazioneCondivisione
         /*
          * Classe per descrivere un utente
         */
-        
+        private bool isold;
         private string nome;
         private string cognome;
         private string stato;
         private IPAddress ip;
         private int port;
         private bool imNew;
-        private Timer t;
-        
+        private System.Timers.Timer t;
+        private ListUserHandler luh;
+        private MetroTile a;
+        private  static string tempo;
+       
         public Person(string n, string c, string s, string ip, string port)
         {
-            t = new Timer(5);
+            t = new System.Timers.Timer(5000);
             this.nome = n;
             this.cognome = c;
             this.stato = s;
             this.imNew = true;
             this.ip = IPAddress.Parse(ip);
             this.port = int.Parse(port);
-            t.Interval = 2;
-            t.Elapsed += Ontimeelapse;
+            t.Elapsed +=  Ontimeelapse;
+            t.AutoReset = true;
+            t.Start();
+           // t.Elapsed += Ontimeelapse;
         }
-
-        private void Ontimeelapse(object sender, ElapsedEventArgs e)
+      
+        public void reset()
         {
-            imNew = false;
-           
+            // tempo = System.DateTime.Now.ToString();
+            t.Stop();
+            isold = false;
+            t.Start();
+            
+        }
+        private void Ontimeelapse(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            
+                isold = true;
+                t.Stop();
+                t.Start();
+            
+                //throw new Exception();
+            
         }
 
         public string getNome()
@@ -72,12 +93,34 @@ namespace ApplicazioneCondivisione
 
         public bool isNew()
         {
-           
+          
 
             // L'utente è una nuova aggiunta?
             return imNew;
         }
+        public  bool old()
+        {
+            //system.timespan diff;
+            //System.DateTime now = System.DateTime.Now;
+            //DateTime tmp= DateTime.Parse(tempo);
 
+            //    diff = now - tmp;
+            //Console.WriteLine("tot sec " + diff.TotalSeconds);
+            //if (diff.TotalSeconds < 0)
+            //{
+            //    if (diff.TotalSeconds < -5) return true;
+            //    else return false;
+            //}
+            //else
+            //{
+            //    if (diff.TotalSeconds > 5) return true;
+            //    else return false;
+            //}
+            
+            return isold;
+            
+           
+        }
         public void setOld()
         {
             // L'utente non è più una nuova aggiunta
@@ -114,5 +157,18 @@ namespace ApplicazioneCondivisione
                 && (p.getIp().ToString().CompareTo(ip.ToString()) == 0) 
                 && (p.getPort() == port);
         }
+
+        internal void addbotton(MetroTile btn)
+        {
+            a = btn;
+        }
+
+        internal MetroTile getbotton()
+        {
+            return a;
+            throw new NotImplementedException();
+        }
+
+       
     }
 }
