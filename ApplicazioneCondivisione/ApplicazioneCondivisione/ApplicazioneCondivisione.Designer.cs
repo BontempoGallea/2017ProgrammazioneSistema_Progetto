@@ -33,12 +33,6 @@
             this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.iconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.statoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.esciToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new MetroFramework.Controls.MetroTile();
             this.changeState = new MetroFramework.Controls.MetroTile();
             this.nome = new MetroFramework.Controls.MetroLabel();
@@ -46,7 +40,15 @@
             this.stato = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.iconContextMenu.SuspendLayout();
+            this.didascalia = new MetroFramework.Controls.MetroLabel();
+            this.contextMenuStripTaskbarIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.apriToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.esciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripTaskbarIcon.SuspendLayout();
             this.SuspendLayout();
             // 
             // taskbarIcon
@@ -82,51 +84,6 @@
             this.button2.Text = "Annulla";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.annullaButton_Click);
-            // 
-            // iconContextMenu
-            // 
-            this.iconContextMenu.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.iconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statoToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.esciToolStripMenuItem1});
-            this.iconContextMenu.Name = "iconContextMenu";
-            this.iconContextMenu.Size = new System.Drawing.Size(170, 86);
-            // 
-            // statoToolStripMenuItem
-            // 
-            this.statoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.onlineToolStripMenuItem,
-            this.offlineToolStripMenuItem});
-            this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
-            this.statoToolStripMenuItem.Size = new System.Drawing.Size(169, 38);
-            this.statoToolStripMenuItem.Text = "Stato";
-            // 
-            // onlineToolStripMenuItem
-            // 
-            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(184, 38);
-            this.onlineToolStripMenuItem.Text = "online";
-            this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
-            // 
-            // offlineToolStripMenuItem
-            // 
-            this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
-            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(184, 38);
-            this.offlineToolStripMenuItem.Text = "offline";
-            this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
-            // 
-            // esciToolStripMenuItem1
-            // 
-            this.esciToolStripMenuItem1.Name = "esciToolStripMenuItem1";
-            this.esciToolStripMenuItem1.Size = new System.Drawing.Size(169, 38);
-            this.esciToolStripMenuItem1.Text = "Esci";
-            this.esciToolStripMenuItem1.Click += new System.EventHandler(this.esciOptionIconContextMenu_Click);
             // 
             // refresh
             // 
@@ -183,20 +140,82 @@
             this.metroLabel4.AutoSize = true;
             this.metroLabel4.Location = new System.Drawing.Point(538, 113);
             this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(83, 19);
+            this.metroLabel4.Size = new System.Drawing.Size(81, 19);
             this.metroLabel4.TabIndex = 9;
-            this.metroLabel4.Text = "metroLabel4";
+            this.metroLabel4.Text = "Credenziali: ";
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(23, 240);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(23, 287);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1101, 349);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1101, 302);
             this.flowLayoutPanel1.TabIndex = 11;
+            // 
+            // didascalia
+            // 
+            this.didascalia.AutoSize = true;
+            this.didascalia.Location = new System.Drawing.Point(33, 248);
+            this.didascalia.Name = "didascalia";
+            this.didascalia.Size = new System.Drawing.Size(188, 19);
+            this.didascalia.TabIndex = 12;
+            this.didascalia.Text = "Seleziona chi vuoi inviare il file:";
+            // 
+            // contextMenuStripTaskbarIcon
+            // 
+            this.contextMenuStripTaskbarIcon.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.contextMenuStripTaskbarIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.apriToolStripMenuItem,
+            this.statoToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.esciToolStripMenuItem});
+            this.contextMenuStripTaskbarIcon.Name = "contextMenuStripTaskbarIcon";
+            this.contextMenuStripTaskbarIcon.Size = new System.Drawing.Size(170, 124);
+            // 
+            // apriToolStripMenuItem
+            // 
+            this.apriToolStripMenuItem.Name = "apriToolStripMenuItem";
+            this.apriToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.apriToolStripMenuItem.Text = "Apri";
+            this.apriToolStripMenuItem.Click += new System.EventHandler(this.apriOptionIconContextMenu_Click);
+            // 
+            // statoToolStripMenuItem
+            // 
+            this.statoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.onlineToolStripMenuItem,
+            this.offlineToolStripMenuItem});
+            this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
+            this.statoToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.statoToolStripMenuItem.Text = "Stato";
+            // 
+            // onlineToolStripMenuItem
+            // 
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.onlineToolStripMenuItem.Text = "Online";
+            this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
+            // 
+            // offlineToolStripMenuItem
+            // 
+            this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
+            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.offlineToolStripMenuItem.Text = "Offline";
+            this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            // 
+            // esciToolStripMenuItem
+            // 
+            this.esciToolStripMenuItem.Name = "esciToolStripMenuItem";
+            this.esciToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.esciToolStripMenuItem.Text = "Esci";
+            this.esciToolStripMenuItem.Click += new System.EventHandler(this.esciToolStripMenuItem_Click);
             // 
             // ApplicazioneCondivisione
             // 
@@ -204,6 +223,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 714);
+            this.Controls.Add(this.didascalia);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.stato);
@@ -215,9 +235,8 @@
             this.Controls.Add(this.button1);
             this.Name = "ApplicazioneCondivisione";
             this.Text = "Condividi con...";
-            this.Load += new System.EventHandler(this.applicazioneCondivisione_Load);
-            this.Resize += new System.EventHandler(this.applicazioneCondivisione_Resize);
-            this.iconContextMenu.ResumeLayout(false);
+            this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
+            this.contextMenuStripTaskbarIcon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,12 +246,6 @@
         private System.Windows.Forms.NotifyIcon taskbarIcon;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ContextMenuStrip iconContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem statoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
         private MetroFramework.Controls.MetroTile refresh;
         private MetroFramework.Controls.MetroTile changeState;
         private MetroFramework.Controls.MetroLabel metroLabel4;
@@ -240,6 +253,14 @@
         public MetroFramework.Controls.MetroLabel cognome;
         public MetroFramework.Controls.MetroLabel stato;
         public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private MetroFramework.Controls.MetroLabel didascalia;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTaskbarIcon;
+        private System.Windows.Forms.ToolStripMenuItem apriToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem;
     }
 }
 

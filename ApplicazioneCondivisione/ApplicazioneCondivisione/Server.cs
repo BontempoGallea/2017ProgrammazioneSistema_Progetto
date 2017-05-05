@@ -18,6 +18,10 @@ namespace ApplicazioneCondivisione
         private static int senderPort = 16000;
         private static ListUserHandler luh;
         private static UdpClient clientUDP = new UdpClient(senderPort);
+        private static Thread ramoUDP;
+        private static Thread ramoTCP;
+        private static Thread talkUDP;
+        private static Thread listenerUDP;
 
         public Server(ListUserHandler luhandler)
         {
@@ -26,19 +30,19 @@ namespace ApplicazioneCondivisione
 
         public void entryPoint()
         {
-            Thread ramoUDP = new Thread(entryUDP);
+            ramoUDP = new Thread(entryUDP);
             ramoUDP.Start();
 
-            Thread ramoTCP = new Thread(entryTCP);
+            ramoTCP = new Thread(entryTCP);
             ramoTCP.Start();
         }
 
         public void entryUDP()
         {
-            Thread talkUDP = new Thread(entryTalk);
+            talkUDP = new Thread(entryTalk);
             talkUDP.Start();
 
-            Thread listenerUDP = new Thread(entryListen);
+            listenerUDP = new Thread(entryListen);
             listenerUDP.Start();
         } 
 
@@ -138,6 +142,14 @@ namespace ApplicazioneCondivisione
                     }
                 }
             }
+        }
+
+        public void closeAllThreads()
+        {
+            listenerUDP.Abort();
+            talkUDP.Abort();
+            ramoTCP.Abort();
+            ramoUDP.Abort();
         }
     }
 }
