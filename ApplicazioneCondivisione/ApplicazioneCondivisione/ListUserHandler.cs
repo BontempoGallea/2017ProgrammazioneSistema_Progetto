@@ -57,6 +57,38 @@ namespace ApplicazioneCondivisione
             frame.stato.Text = s;
         }
 
+        internal void clean()
+        {
+            Dictionary<string, Person>.ValueCollection values = users.Values;
+            try
+            {
+                foreach (Person p in values)
+                {
+                    var isnew = p.isNew();
+                    var old = p.old();
+                    if (old)
+                    {
+                       // users.Remove(p.getCognome() + p.getNome());
+                        
+                        if (!isnew)
+                        {
+
+                            frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                        }
+                    }
+                    if ((p.getStato().CompareTo( "offline")==0)&&(!isnew))
+                    {
+                        frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                    }
+                }
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            
+           
+        }
+
         public Dictionary<String,Person> getlist() { return users; }
 
         public string getAdminState()
@@ -72,44 +104,64 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi quando si clicca il refresh button
             */
-            
             int l = users.Count(); // Lunghezza attuale della lista, dopo il click
-            if (l >= lastRefresh)
+            if ((l > lastRefresh))
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
                 // utenti.
                 try
                 {
-                    foreach (Person p in users.Values)
+                    Dictionary<string,Person>.ValueCollection values = users.Values;
+                    foreach (Person p in values)
                     {
-                        if (p.isNew())
+                        var isnew = p.isNew();
+                      
+                        
+                        if (isnew)
                         {
-                            //Controllo se l'utente è una nuova aggiunta o meno
-                            p.setOld(); //Setto l'utente come OLD, ossia uno che è già stato visualizzato nella UI
-                            btn = new MetroFramework.Controls.MetroTile();
-                            btn.Size = new Size(70, 70);
-                            btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
-                            btn.Style = MetroFramework.MetroColorStyle.Green;
-                            btn.Click += new EventHandler(changeState2_Click);
-                            btn.Text = p.getNome() + "\n" + p.getCognome();
-                            btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
-                            btn.TileImageAlign = ContentAlignment.TopCenter;
-                            btn.UseTileImage = true;
+                            p.setOld();
+                                btn = new MetroFramework.Controls.MetroTile();
+                                btn.Size = new Size(70, 70);
+                                btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
+                                btn.Style = MetroFramework.MetroColorStyle.Green;
+                                btn.Click += new EventHandler(changeState2_Click);
+                                btn.Text = p.getNome() + "\n" + p.getCognome();
+                                btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
+                                btn.TileImageAlign = ContentAlignment.TopCenter;
+                                btn.UseTileImage = true;
 
-                            listBTN.Add(btn);
-                            frame.flowLayoutPanel1.Controls.Add(btn);
+                                listBTN.Add(btn);
+                                p.addbotton(btn);
+                                frame.flowLayoutPanel1.Controls.Add(btn);
+                           
+                           
                         }
                         else
                         {
-                            users.Remove(p.getCognome() + p.getNome());
-                            frame.flowLayoutPanel1.Controls.RemoveByKey("");
+                       
                         }
+
+                       
                     }
                 }catch(Exception e) {
                     Console.WriteLine(e.ToString());
                 }
                 lastRefresh = l; //Aggiorno la lunghezza della lista all'ultimo refresh
             }
+        }
+
+        internal void resettimer(string v)
+        {
+            Person a;
+            users.TryGetValue(v,out a);
+            a.reset();
+            
+        }
+
+        internal bool ispresent(string v)
+        {
+            return users.ContainsKey(v);
+            throw new NotImplementedException();
         }
 
         private void changeState2_Click(object sender, EventArgs e)
