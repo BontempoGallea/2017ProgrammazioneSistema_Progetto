@@ -16,13 +16,14 @@ namespace ApplicazioneCondivisione
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
         static ListUserHandler luh; // Per gestire la lista di utenti
-        static Client client;
-        static Server server;
-        static Thread serverThread;
+        static Client client;       //per gestire la connessione tcp e invio di file
+        static Server server;       //per gestire connessioni udp e ricezione file in tcp
+        static Thread serverThread; //thread del server
 
         public ApplicazioneCondivisione()
         {
-            InitializeComponent();
+            var nome = Environment.;
+            InitializeComponent();  
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
 
             // Creo il list users handler
@@ -41,13 +42,12 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
-            Person ciao = new Person("marica", "messina", "online", "222.11.11.11", "2343");
-            luh.addUser(ciao);
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
             timer.Interval = (2 * 1000); // 10 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
-
+            
             metroLabel4.Text = "Le tue credenziali: ";
         }
 
@@ -55,7 +55,6 @@ namespace ApplicazioneCondivisione
         {
             luh.clean();
             luh.refreshButtonClick();
-            
         }
 
         private void condividiButton_Click(object sender, EventArgs e)
@@ -86,7 +85,7 @@ namespace ApplicazioneCondivisione
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            luh.refreshButtonClick();
+            this.timer_Tick(sender,e);
         }
 
         protected override void SetVisibleCore(bool value)

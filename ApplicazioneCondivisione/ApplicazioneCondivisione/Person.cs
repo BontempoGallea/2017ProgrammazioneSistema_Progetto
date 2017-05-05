@@ -15,21 +15,20 @@ namespace ApplicazioneCondivisione
         /*
          * Classe per descrivere un utente
         */
-        private bool isold;
-        private string nome;
+        private bool isold;// bool per sapere se la persona sta ancora inviando pacchetti
+        private string nome;//nome
         private string cognome;
         private string stato;
         private IPAddress ip;
         private int port;
-        private bool imNew;
-        private System.Timers.Timer t;
+        private bool imNew;//boot per sapere se la persona ha gia un metrotile in flowlayout
+        private System.Timers.Timer t;//timer che se scade imposta isold a true
         private ListUserHandler luh;
         private MetroTile a;
-        private  static string tempo;
        
         public Person(string n, string c, string s, string ip, string port)
         {
-            t = new System.Timers.Timer(5000);
+            t = new System.Timers.Timer(5000);//timer impostato ogni tot sec
             this.nome = n;
             this.cognome = c;
             this.stato = s;
@@ -39,26 +38,21 @@ namespace ApplicazioneCondivisione
             t.Elapsed +=  Ontimeelapse;
             t.AutoReset = true;
             t.Start();
-           // t.Elapsed += Ontimeelapse;
         }
       
         public void reset()
         {
-            // tempo = System.DateTime.Now.ToString();
             t.Stop();
             isold = false;
             t.Start();
-            
         }
+
         private void Ontimeelapse(object sender, System.Timers.ElapsedEventArgs e)
         {
-            
+            //metodo chiamato alla scadenza del timer della persona
                 isold = true;
-                t.Stop();
-                t.Start();
-            
-                //throw new Exception();
-            
+                t.Stop();//fermo il timer
+                t.Start();//faccio ripartire il timer da 0
         }
 
         public string getNome()
@@ -93,34 +87,15 @@ namespace ApplicazioneCondivisione
 
         public bool isNew()
         {
-          
-
             // L'utente è una nuova aggiunta?
             return imNew;
         }
+
         public  bool old()
         {
-            //system.timespan diff;
-            //System.DateTime now = System.DateTime.Now;
-            //DateTime tmp= DateTime.Parse(tempo);
-
-            //    diff = now - tmp;
-            //Console.WriteLine("tot sec " + diff.TotalSeconds);
-            //if (diff.TotalSeconds < 0)
-            //{
-            //    if (diff.TotalSeconds < -5) return true;
-            //    else return false;
-            //}
-            //else
-            //{
-            //    if (diff.TotalSeconds > 5) return true;
-            //    else return false;
-            //}
-            
             return isold;
-            
-           
         }
+
         public void setOld()
         {
             // L'utente non è più una nuova aggiunta
@@ -168,7 +143,5 @@ namespace ApplicazioneCondivisione
             return a;
             throw new NotImplementedException();
         }
-
-       
     }
 }
