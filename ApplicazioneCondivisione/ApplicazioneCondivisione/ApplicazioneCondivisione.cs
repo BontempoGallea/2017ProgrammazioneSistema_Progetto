@@ -22,7 +22,6 @@ namespace ApplicazioneCondivisione
 
         public ApplicazioneCondivisione()
         {
-            var nome = Environment.;
             InitializeComponent();  
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
 
