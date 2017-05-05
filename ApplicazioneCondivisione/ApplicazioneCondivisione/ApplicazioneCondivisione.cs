@@ -41,8 +41,10 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {
+            Person ciao = new Person("marica", "messina", "online", "222.11.11.11", "2343");
+            luh.addUser(ciao);
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = (10 * 1000); // 10 secs
+            timer.Interval = (2 * 1000); // 10 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
 
@@ -51,8 +53,9 @@ namespace ApplicazioneCondivisione
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            luh.clean();
             luh.refreshButtonClick();
-            //throw new NotImplementedException();
+            
         }
 
         private void condividiButton_Click(object sender, EventArgs e)
