@@ -168,7 +168,8 @@ namespace ApplicazioneCondivisione
                     //clientThread.Start();
                     //clientThread.Join();
 
-                    sd.progressBar.Value += 100 / selectedList.Count; 
+                    sd.progressBar.Value += (100 / selectedList.Count);
+                    sd.progressBar.Text = sd.progressBar.Value.ToString() + "%";
                 }
             }
             else

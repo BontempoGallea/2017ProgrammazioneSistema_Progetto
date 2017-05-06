@@ -33,6 +33,9 @@ namespace ApplicazioneCondivisione
             else
                 changeState.Style = MetroFramework.MetroColorStyle.Red;
 
+            // Setto il colore di sfondo del refresh button
+            refreshButton.Style = MetroFramework.MetroColorStyle.White;
+
             /* Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
              * Ci sono problemi per quanto riguarda l'accesso e la sicurezza ai registri di sistema...Bah!
             RegistryKey key;
@@ -47,8 +50,6 @@ namespace ApplicazioneCondivisione
             Program.timer.Interval = (2 * 1000); // 2 secs
             Program.timer.Tick += new EventHandler(timer_Tick);
             Program.timer.Start();
-
-            Program.luh.refreshButtonClick();
         }
 
         private void timer_Tick(object sender, EventArgs e)
