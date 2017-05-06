@@ -58,6 +58,7 @@ namespace ApplicazioneCondivisione
             Program.luh.refreshButtonClick();
         }
 
+        // Bottoni dentro al form
         private void condividiButton_Click(object sender, EventArgs e)
         {
             Program.luh.condividiButtonClick();
@@ -90,23 +91,15 @@ namespace ApplicazioneCondivisione
             this.timer_Tick(sender,e);
 
         }
-
-        protected override void SetVisibleCore(bool value)
-        {
-            base.SetVisibleCore(false);
-        }
-
+        
+        // Click sulla taskbar
         private void taskbarIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             base.SetVisibleCore(true);
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void esciOptionIconContextMenu_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
+        // Opzioni nel context strip menu
         private void offlineOptionIconContextMenu_Click(object sender, EventArgs e)
         {
             Program.luh.changeAdminState("offline");
@@ -119,9 +112,18 @@ namespace ApplicazioneCondivisione
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.closeEverything = true;
-            Program.serverThread.Join();
-            Application.Exit();
+            switch (MessageBox.Show(this, "Sei sicuro di volere uscire?", "Esci dall'applicazione", MessageBoxButtons.YesNo))
+            {
+                case DialogResult.No:
+                    break;
+                default:
+                    FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
+                    Program.closeEverything = true;
+                    Program.serverThread.Join();
+                    base.OnFormClosing(fcea);
+                    Application.Exit();
+                    break;
+            }
         }
 
         private void apriOptionIconContextMenu_Click(object sender, EventArgs e)
@@ -130,11 +132,25 @@ namespace ApplicazioneCondivisione
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void applicazioneCondivisione_Closing(object sender, FormClosingEventArgs e)
+        // Override delle funzioni di base
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Program.closeEverything = true;
-            Program.serverThread.Join();
-            Application.Exit();
+            if (Program.closeEverything)
+                return;
+
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+                return;
+
+            base.SetVisibleCore(false);
+            this.WindowState = FormWindowState.Minimized;
+            e.Cancel = true;
+            taskbarIcon.Visible = true;
         }
+
+        protected override void SetVisibleCore(bool value)
+        {
+            base.SetVisibleCore(false);
+        }
+
     }
 }
