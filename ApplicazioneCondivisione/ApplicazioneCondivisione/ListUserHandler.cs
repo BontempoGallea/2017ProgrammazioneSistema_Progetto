@@ -29,7 +29,7 @@ namespace ApplicazioneCondivisione
         {
             users = new Dictionary<string, Person>();//creo una dictionary di persone
             lastRefresh = -1;
-            admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");//imposto admin
+            admin = new Person("gianpaolo", "Bontempo", "online", getLocalIPAddress(), "3000");//imposto admin
         }
 
         public void listaUsersInit()
@@ -114,7 +114,7 @@ namespace ApplicazioneCondivisione
                                 p.setOld();//la persona adesso ha un bottone
                                 btn = new MetroFramework.Controls.MetroTile();//inizializzo il bottone
                                 btn.Size = new Size(70, 70);//dimensione bottone
-                                btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();//bottone del bottone
+                                btn.Name = p.getName() + "," + p.getSurname() + "," + p.getIp() + "," + p.getPort();//bottone del bottone
                                 btn.Style = MetroFramework.MetroColorStyle.Green;//bottone verde per indicare persona online
                                 btn.Click += new EventHandler(changeState2_Click);
                                 btn.Text = p.getName() + "\n" + p.getSurname();
@@ -167,16 +167,16 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
-            if (selectedlist.Count > 0)//se lista dei selezionati è > 0
+            if (selectedList.Count > 0)//se lista dei selezionati è > 0
             {
                 SendFile sd = new SendFile();//?
-                foreach(MetroFramework.Controls.MetroTile m in selectedlist)
+                foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
                     Thread clientThread = new Thread(() => c.entryPoint(m.Name));//per ogni bottone selezionato creo un thread
                     clientThread.Start();
                     clientThread.Join();
 
-                    sd.progressBar.Value += 100 / selectedlist.Count; 
+                    sd.progressBar.Value += 100 / selectedList.Count; 
                 }
             }
             else
@@ -190,8 +190,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per aggiungere un utente alla lista degli user
             */
-            if(!users.ContainsKey(p.getCognome()+p.getNome()))//controllo per avere persone distinte
-            users.Add(p.getCognome() + p.getNome(), p);
+            if(!users.ContainsKey(p.getSurname()+p.getName()))//controllo per avere persone distinte
+            users.Add(p.getSurname() + p.getName(), p);
         }
 
         public Person getAdmin()
