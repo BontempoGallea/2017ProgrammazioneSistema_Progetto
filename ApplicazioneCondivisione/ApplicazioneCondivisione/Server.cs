@@ -86,8 +86,8 @@ namespace ApplicazioneCondivisione
                     {
                         bytes = clientUDP.Receive(ref ipEp);//ricevo byte
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');//converto in stringhe
-                        if (Program.luh.ispresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
-                            Program.luh.resettimer(cred[1]+cred[0]);//se presente resetto il timer della persona
+                        if (Program.luh.isPresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
+                            Program.luh.resetTimer(cred[1]+cred[0]);//se presente resetto il timer della persona
                             done = true;//ricezione completata
                         }
                         else//se non è gia presente
