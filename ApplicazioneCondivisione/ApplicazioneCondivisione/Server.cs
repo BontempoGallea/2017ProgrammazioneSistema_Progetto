@@ -15,25 +15,20 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-        private static int senderPort = 16000;          //porta standard per chi manda sulla rete le proprie credenziali
-        private static ListUserHandler luh;
+        private static int senderPort = 16000;
         private static UdpClient clientUDP = new UdpClient(senderPort);
-        private static Thread ramoUDP;                  //thread del ramo udp
-        private static Thread ramoTCP;                  //thread del ramo tcp
-        private static Thread talkUDP;                  //thread che si occupa di inviare pacchetti udp
-        private static Thread listenerUDP;              //thread che si occupa di ascoltare pacchetti udp
-
-        public Server(ListUserHandler luhandler)
-        {
-            luh = luhandler;
-        }
+        private static Thread branchUDP;
+        private static Thread branchTCP;
+        private static Thread talkUDP;
+        private static Thread listenerUDP;
 
         public void entryPoint()
         {
-            ramoUDP = new Thread(entryUDP);
-            ramoUDP.Start();
-            ramoTCP = new Thread(entryTCP);
-            ramoTCP.Start();
+            branchUDP = new Thread(entryUDP);
+            branchUDP.Start();
+
+            branchTCP = new Thread(entryTCP);
+            branchTCP.Start();
         }
 
         public void entryUDP()
@@ -44,11 +39,15 @@ namespace ApplicazioneCondivisione
             listenerUDP.Start();
         } 
 
+        /*
+         * Sezione del ramo UDP dove sono elencate le funzioni che il server userà quando dovrà inviare pacchetti 
+         * broadcast sulla LAN.
+        */ 
         public void entryTalk()
         {
-            while (true)
+            while (!Program.closeEverything)
             {
-                BroadcastMessage(luh.getAdmin().getString());
+                BroadcastMessage(Program.luh.getAdmin().getString());
             }
         }
 
@@ -57,10 +56,10 @@ namespace ApplicazioneCondivisione
             IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);  
             try
             {
-                //invia messaggio udp in broadcast
-                clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);//invio messaggio in byte su broadcast
-                Console.WriteLine("Multicast data sent.....");//visione su output
-                Thread.Sleep(5000);//sospendi tread per tot sec
+                // Mando pacchetti broadcast
+                clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);
+                Console.WriteLine("Multicast data sent.....");
+                Thread.Sleep(5000);
             }
             catch (Exception e)
             {
@@ -68,39 +67,42 @@ namespace ApplicazioneCondivisione
             }
         }
 
+        /*
+         * Sezione del ramo UDP che elenca le funzioni usate dal server per agire come receiver di pacchetti
+        */ 
         public void entryListen()
         {
-            while (true)  ReceiveBroadcastMessages();
+            while (!Program.closeEverything)  ReceiveBroadcastMessages();
         }
 
         private static void ReceiveBroadcastMessages()
         {
             /*
              * Funzione per ricevere un messaggio in broadcast
-             * 
             */
-            //variabile per terminare la ricezione del pacchetto
-            bool done = false;
-            byte[] bytes = new Byte[4096];//buffer
-            IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort);//imposto il broadcast come sender del pacchetto
+            bool done = false; //variabile per terminare la ricezione del pacchetto
+            byte[] bytes = new Byte[4096]; //buffer
+            IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort); // Endpoint dal quale sto ricevendo dati, accetto qualsiasi indirizzo con la senderPort
             try
             {
-                while (!done)
+                while ( !done && !Program.closeEverything )
                 {
-                    if (clientUDP.Available > 0)//controllo che sul canale ci siano dei byte disponibili
+                    if ( clientUDP.Available > 0 ) //controllo che sul canale ci siano dei byte disponibili
                     {
-                        bytes = clientUDP.Receive(ref ipEp);//ricevo byte
-                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');//converto in stringhe
-                        if (luh.ispresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
-                            luh.resettimer(cred[1]+cred[0]);//se presente resetto il timer della persona
-                            done = true;//ricezione completata
+                        bytes = clientUDP.Receive(ref ipEp); //ricevo byte
+                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(','); //converto in stringhe
+                        if (Program.luh.isPresent(cred[1] + cred[0]) && !( cred[2].CompareTo("offline") == 0 ))
+                        {   
+                            //controllo che la persona è gia presente nella lista e lo stato inviatomi sia ONLINE
+                            Program.luh.resetTimer( cred[1] + cred[0] ); //se presente resetto il timer della persona
+                            done = true; //ricezione completata
                         }
-                        else//se non è gia presente
+                        else //se non è gia presente
                         { 
-                            Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);//creo una nuova persona
-                            if (!p.isEqual(luh.getAdmin()))//se non è uguale all'amministratore
+                            Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]); //creo una nuova persona
+                            if ( !p.isEqual(Program.luh.getAdmin()) && !( cred[2].CompareTo("offline") == 0 ) ) //se non è uguale all'amministratore
                             {
-                                luh.addUser(p);//inserisco nella lista delle persone
+                                Program.luh.addUser(p);//inserisco nella lista delle persone
                                 done = true;//ricezione completata
                             }
                         }
@@ -113,25 +115,31 @@ namespace ApplicazioneCondivisione
             }
         }
 
+        /*
+         * Sezione del tamo TCP dove si elencano le funzioni usate dal server per ricevere files.
+        */ 
         public void entryTCP()
         {
-            while (luh.getAdmin().isOnline())
+            while (Program.luh.getAdmin().isOnline() && !Program.closeEverything)
                 receiveFile();
         }
 
         public void receiveFile()
         {
-            var listener = new TcpListener(luh.getAdmin().getIp(), luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
-            listener.Start();//inizio ascolto
+            var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
+            listener.Start(); // inizio ascolto
             Thread.Sleep(2000);
-            while (true)
+            while (!Program.closeEverything)
             {
-                using (var client = listener.AcceptTcpClient())//aspetta connessione
-                using (var stream = client.GetStream())//flusso di dati
-                using (var output = File.Create("result.txt"))//file di output
+                if (!listener.Pending())
+                    continue;
+
+                using (var client = listener.AcceptTcpClient()) // aspetta connessione
+                using (var stream = client.GetStream()) // flusso di dati
+                using (var output = File.Create("result.txt")) // file di output
                 {
-                    // read the file in chunks of 1KB
-                    var buffer = new byte[1024];//buffer
+                    // Leggo il file a pezzi da 1KB
+                    var buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                     {
@@ -139,14 +147,6 @@ namespace ApplicazioneCondivisione
                     }
                 }
             }
-        }
-
-        public void closeAllThreads()
-        {
-            listenerUDP.Abort();
-            talkUDP.Abort();
-            ramoTCP.Abort();
-            ramoUDP.Abort();
         }
     }
 }

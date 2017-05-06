@@ -12,53 +12,48 @@ using Microsoft.Win32;
 
 namespace ApplicazioneCondivisione
 {
-    
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
-        static ListUserHandler luh; // Per gestire la lista di utenti
-        static Client client;       //per gestire la connessione tcp e invio di file
-        static Server server;       //per gestire connessioni udp e ricezione file in tcp
-        static Thread serverThread; //thread del server
-
         public ApplicazioneCondivisione()
         {
-            InitializeComponent();  
+            InitializeComponent();
+
+            // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
 
-            // Creo il list users handler
-            luh = new ListUserHandler();
-            luh.listaUsersInit(this);
+            // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
+            metroLabel4.Text = "Le tue credenziali: ";
+            name.Text = Program.luh.getAdmin().getName();
+            surname.Text = Program.luh.getAdmin().getSurname();
+            state.Text = Program.luh.getAdmin().getState();
 
-            // Creo la classe client che verrà fatta girare nel rispettivo thread
-            client = new Client(luh);
+            // Setto il colore iniziale del bottone di cambio stato
+            if (Program.luh.getAdminState().CompareTo("online") == 0)
+                changeState.Style = MetroFramework.MetroColorStyle.Green;
+            else
+                changeState.Style = MetroFramework.MetroColorStyle.Red;
 
-            // Creo la classe server che verrà fatta girare nel rispettivo thread
-            server = new Server(luh);
-            serverThread = new Thread(server.entryPoint);
-            serverThread.Name = "serverThread";
-            serverThread.Start();
+            // Setto il colore di sfondo del refresh button
+            refreshButton.Style = MetroFramework.MetroColorStyle.White;
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
-        {
-            
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
-            timer.Interval = (2 * 1000); // 10 secs
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
-            
-            metroLabel4.Text = "Le tue credenziali: ";
+        {   
+            Program.timer.Interval = (2 * 1000); // 2 secs
+            Program.timer.Tick += new EventHandler(timer_Tick);
+            Program.timer.Start();
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            luh.clean();
-            luh.refreshButtonClick();
+            Program.luh.clean();
+            Program.luh.refreshButtonClick();
         }
 
+        // Bottoni dentro al form
         private void condividiButton_Click(object sender, EventArgs e)
         {
-            luh.condividiButtonClick(client);
+            Program.luh.condividiButtonClick();
         }
 
         private void annullaButton_Click(object sender, EventArgs e)
@@ -70,54 +65,57 @@ namespace ApplicazioneCondivisione
         private void changeState_Click(object sender, EventArgs e)
         {
             MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
-            if (luh.getAdminState().Equals("online"))
+            if (Program.luh.getAdminState().Equals("online"))
             {
-                luh.changeAdminState("offline");
+                Program.luh.changeAdminState("offline");
                 changeState.Style = MetroFramework.MetroColorStyle.Red;
             }
             else
             {
-                luh.changeAdminState("online");
+                Program.luh.changeAdminState("online");
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
 
         private void refresh_Click(object sender, EventArgs e)
         {
+            Program.luh.refreshButtonClick();
             this.timer_Tick(sender,e);
-        }
 
-        protected override void SetVisibleCore(bool value)
-        {
-            base.SetVisibleCore(false);
         }
-
+        
+        // Click sulla taskbar
         private void taskbarIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             base.SetVisibleCore(true);
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void esciOptionIconContextMenu_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
+        // Opzioni nel context strip menu
         private void offlineOptionIconContextMenu_Click(object sender, EventArgs e)
         {
-            luh.changeAdminState("offline");
+            Program.luh.changeAdminState("offline");
         }
 
         private void onlineOptionIconContextMenu_Click(object sender, EventArgs e)
         {
-            luh.changeAdminState("online");
+            Program.luh.changeAdminState("online");
         }
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            server.closeAllThreads();
-            serverThread.Abort();
-            Application.Exit();
+            switch (MessageBox.Show(this, "Sei sicuro di volere uscire?", "Esci dall'applicazione", MessageBoxButtons.YesNo))
+            {
+                case DialogResult.No:
+                    break;
+                default:
+                    FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
+                    Program.closeEverything = true;
+                    Program.serverThread.Join();
+                    base.OnFormClosing(fcea);
+                    Application.Exit();
+                    break;
+            }
         }
 
         private void apriOptionIconContextMenu_Click(object sender, EventArgs e)
@@ -125,5 +123,26 @@ namespace ApplicazioneCondivisione
             base.SetVisibleCore(true);
             this.WindowState = FormWindowState.Normal;
         }
+
+        // Override delle funzioni di base
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (Program.closeEverything)
+                return;
+
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+                return;
+
+            base.SetVisibleCore(false);
+            this.WindowState = FormWindowState.Minimized;
+            e.Cancel = true;
+            taskbarIcon.Visible = true;
+        }
+
+        protected override void SetVisibleCore(bool value)
+        {
+            base.SetVisibleCore(false);
+        }
+
     }
 }

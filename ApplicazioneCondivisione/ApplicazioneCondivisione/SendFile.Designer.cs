@@ -28,42 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.progressBar = new MetroFramework.Controls.MetroProgressBar();
             this.button1 = new System.Windows.Forms.Button();
+            this.progressBar = new CircularProgressBar.CircularProgressBar();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(304, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(226, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Invio del file in corso...";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(353, 85);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 25);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "label2";
-            // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(113, 127);
-            this.progressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(632, 48);
-            this.progressBar.TabIndex = 5;
             // 
             // button1
             // 
             this.button1.AccessibleName = "interrompiButton";
-            this.button1.Location = new System.Drawing.Point(317, 202);
+            this.button1.Location = new System.Drawing.Point(364, 551);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(213, 47);
             this.button1.TabIndex = 3;
@@ -71,28 +43,58 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.progressBar.AnimationSpeed = 500;
+            this.progressBar.BackColor = System.Drawing.Color.Transparent;
+            this.progressBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.progressBar.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.progressBar.InnerColor = System.Drawing.Color.White;
+            this.progressBar.InnerMargin = 2;
+            this.progressBar.InnerWidth = -1;
+            this.progressBar.Location = new System.Drawing.Point(315, 184);
+            this.progressBar.MarqueeAnimationSpeed = 2000;
+            this.progressBar.Name = "progressBar";
+            this.progressBar.OuterColor = System.Drawing.Color.Gray;
+            this.progressBar.OuterMargin = -25;
+            this.progressBar.OuterWidth = 26;
+            this.progressBar.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.progressBar.ProgressWidth = 25;
+            this.progressBar.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.progressBar.Size = new System.Drawing.Size(308, 309);
+            this.progressBar.StartAngle = 270;
+            this.progressBar.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.progressBar.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.progressBar.SubscriptText = "";
+            this.progressBar.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.progressBar.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.progressBar.SuperscriptText = "";
+            this.progressBar.TabIndex = 6;
+            this.progressBar.TextMargin = new System.Windows.Forms.Padding(0);
+            this.progressBar.Value = 68;
+            // 
             // SendFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 282);
+            this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(965, 621);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Name = "SendFile";
-            this.Text = "Form2";
+            this.Text = "Invio in corso...";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
-        public MetroFramework.Controls.MetroProgressBar progressBar;
+        public CircularProgressBar.CircularProgressBar progressBar;
     }
 }
