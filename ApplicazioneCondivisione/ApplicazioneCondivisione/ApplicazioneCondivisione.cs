@@ -35,14 +35,6 @@ namespace ApplicazioneCondivisione
 
             // Setto il colore di sfondo del refresh button
             refreshButton.Style = MetroFramework.MetroColorStyle.White;
-
-            /* Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
-             * Ci sono problemi per quanto riguarda l'accesso e la sicurezza ai registri di sistema...Bah!
-            RegistryKey key;
-            key = Registry.ClassesRoot.CreateSubKey("HKEY_CLASSES_ROOT\\*\\shellex\\ContextMenuHandlers\\MOH");
-            key = Registry.ClassesRoot.CreateSubKey("HKEY_CLASSES_ROOT\\*\\shellex\\ContextMenuHandlers\\MOH\\command");
-            key.SetValue("", Application.ExecutablePath);
-            */
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
