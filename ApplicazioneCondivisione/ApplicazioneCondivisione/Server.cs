@@ -15,25 +15,20 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-        private static int senderPort = 16000;          //porta standard per chi manda sulla rete le proprie credenziali
-        private static ListUserHandler luh;
+        private static int senderPort = 16000;
         private static UdpClient clientUDP = new UdpClient(senderPort);
-        private static Thread ramoUDP;                  //thread del ramo udp
-        private static Thread ramoTCP;                  //thread del ramo tcp
-        private static Thread talkUDP;                  //thread che si occupa di inviare pacchetti udp
-        private static Thread listenerUDP;              //thread che si occupa di ascoltare pacchetti udp
-
-        public Server(ListUserHandler luhandler)
-        {
-            luh = luhandler;
-        }
+        private static Thread branchUDP;
+        private static Thread branchTCP;
+        private static Thread talkUDP;
+        private static Thread listenerUDP;
 
         public void entryPoint()
         {
-            ramoUDP = new Thread(entryUDP);
-            ramoUDP.Start();
-            ramoTCP = new Thread(entryTCP);
-            ramoTCP.Start();
+            branchUDP = new Thread(entryUDP);
+            branchUDP.Start();
+
+            branchTCP = new Thread(entryTCP);
+            branchTCP.Start();
         }
 
         public void entryUDP()
@@ -48,7 +43,7 @@ namespace ApplicazioneCondivisione
         {
             while (true)
             {
-                BroadcastMessage(luh.getAdmin().getString());
+                BroadcastMessage(Program.luh.getAdmin().getString());
             }
         }
 
@@ -57,10 +52,10 @@ namespace ApplicazioneCondivisione
             IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);  
             try
             {
-                //invia messaggio udp in broadcast
-                clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);//invio messaggio in byte su broadcast
-                Console.WriteLine("Multicast data sent.....");//visione su output
-                Thread.Sleep(5000);//sospendi tread per tot sec
+                // Mando pacchetti broadcast
+                clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);
+                Console.WriteLine("Multicast data sent.....");
+                Thread.Sleep(5000);
             }
             catch (Exception e)
             {
@@ -91,8 +86,8 @@ namespace ApplicazioneCondivisione
                     {
                         bytes = clientUDP.Receive(ref ipEp);//ricevo byte
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');//converto in stringhe
-                        if (luh.ispresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
-                            luh.resettimer(cred[1]+cred[0]);//se presente resetto il timer della persona
+                        if (Program.luh.ispresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
+                            Program.luh.resettimer(cred[1]+cred[0]);//se presente resetto il timer della persona
                             done = true;//ricezione completata
                         }
                         else//se non è gia presente
@@ -100,7 +95,7 @@ namespace ApplicazioneCondivisione
                             Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);//creo una nuova persona
                             if (!p.isEqual(luh.getAdmin()))//se non è uguale all'amministratore
                             {
-                                luh.addUser(p);//inserisco nella lista delle persone
+                                Program.luh.addUser(p);//inserisco nella lista delle persone
                                 done = true;//ricezione completata
                             }
                         }
@@ -115,7 +110,7 @@ namespace ApplicazioneCondivisione
 
         public void entryTCP()
         {
-            while (luh.getAdmin().isOnline())
+            while (Program.luh.getAdmin().isOnline())
                 receiveFile();
         }
 
@@ -130,8 +125,8 @@ namespace ApplicazioneCondivisione
                 using (var stream = client.GetStream())//flusso di dati
                 using (var output = File.Create("result.txt"))//file di output
                 {
-                    // read the file in chunks of 1KB
-                    var buffer = new byte[1024];//buffer
+                    // Leggo il file a pezzi da 1KB
+                    var buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                     {
@@ -145,8 +140,8 @@ namespace ApplicazioneCondivisione
         {
             listenerUDP.Abort();
             talkUDP.Abort();
-            ramoTCP.Abort();
-            ramoUDP.Abort();
+            branchTCP.Abort();
+            branchUDP.Abort();
         }
     }
 }

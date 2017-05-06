@@ -17,13 +17,13 @@ namespace ApplicazioneCondivisione
          * Questa è la classe che si occupa di gestire la lista degli utenti attivi nella nostra LAN.  
         */
         private Person admin; // Dove sta girando l'applicazione
-        private ApplicazioneCondivisione frame; // Il frame della UI
         private Dictionary<string,Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
-        private Dictionary<string, Person> personeselezionate = new Dictionary<string, Person>();//lista persone selezionate
+        private Dictionary<string, Person> selectedUsers = new Dictionary<string, Person>();
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
-        private List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();//lista bottoni selezionati
+        private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
+
 
         public ListUserHandler()
         {
@@ -32,18 +32,16 @@ namespace ApplicazioneCondivisione
             admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");//imposto admin
         }
 
-        public void listaUsersInit(ApplicazioneCondivisione f)
+        public void listaUsersInit()
         {
             /*
              * Funzione per inizializzare l'handler della lista di utenti
              * 1) mi salvo il frame dell UI
              * 2) salvo il mio admin
             */ 
-
-            this.frame = f;
-            f.nome.Text = admin.getNome();
-            f.cognome.Text = admin.getCognome();
-            f.stato.Text = admin.getStato();
+            Program.ac.name.Text = admin.getName();
+            Program.ac.surname.Text = admin.getSurname();
+            Program.ac.state.Text = admin.getState();
         }
 
         public void changeAdminState(string s)
@@ -51,8 +49,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per settare lo stato dell'admin
             */ 
-            this.admin.setStato(s);
-            frame.stato.Text = s;
+            this.admin.setState(s);
+            Program.ac.state.Text = s;
         }
 
         internal void clean()
@@ -71,20 +69,19 @@ namespace ApplicazioneCondivisione
                        // users.Remove(p.getCognome() + p.getNome());
                         if (!isnew)
                         {
-                            frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                            Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
+
                         }
                     }
-                    if ((p.getStato().CompareTo( "offline")==0)&&(!isnew))
+                    if ((p.getState().CompareTo( "offline")==0)&&(!isnew))
                     {
-                        frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                        Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
                     }
                 }
             }catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            
-           
         }
 
         public Dictionary<String,Person> getlist() { return users; }//ritorna la lista di persone
@@ -94,7 +91,7 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per ritornare lo stato dell'admin
             */ 
-            return this.admin.getStato();
+            return this.admin.getState();
         }
 
         public void refreshButtonClick()
@@ -112,8 +109,7 @@ namespace ApplicazioneCondivisione
                     Dictionary<string,Person>.ValueCollection values = users.Values;
                     foreach (Person p in values)
                     {
-                        var isnew = p.isNew();//true se non ha ancora un metrotile sul flowlayout
-                        if (isnew)
+                        if (p.isNew())
                         {
                                 p.setOld();//la persona adesso ha un bottone
                                 btn = new MetroFramework.Controls.MetroTile();//inizializzo il bottone
@@ -121,13 +117,13 @@ namespace ApplicazioneCondivisione
                                 btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();//bottone del bottone
                                 btn.Style = MetroFramework.MetroColorStyle.Green;//bottone verde per indicare persona online
                                 btn.Click += new EventHandler(changeState2_Click);
-                                btn.Text = p.getNome() + "\n" + p.getCognome();
+                                btn.Text = p.getName() + "\n" + p.getSurname();
                                 btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
                                 btn.TileImageAlign = ContentAlignment.TopCenter;
                                 btn.UseTileImage = true;
                                 listBTN.Add(btn);
-                                p.addbotton(btn);
-                                frame.flowLayoutPanel1.Controls.Add(btn);
+                                p.addButton(btn);
+                                Program.ac.flowLayoutPanel1.Controls.Add(btn);
                         }
                     }
                 }catch(Exception e) {
@@ -142,7 +138,6 @@ namespace ApplicazioneCondivisione
             Person a;
             users.TryGetValue(v,out a);//prova a ottenere la persona alla tale chiave v
             a.reset();//fa il reset della persona
-            
         }
 
         internal bool ispresent(string v)
@@ -157,12 +152,12 @@ namespace ApplicazioneCondivisione
             MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
             if (changeState.Style == MetroFramework.MetroColorStyle.Green)
             {
-                selectedlist.Add(changeState);
+                selectedList.Add(changeState);
                 changeState.Style = MetroFramework.MetroColorStyle.Blue;
             }
             else
             {
-                selectedlist.Remove(changeState);
+                selectedList.Remove(changeState);
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
@@ -180,6 +175,7 @@ namespace ApplicazioneCondivisione
                     Thread clientThread = new Thread(() => c.entryPoint(m.Name));//per ogni bottone selezionato creo un thread
                     clientThread.Start();
                     clientThread.Join();
+
                     sd.progressBar.Value += 100 / selectedlist.Count; 
                 }
             }
@@ -203,7 +199,7 @@ namespace ApplicazioneCondivisione
             return admin;
         }
 
-        public static string GetLocalIPAddress()
+        public static string getLocalIPAddress()
         {
             /*
              * Funzione per trovare il mio indirizzo IPv4
