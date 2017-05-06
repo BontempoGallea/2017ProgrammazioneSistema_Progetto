@@ -15,28 +15,27 @@ namespace ApplicazioneCondivisione
         /*
          * Classe per descrivere un utente
         */
-        private bool isold;
-        private string nome;
-        private string cognome;
-        private string stato;
+        private bool isOld;
+        private string name;
+        private string surname;
+        private string state;
         private IPAddress ip;
         private int port;
         private bool imNew;
         private System.Timers.Timer t;
-        private ListUserHandler luh;
         private MetroTile a;
-        private  static string tempo;
+        //private static string time;
        
         public Person(string n, string c, string s, string ip, string port)
         {
             t = new System.Timers.Timer(5000);
-            this.nome = n;
-            this.cognome = c;
-            this.stato = s;
+            this.name = n;
+            this.surname = c;
+            this.state = s;
             this.imNew = true;
             this.ip = IPAddress.Parse(ip);
             this.port = int.Parse(port);
-            t.Elapsed +=  Ontimeelapse;
+            t.Elapsed +=  onTimeElapse;
             t.AutoReset = true;
             t.Start();
            // t.Elapsed += Ontimeelapse;
@@ -46,55 +45,50 @@ namespace ApplicazioneCondivisione
         {
             // tempo = System.DateTime.Now.ToString();
             t.Stop();
-            isold = false;
+            isOld = false;
             t.Start();
             
         }
-        private void Ontimeelapse(object sender, System.Timers.ElapsedEventArgs e)
+        private void onTimeElapse(object sender, System.Timers.ElapsedEventArgs e)
         {
-            
-                isold = true;
+                isOld = true;
                 t.Stop();
                 t.Start();
-            
                 //throw new Exception();
-            
         }
 
-        public string getNome()
+        public string getName()
         {
-            return nome;
+            return name;
         }
 
-        public void setNome(string n)
+        public void setName(string n)
         {
-            this.nome = n;
+            this.name = n;
         }
 
-        public string getCognome()
+        public string getSurname()
         {
-            return this.cognome;
+            return this.surname;
         }
 
-        public void setCognome(string c)
+        public void setSurname(string c)
         {
-            this.cognome = c;
+            this.surname = c;
         }
 
-        public string getStato()
+        public string getState()
         {
-            return this.stato;
+            return this.state;
         }
 
-        public void setStato(string s)
+        public void setState(string s)
         {
-            this.stato = s;
+            this.state = s;
         }
 
         public bool isNew()
         {
-          
-
             // L'utente è una nuova aggiunta?
             return imNew;
         }
@@ -117,7 +111,7 @@ namespace ApplicazioneCondivisione
             //    else return false;
             //}
             
-            return isold;
+            return isOld;
             
            
         }
@@ -139,7 +133,7 @@ namespace ApplicazioneCondivisione
 
         public bool isOnline()
         {
-            if (stato.Equals("online"))
+            if (state.Equals("online"))
                 return true;
             else
                 return false;
@@ -147,28 +141,26 @@ namespace ApplicazioneCondivisione
 
         public string getString()
         {
-            return nome + "," + cognome + "," + stato + "," + ip.ToString() + "," + port;
+            return name + "," + surname + "," + state + "," + ip.ToString() + "," + port;
         }
 
         public bool isEqual(Person p)
         {
-            return (p.getCognome().CompareTo(cognome) == 0) 
-                && (p.getNome().CompareTo(nome) == 0) 
+            return (p.getSurname().CompareTo(surname) == 0) 
+                && (p.getName().CompareTo(name) == 0) 
                 && (p.getIp().ToString().CompareTo(ip.ToString()) == 0) 
                 && (p.getPort() == port);
         }
 
-        internal void addbotton(MetroTile btn)
+        internal void addButton(MetroTile btn)
         {
             a = btn;
         }
 
-        internal MetroTile getbotton()
+        internal MetroTile getButton()
         {
             return a;
             throw new NotImplementedException();
         }
-
-       
     }
 }

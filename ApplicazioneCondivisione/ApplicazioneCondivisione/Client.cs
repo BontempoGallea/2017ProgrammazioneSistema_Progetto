@@ -15,17 +15,11 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-        private static ListUserHandler luh;
-
-        public Client(ListUserHandler luhandler)
-        {
-            luh = luhandler;
-        }
 
         public void entryPoint(string user)
         {
             string[] cred = user.Split(',');
-            if(luh.getlist().ContainsKey(cred[1]+cred[0]))
+            if(Program.luh.getlist().ContainsKey(cred[1]+cred[0]))
             SendFileTo(cred[2], cred[3]);
         }
 

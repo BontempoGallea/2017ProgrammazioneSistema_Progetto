@@ -17,35 +17,31 @@ namespace ApplicazioneCondivisione
          * Questa è la classe che si occupa di gestire la lista degli utenti attivi nella nostra LAN.  
         */
         private Person admin; // Dove sta girando l'applicazione
-        private ApplicazioneCondivisione frame; // Il frame della UI
         private Dictionary<string,Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
-        private Dictionary<string, Person> personeselezionate = new Dictionary<string, Person>();
+        private Dictionary<string, Person> selectedUsers = new Dictionary<string, Person>();
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
-        private List<MetroFramework.Controls.MetroTile> selectedlist = new List<MetroFramework.Controls.MetroTile>();
+        private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
 
         public ListUserHandler()
         {
             users = new Dictionary<string, Person>();
             lastRefresh = -1;
 
-            admin = new Person("Eugenio", "Gallea", "online", GetLocalIPAddress(), "3000");
-
+            admin = new Person("Eugenio", "Gallea", "online", getLocalIPAddress(), "3000");
         }
 
-        public void listaUsersInit(ApplicazioneCondivisione f)
+        public void listaUsersInit()
         {
             /*
              * Funzione per inizializzare l'handler della lista di utenti
              * 1) mi salvo il frame dell UI
              * 2) salvo il mio admin
             */ 
-
-            this.frame = f;
-            f.nome.Text = admin.getNome();
-            f.cognome.Text = admin.getCognome();
-            f.stato.Text = admin.getStato();
+            Program.ac.name.Text = admin.getName();
+            Program.ac.surname.Text = admin.getSurname();
+            Program.ac.state.Text = admin.getState();
         }
 
         public void changeAdminState(string s)
@@ -53,8 +49,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per settare lo stato dell'admin
             */ 
-            this.admin.setStato(s);
-            frame.stato.Text = s;
+            this.admin.setState(s);
+            Program.ac.state.Text = s;
         }
 
         internal void clean()
@@ -69,24 +65,21 @@ namespace ApplicazioneCondivisione
                     if (old)
                     {
                        // users.Remove(p.getCognome() + p.getNome());
-                        
                         if (!isnew)
                         {
 
-                            frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                            Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
                         }
                     }
-                    if ((p.getStato().CompareTo( "offline")==0)&&(!isnew))
+                    if ((p.getState().CompareTo( "offline")==0)&&(!isnew))
                     {
-                        frame.flowLayoutPanel1.Controls.Remove(p.getbotton());
+                        Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
                     }
                 }
             }catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            
-           
         }
 
         public Dictionary<String,Person> getlist() { return users; }
@@ -96,7 +89,7 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per ritornare lo stato dell'admin
             */ 
-            return this.admin.getStato();
+            return this.admin.getState();
         }
 
         public void refreshButtonClick()
@@ -114,34 +107,23 @@ namespace ApplicazioneCondivisione
                     Dictionary<string,Person>.ValueCollection values = users.Values;
                     foreach (Person p in values)
                     {
-                        var isnew = p.isNew();
-                      
-                        
-                        if (isnew)
+                        if (p.isNew())
                         {
                             p.setOld();
                                 btn = new MetroFramework.Controls.MetroTile();
                                 btn.Size = new Size(70, 70);
-                                btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();
+                                btn.Name = p.getName() + "," + p.getSurname() + "," + p.getIp() + "," + p.getPort();
                                 btn.Style = MetroFramework.MetroColorStyle.Green;
                                 btn.Click += new EventHandler(changeState2_Click);
-                                btn.Text = p.getNome() + "\n" + p.getCognome();
+                                btn.Text = p.getName() + "\n" + p.getSurname();
                                 btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
                                 btn.TileImageAlign = ContentAlignment.TopCenter;
                                 btn.UseTileImage = true;
 
                                 listBTN.Add(btn);
-                                p.addbotton(btn);
-                                frame.flowLayoutPanel1.Controls.Add(btn);
-                           
-                           
+                                p.addButton(btn);
+                                Program.ac.flowLayoutPanel1.Controls.Add(btn);
                         }
-                        else
-                        {
-                       
-                        }
-
-                       
                     }
                 }catch(Exception e) {
                     Console.WriteLine(e.ToString());
@@ -155,7 +137,6 @@ namespace ApplicazioneCondivisione
             Person a;
             users.TryGetValue(v,out a);
             a.reset();
-            
         }
 
         internal bool ispresent(string v)
@@ -169,12 +150,12 @@ namespace ApplicazioneCondivisione
             MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
             if (changeState.Style == MetroFramework.MetroColorStyle.Green)
             {
-                selectedlist.Add(changeState);
+                selectedList.Add(changeState);
                 changeState.Style = MetroFramework.MetroColorStyle.Blue;
             }
             else
             {
-                selectedlist.Remove(changeState);
+                selectedList.Remove(changeState);
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
             }
         }
@@ -185,17 +166,17 @@ namespace ApplicazioneCondivisione
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
 
-            if (selectedlist.Count > 0)
+            if (selectedList.Count > 0)
             {
                 SendFile sd = new SendFile();
 
-                foreach(MetroFramework.Controls.MetroTile m in selectedlist)
+                foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
                     Thread clientThread = new Thread(() => c.entryPoint(m.Name));
                     clientThread.Start();
                     clientThread.Join();
 
-                    sd.progressBar.Value += 100 / selectedlist.Count; 
+                    sd.progressBar.Value += 100 / selectedList.Count; 
                 }
             }
             else
@@ -209,8 +190,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per aggiungere un utente alla lista degli user
             */
-            if(!users.ContainsKey(p.getCognome()+p.getNome()))
-            users.Add(p.getCognome() + p.getNome(), p);
+            if(!users.ContainsKey(p.getSurname()+p.getName()))
+            users.Add(p.getSurname() + p.getName(), p);
         }
 
         public Person getAdmin()
@@ -218,7 +199,7 @@ namespace ApplicazioneCondivisione
             return admin;
         }
 
-        public static string GetLocalIPAddress()
+        public static string getLocalIPAddress()
         {
             /*
              * Funzione per trovare il mio indirizzo IPv4

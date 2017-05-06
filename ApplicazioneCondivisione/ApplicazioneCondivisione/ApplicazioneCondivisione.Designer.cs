@@ -31,13 +31,13 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApplicazioneCondivisione));
             this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.condividiButton = new System.Windows.Forms.Button();
+            this.annullaButton = new System.Windows.Forms.Button();
             this.refresh = new MetroFramework.Controls.MetroTile();
             this.changeState = new MetroFramework.Controls.MetroTile();
-            this.nome = new MetroFramework.Controls.MetroLabel();
-            this.cognome = new MetroFramework.Controls.MetroLabel();
-            this.stato = new MetroFramework.Controls.MetroLabel();
+            this.name = new MetroFramework.Controls.MetroLabel();
+            this.surname = new MetroFramework.Controls.MetroLabel();
+            this.state = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.didascalia = new MetroFramework.Controls.MetroLabel();
@@ -61,29 +61,29 @@
             this.taskbarIcon.Visible = true;
             this.taskbarIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.taskbarIcon_MouseDoubleClick);
             // 
-            // button1
+            // condividiButton
             // 
-            this.button1.AccessibleName = "condividiButton";
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(490, 610);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(311, 71);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Condividi";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.condividiButton_Click);
+            this.condividiButton.AccessibleName = "condividiButton";
+            this.condividiButton.BackColor = System.Drawing.Color.Transparent;
+            this.condividiButton.Location = new System.Drawing.Point(490, 610);
+            this.condividiButton.Name = "condividiButton";
+            this.condividiButton.Size = new System.Drawing.Size(311, 71);
+            this.condividiButton.TabIndex = 2;
+            this.condividiButton.Text = "Condividi";
+            this.condividiButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.condividiButton.UseVisualStyleBackColor = false;
+            this.condividiButton.Click += new System.EventHandler(this.condividiButton_Click);
             // 
-            // button2
+            // annullaButton
             // 
-            this.button2.AccessibleName = "annullaButton";
-            this.button2.Location = new System.Drawing.Point(830, 610);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(311, 71);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Annulla";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.annullaButton_Click);
+            this.annullaButton.AccessibleName = "annullaButton";
+            this.annullaButton.Location = new System.Drawing.Point(830, 610);
+            this.annullaButton.Name = "annullaButton";
+            this.annullaButton.Size = new System.Drawing.Size(311, 71);
+            this.annullaButton.TabIndex = 3;
+            this.annullaButton.Text = "Annulla";
+            this.annullaButton.UseVisualStyleBackColor = true;
+            this.annullaButton.Click += new System.EventHandler(this.annullaButton_Click);
             // 
             // refresh
             // 
@@ -104,45 +104,50 @@
             this.changeState.Size = new System.Drawing.Size(253, 104);
             this.changeState.Style = MetroFramework.MetroColorStyle.Red;
             this.changeState.TabIndex = 5;
-            this.changeState.Text = "state";
+            this.changeState.Text = "Cambia Stato";
+            this.changeState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.changeState.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
             this.changeState.Click += new System.EventHandler(this.changeState_Click);
             // 
-            // nome
+            // name
             // 
-            this.nome.AutoSize = true;
-            this.nome.Location = new System.Drawing.Point(910, 113);
-            this.nome.Name = "nome";
-            this.nome.Size = new System.Drawing.Size(81, 19);
-            this.nome.TabIndex = 6;
-            this.nome.Text = "metroLabel1";
+            this.name.AutoSize = true;
+            this.name.Location = new System.Drawing.Point(910, 113);
+            this.name.Name = "name";
+            this.name.Size = new System.Drawing.Size(81, 19);
+            this.name.TabIndex = 6;
+            this.name.Text = "metroLabel1";
+            this.name.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // cognome
+            // surname
             // 
-            this.cognome.AutoSize = true;
-            this.cognome.Location = new System.Drawing.Point(910, 147);
-            this.cognome.Name = "cognome";
-            this.cognome.Size = new System.Drawing.Size(83, 19);
-            this.cognome.TabIndex = 7;
-            this.cognome.Text = "metroLabel2";
+            this.surname.AutoSize = true;
+            this.surname.Location = new System.Drawing.Point(910, 151);
+            this.surname.Name = "surname";
+            this.surname.Size = new System.Drawing.Size(83, 19);
+            this.surname.TabIndex = 7;
+            this.surname.Text = "metroLabel2";
+            this.surname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // stato
+            // state
             // 
-            this.stato.AutoSize = true;
-            this.stato.Location = new System.Drawing.Point(910, 188);
-            this.stato.Name = "stato";
-            this.stato.Size = new System.Drawing.Size(83, 19);
-            this.stato.TabIndex = 8;
-            this.stato.Text = "metroLabel3";
+            this.state.AutoSize = true;
+            this.state.Location = new System.Drawing.Point(910, 188);
+            this.state.Name = "state";
+            this.state.Size = new System.Drawing.Size(83, 19);
+            this.state.TabIndex = 8;
+            this.state.Text = "metroLabel3";
+            this.state.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(538, 113);
+            this.metroLabel4.Location = new System.Drawing.Point(720, 113);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(81, 19);
             this.metroLabel4.TabIndex = 9;
             this.metroLabel4.Text = "Credenziali: ";
+            this.metroLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // flowLayoutPanel1
             // 
@@ -178,7 +183,7 @@
             // apriToolStripMenuItem
             // 
             this.apriToolStripMenuItem.Name = "apriToolStripMenuItem";
-            this.apriToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.apriToolStripMenuItem.Size = new System.Drawing.Size(169, 38);
             this.apriToolStripMenuItem.Text = "Apri";
             this.apriToolStripMenuItem.Click += new System.EventHandler(this.apriOptionIconContextMenu_Click);
             // 
@@ -188,20 +193,20 @@
             this.onlineToolStripMenuItem,
             this.offlineToolStripMenuItem});
             this.statoToolStripMenuItem.Name = "statoToolStripMenuItem";
-            this.statoToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.statoToolStripMenuItem.Size = new System.Drawing.Size(169, 38);
             this.statoToolStripMenuItem.Text = "Stato";
             // 
             // onlineToolStripMenuItem
             // 
             this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(188, 38);
             this.onlineToolStripMenuItem.Text = "Online";
             this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
             // 
             // offlineToolStripMenuItem
             // 
             this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
-            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(188, 38);
             this.offlineToolStripMenuItem.Text = "Offline";
             this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineOptionIconContextMenu_Click);
             // 
@@ -213,7 +218,7 @@
             // esciToolStripMenuItem
             // 
             this.esciToolStripMenuItem.Name = "esciToolStripMenuItem";
-            this.esciToolStripMenuItem.Size = new System.Drawing.Size(269, 38);
+            this.esciToolStripMenuItem.Size = new System.Drawing.Size(169, 38);
             this.esciToolStripMenuItem.Text = "Esci";
             this.esciToolStripMenuItem.Click += new System.EventHandler(this.esciToolStripMenuItem_Click);
             // 
@@ -226,13 +231,13 @@
             this.Controls.Add(this.didascalia);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.metroLabel4);
-            this.Controls.Add(this.stato);
-            this.Controls.Add(this.cognome);
-            this.Controls.Add(this.nome);
+            this.Controls.Add(this.state);
+            this.Controls.Add(this.surname);
+            this.Controls.Add(this.name);
             this.Controls.Add(this.changeState);
             this.Controls.Add(this.refresh);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.annullaButton);
+            this.Controls.Add(this.condividiButton);
             this.Name = "ApplicazioneCondivisione";
             this.Text = "Condividi con...";
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
@@ -244,14 +249,14 @@
 
         #endregion
         private System.Windows.Forms.NotifyIcon taskbarIcon;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button condividiButton;
+        private System.Windows.Forms.Button annullaButton;
         private MetroFramework.Controls.MetroTile refresh;
         private MetroFramework.Controls.MetroTile changeState;
         private MetroFramework.Controls.MetroLabel metroLabel4;
-        public MetroFramework.Controls.MetroLabel nome;
-        public MetroFramework.Controls.MetroLabel cognome;
-        public MetroFramework.Controls.MetroLabel stato;
+        public MetroFramework.Controls.MetroLabel name;
+        public MetroFramework.Controls.MetroLabel surname;
+        public MetroFramework.Controls.MetroLabel state;
         public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MetroFramework.Controls.MetroLabel didascalia;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripTaskbarIcon;
