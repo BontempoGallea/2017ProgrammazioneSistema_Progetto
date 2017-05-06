@@ -14,16 +14,24 @@ namespace ApplicazioneCondivisione
 {
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
-        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer() ;// inizializzo timer
-
         public ApplicazioneCondivisione()
         {
             InitializeComponent();  
+
+            // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
+
+            // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
             metroLabel4.Text = "Le tue credenziali: ";
             name.Text = Program.luh.getAdmin().getName();
             surname.Text = Program.luh.getAdmin().getSurname();
             state.Text = Program.luh.getAdmin().getState();
+
+            // Setto il colore iniziale del bottone di cambio stato
+            if (Program.luh.getAdminState().CompareTo("online") == 0)
+                changeState.Style = MetroFramework.MetroColorStyle.Green;
+            else
+                changeState.Style = MetroFramework.MetroColorStyle.Red;
 
             /* Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
              * Ci sono problemi per quanto riguarda l'accesso e la sicurezza ai registri di sistema...Bah!
@@ -36,9 +44,9 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {   
-            timer.Interval = (2 * 1000); // 2 secs
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
+            Program.timer.Interval = (2 * 1000); // 2 secs
+            Program.timer.Tick += new EventHandler(timer_Tick);
+            Program.timer.Start();
         }
 
         private void timer_Tick(object sender, EventArgs e)
