@@ -244,6 +244,7 @@
             this.Name = "ApplicazioneCondivisione";
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.None;
             this.Text = "Condividi con...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.applicazioneCondivisione_Closing);
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
             this.contextMenuStripTaskbarIcon.ResumeLayout(false);
             this.ResumeLayout(false);

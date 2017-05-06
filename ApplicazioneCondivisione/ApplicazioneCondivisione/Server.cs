@@ -45,7 +45,7 @@ namespace ApplicazioneCondivisione
         */ 
         public void entryTalk()
         {
-            while (true)
+            while (!Program.closeEverything)
             {
                 BroadcastMessage(Program.luh.getAdmin().getString());
             }
@@ -72,7 +72,7 @@ namespace ApplicazioneCondivisione
         */ 
         public void entryListen()
         {
-            while (true)  ReceiveBroadcastMessages();
+            while (!Program.closeEverything)  ReceiveBroadcastMessages();
         }
 
         private static void ReceiveBroadcastMessages()
@@ -85,7 +85,7 @@ namespace ApplicazioneCondivisione
             IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort); // Endpoint dal quale sto ricevendo dati, accetto qualsiasi indirizzo con la senderPort
             try
             {
-                while ( !done )
+                while ( !done && !Program.closeEverything )
                 {
                     if ( clientUDP.Available > 0 ) //controllo che sul canale ci siano dei byte disponibili
                     {
@@ -120,20 +120,23 @@ namespace ApplicazioneCondivisione
         */ 
         public void entryTCP()
         {
-            while (Program.luh.getAdmin().isOnline())
+            while (Program.luh.getAdmin().isOnline() && !Program.closeEverything)
                 receiveFile();
         }
 
         public void receiveFile()
         {
             var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
-            listener.Start();//inizio ascolto
+            listener.Start(); // inizio ascolto
             Thread.Sleep(2000);
-            while (true)
+            while (!Program.closeEverything)
             {
-                using (var client = listener.AcceptTcpClient())//aspetta connessione
-                using (var stream = client.GetStream())//flusso di dati
-                using (var output = File.Create("result.txt"))//file di output
+                if (!listener.Pending())
+                    continue;
+
+                using (var client = listener.AcceptTcpClient()) // aspetta connessione
+                using (var stream = client.GetStream()) // flusso di dati
+                using (var output = File.Create("result.txt")) // file di output
                 {
                     // Leggo il file a pezzi da 1KB
                     var buffer = new byte[1024];
@@ -144,14 +147,6 @@ namespace ApplicazioneCondivisione
                     }
                 }
             }
-        }
-
-        public void closeAllThreads()
-        {
-            listenerUDP.Abort();
-            talkUDP.Abort();
-            branchTCP.Abort();
-            branchUDP.Abort();
         }
     }
 }
