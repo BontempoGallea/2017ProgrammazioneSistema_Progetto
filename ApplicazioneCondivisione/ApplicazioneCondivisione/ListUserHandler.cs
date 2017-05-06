@@ -25,8 +25,8 @@ namespace ApplicazioneCondivisione
         private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
 
         // Persone di test
-        private Person test1;
-        private Person test2;
+        //private Person test1;
+        //private Person test2;
 
 
         public ListUserHandler()
@@ -39,10 +39,11 @@ namespace ApplicazioneCondivisione
             admin = new Person("Admin", "MyPC", "online", getLocalIPAddress(), "3000"); //imposto admin
 
             // Persone aggiunte per test
+            /*
             test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
             test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
             addUser(test1);
-            addUser(test2);
+            addUser(test2);*/
         }
 
         internal void clean()
