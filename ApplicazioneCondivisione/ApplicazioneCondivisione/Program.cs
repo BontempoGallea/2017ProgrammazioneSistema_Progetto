@@ -22,7 +22,9 @@ namespace ApplicazioneCondivisione
         [MTAThread]
         static void Main()
         {
-             luh = new ListUserHandler();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            luh = new ListUserHandler();
 
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
@@ -34,8 +36,6 @@ namespace ApplicazioneCondivisione
             serverThread.Start();
 
             // Avvio l'appplicazione
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             ac = new ApplicazioneCondivisione();
             Application.Run(ac);
         }

@@ -47,6 +47,8 @@ namespace ApplicazioneCondivisione
             Program.timer.Interval = (2 * 1000); // 2 secs
             Program.timer.Tick += new EventHandler(timer_Tick);
             Program.timer.Start();
+
+            Program.luh.refreshButtonClick();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -57,7 +59,7 @@ namespace ApplicazioneCondivisione
 
         private void condividiButton_Click(object sender, EventArgs e)
         {
-            Program.luh.condividiButtonClick(Program.client);
+            Program.luh.condividiButtonClick();
         }
 
         private void annullaButton_Click(object sender, EventArgs e)

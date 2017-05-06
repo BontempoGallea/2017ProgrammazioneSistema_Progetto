@@ -24,6 +24,10 @@ namespace ApplicazioneCondivisione
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
         private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
 
+        // Persone di test
+        private Person test1;
+        private Person test2;
+
 
         public ListUserHandler()
         {
@@ -33,6 +37,12 @@ namespace ApplicazioneCondivisione
             users = new Dictionary<string, Person>(); //creo una dictionary di persone
             lastRefresh = -1;
             admin = new Person("Admin", "MyPC", "online", getLocalIPAddress(), "3000"); //imposto admin
+
+            // Persone aggiunte per test
+            test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
+            test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
+            addUser(test1);
+            addUser(test2);
         }
 
         internal void clean()
@@ -80,7 +90,7 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi quando si clicca il refresh button
             */
-            int l = users.Count(); // Lunghezza attuale della lista, dopo il click
+            int l = users.Keys.Count; // Lunghezza attuale della lista, dopo il click
             if ( l > lastRefresh )
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
@@ -142,19 +152,21 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        public void condividiButtonClick(Client c)
+        public void condividiButtonClick()
         {
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
             if (selectedList.Count > 0)//se lista dei selezionati è > 0
             {
-                SendFile sd = new SendFile();//?
+                SendFile sd = new SendFile(); // Apro la finestra della barra di avanzamento
+                sd.Show();
+
                 foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
-                    Thread clientThread = new Thread(() => c.entryPoint(m.Name));//per ogni bottone selezionato creo un thread
-                    clientThread.Start();
-                    clientThread.Join();
+                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)); //per ogni bottone selezionato creo un thread
+                    //clientThread.Start();
+                    //clientThread.Join();
 
                     sd.progressBar.Value += 100 / selectedList.Count; 
                 }
@@ -176,7 +188,6 @@ namespace ApplicazioneCondivisione
             if (!users.ContainsKey(p.getSurname() + p.getName()))
             {
                 users.Add(p.getSurname() + p.getName(), p);
-                refreshButtonClick();
             }
         }
 
