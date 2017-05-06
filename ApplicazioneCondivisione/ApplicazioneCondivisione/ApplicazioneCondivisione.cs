@@ -14,10 +14,13 @@ namespace ApplicazioneCondivisione
 {
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer() ;// inizializzo timer
+
         public ApplicazioneCondivisione()
         {
             InitializeComponent();  
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
+            metroLabel4.Text = "Le tue credenziali: ";
             name.Text = Program.luh.getAdmin().getName();
             surname.Text = Program.luh.getAdmin().getSurname();
             state.Text = Program.luh.getAdmin().getState();
@@ -33,13 +36,9 @@ namespace ApplicazioneCondivisione
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
         {   
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
-
-            timer.Interval = (2 * 1000); // 10 secs
+            timer.Interval = (2 * 1000); // 2 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
-            
-            metroLabel4.Text = "Le tue credenziali: ";
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -77,7 +76,6 @@ namespace ApplicazioneCondivisione
         private void refresh_Click(object sender, EventArgs e)
         {
             Program.luh.refreshButtonClick();
-
             this.timer_Tick(sender,e);
 
         }
