@@ -38,17 +38,15 @@ namespace ApplicazioneCondivisione
             t.Elapsed +=  onTimeElapse;
             t.AutoReset = true;
             t.Start();
-           // t.Elapsed += Ontimeelapse;
         }
       
         public void reset()
         {
-            // tempo = System.DateTime.Now.ToString();
             t.Stop();
             isOld = false;
             t.Start();
-            
         }
+      
         private void onTimeElapse(object sender, System.Timers.ElapsedEventArgs e)
         {
                 isOld = true;
@@ -92,29 +90,12 @@ namespace ApplicazioneCondivisione
             // L'utente è una nuova aggiunta?
             return imNew;
         }
+
         public  bool old()
         {
-            //system.timespan diff;
-            //System.DateTime now = System.DateTime.Now;
-            //DateTime tmp= DateTime.Parse(tempo);
-
-            //    diff = now - tmp;
-            //Console.WriteLine("tot sec " + diff.TotalSeconds);
-            //if (diff.TotalSeconds < 0)
-            //{
-            //    if (diff.TotalSeconds < -5) return true;
-            //    else return false;
-            //}
-            //else
-            //{
-            //    if (diff.TotalSeconds > 5) return true;
-            //    else return false;
-            //}
-            
-            return isOld;
-            
-           
+            return isold;
         }
+
         public void setOld()
         {
             // L'utente non è più una nuova aggiunta

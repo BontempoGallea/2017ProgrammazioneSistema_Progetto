@@ -24,12 +24,12 @@ namespace ApplicazioneCondivisione
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
         private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
 
+
         public ListUserHandler()
         {
-            users = new Dictionary<string, Person>();
+            users = new Dictionary<string, Person>();//creo una dictionary di persone
             lastRefresh = -1;
-
-            admin = new Person("Eugenio", "Gallea", "online", getLocalIPAddress(), "3000");
+            admin = new Person("gianpaolo", "Bontempo", "online", GetLocalIPAddress(), "3000");//imposto admin
         }
 
         public void listaUsersInit()
@@ -55,20 +55,22 @@ namespace ApplicazioneCondivisione
 
         internal void clean()
         {
+            //funzione che controlla di togliere i bottoni delle persone non piu sulla rete
+            //o semplicemnte non online
             Dictionary<string, Person>.ValueCollection values = users.Values;
             try
             {
-                foreach (Person p in values)
+                foreach (Person p in values)//per ogni persona
                 {
-                    var isnew = p.isNew();
-                    var old = p.old();
+                    var isnew = p.isNew();//true se non ha ancora un metrotile sul flowlayout
+                    var old = p.old();//true se la persona è deprecato
                     if (old)
                     {
                        // users.Remove(p.getCognome() + p.getNome());
                         if (!isnew)
                         {
-
                             Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
+
                         }
                     }
                     if ((p.getState().CompareTo( "offline")==0)&&(!isnew))
@@ -82,7 +84,7 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        public Dictionary<String,Person> getlist() { return users; }
+        public Dictionary<String,Person> getlist() { return users; }//ritorna la lista di persone
 
         public string getAdminState()
         {
@@ -109,17 +111,16 @@ namespace ApplicazioneCondivisione
                     {
                         if (p.isNew())
                         {
-                            p.setOld();
-                                btn = new MetroFramework.Controls.MetroTile();
-                                btn.Size = new Size(70, 70);
-                                btn.Name = p.getName() + "," + p.getSurname() + "," + p.getIp() + "," + p.getPort();
-                                btn.Style = MetroFramework.MetroColorStyle.Green;
+                                p.setOld();//la persona adesso ha un bottone
+                                btn = new MetroFramework.Controls.MetroTile();//inizializzo il bottone
+                                btn.Size = new Size(70, 70);//dimensione bottone
+                                btn.Name = p.getNome() + "," + p.getCognome() + "," + p.getIp() + "," + p.getPort();//bottone del bottone
+                                btn.Style = MetroFramework.MetroColorStyle.Green;//bottone verde per indicare persona online
                                 btn.Click += new EventHandler(changeState2_Click);
                                 btn.Text = p.getName() + "\n" + p.getSurname();
                                 btn.TileImage = Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user-32.png");
                                 btn.TileImageAlign = ContentAlignment.TopCenter;
                                 btn.UseTileImage = true;
-
                                 listBTN.Add(btn);
                                 p.addButton(btn);
                                 Program.ac.flowLayoutPanel1.Controls.Add(btn);
@@ -135,18 +136,19 @@ namespace ApplicazioneCondivisione
         internal void resettimer(string v)
         {
             Person a;
-            users.TryGetValue(v,out a);
-            a.reset();
+            users.TryGetValue(v,out a);//prova a ottenere la persona alla tale chiave v
+            a.reset();//fa il reset della persona
         }
 
         internal bool ispresent(string v)
         {
-            return users.ContainsKey(v);
+            return users.ContainsKey(v);//ritorna un bool per indicare se la lista di persone contiene un valore con la dadta chiave
             throw new NotImplementedException();
         }
 
         private void changeState2_Click(object sender, EventArgs e)
         {
+            //funzione che aggiunge/rimuove dalla lista dei selezionati 
             MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
             if (changeState.Style == MetroFramework.MetroColorStyle.Green)
             {
@@ -165,18 +167,16 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
-
-            if (selectedList.Count > 0)
+            if (selectedlist.Count > 0)//se lista dei selezionati è > 0
             {
-                SendFile sd = new SendFile();
-
-                foreach(MetroFramework.Controls.MetroTile m in selectedList)
+                SendFile sd = new SendFile();//?
+                foreach(MetroFramework.Controls.MetroTile m in selectedlist)
                 {
-                    Thread clientThread = new Thread(() => c.entryPoint(m.Name));
+                    Thread clientThread = new Thread(() => c.entryPoint(m.Name));//per ogni bottone selezionato creo un thread
                     clientThread.Start();
                     clientThread.Join();
 
-                    sd.progressBar.Value += 100 / selectedList.Count; 
+                    sd.progressBar.Value += 100 / selectedlist.Count; 
                 }
             }
             else
@@ -190,8 +190,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per aggiungere un utente alla lista degli user
             */
-            if(!users.ContainsKey(p.getSurname()+p.getName()))
-            users.Add(p.getSurname() + p.getName(), p);
+            if(!users.ContainsKey(p.getCognome()+p.getNome()))//controllo per avere persone distinte
+            users.Add(p.getCognome() + p.getNome(), p);
         }
 
         public Person getAdmin()
@@ -204,7 +204,6 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per trovare il mio indirizzo IPv4
              */
-
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
             {

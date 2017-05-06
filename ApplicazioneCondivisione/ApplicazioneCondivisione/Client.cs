@@ -15,9 +15,9 @@ namespace ApplicazioneCondivisione
         /*
          * Classe che gestirà le tasks del client
         */
-
         public void entryPoint(string user)
         {
+            //ottengo indirizzo ip e porta della persona a cui voglio inviare il file
             string[] cred = user.Split(',');
             if(Program.luh.getlist().ContainsKey(cred[1]+cred[0]))
             SendFileTo(cred[2], cred[3]);
@@ -25,12 +25,12 @@ namespace ApplicazioneCondivisione
 
         private static void SendFileTo(string ip, string port)
         {
-            // Establish the local endpoint for the socket.
+            // stabilisce l'endpoint locale per il socket
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddr = ipHost.AddressList[0];
             IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), int.Parse(port));
 
-            // Create a TCP socket.
+            // Crea un TCP socket.
             Socket client = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream, ProtocolType.Tcp);
 
