@@ -212,6 +212,7 @@
             // 
             // refreshButton
             // 
+            this.refreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.refreshButton.Location = new System.Drawing.Point(33, 113);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(108, 104);
@@ -227,6 +228,7 @@
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(1178, 714);
             this.Controls.Add(this.didascalia);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -240,6 +242,7 @@
             this.Controls.Add(this.condividiButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ApplicazioneCondivisione";
+            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.None;
             this.Text = "Condividi con...";
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
             this.contextMenuStripTaskbarIcon.ResumeLayout(false);

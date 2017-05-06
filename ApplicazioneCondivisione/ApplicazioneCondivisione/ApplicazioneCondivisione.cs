@@ -16,7 +16,7 @@ namespace ApplicazioneCondivisione
     {
         public ApplicazioneCondivisione()
         {
-            InitializeComponent();  
+            InitializeComponent();
 
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
