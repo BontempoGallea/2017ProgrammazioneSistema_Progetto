@@ -133,14 +133,14 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        internal void resettimer(string v)
+        internal void resetTimer(string v)
         {
             Person a;
             users.TryGetValue(v,out a);//prova a ottenere la persona alla tale chiave v
             a.reset();//fa il reset della persona
         }
 
-        internal bool ispresent(string v)
+        internal bool isPresent(string v)
         {
             return users.ContainsKey(v);//ritorna un bool per indicare se la lista di persone contiene un valore con la dadta chiave
             throw new NotImplementedException();
