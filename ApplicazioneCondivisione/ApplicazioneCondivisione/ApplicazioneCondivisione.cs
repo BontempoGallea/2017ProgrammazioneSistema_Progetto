@@ -16,7 +16,7 @@ namespace ApplicazioneCondivisione
     {
         public ApplicazioneCondivisione()
         {
-            InitializeComponent();
+            InitializeComponent();  
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
             name.Text = Program.luh.getAdmin().getName();
             surname.Text = Program.luh.getAdmin().getSurname();
@@ -32,12 +32,13 @@ namespace ApplicazioneCondivisione
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        {   
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
+
             timer.Interval = (2 * 1000); // 10 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
-
+            
             metroLabel4.Text = "Le tue credenziali: ";
         }
 
@@ -76,6 +77,9 @@ namespace ApplicazioneCondivisione
         private void refresh_Click(object sender, EventArgs e)
         {
             Program.luh.refreshButtonClick();
+
+            this.timer_Tick(sender,e);
+
         }
 
         protected override void SetVisibleCore(bool value)

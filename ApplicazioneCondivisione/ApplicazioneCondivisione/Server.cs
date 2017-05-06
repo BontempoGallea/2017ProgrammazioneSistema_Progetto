@@ -35,7 +35,6 @@ namespace ApplicazioneCondivisione
         {
             talkUDP = new Thread(entryTalk);
             talkUDP.Start();
-
             listenerUDP = new Thread(entryListen);
             listenerUDP.Start();
         } 
@@ -50,7 +49,7 @@ namespace ApplicazioneCondivisione
 
         static void BroadcastMessage(string message)
         {
-            IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);
+            IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);  
             try
             {
                 // Mando pacchetti broadcast
@@ -66,39 +65,38 @@ namespace ApplicazioneCondivisione
 
         public void entryListen()
         {
-            while (true) 
-                ReceiveBroadcastMessages();
+            while (true)  ReceiveBroadcastMessages();
         }
 
         private static void ReceiveBroadcastMessages()
         {
             /*
              * Funzione per ricevere un messaggio in broadcast
+             * 
             */
+            //variabile per terminare la ricezione del pacchetto
             bool done = false;
-            byte[] bytes = new Byte[4096];
-            IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort);
-
+            byte[] bytes = new Byte[4096];//buffer
+            IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort);//imposto il broadcast come sender del pacchetto
             try
             {
                 while (!done)
                 {
-                    if (clientUDP.Available > 0)
+                    if (clientUDP.Available > 0)//controllo che sul canale ci siano dei byte disponibili
                     {
-                        bytes = clientUDP.Receive(ref ipEp);
-                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');
-                        if (Program.luh.ispresent(cred[1] + cred[0])) {
-                            Program.luh.resettimer(cred[1]+cred[0]);
-                            done = true;
+                        bytes = clientUDP.Receive(ref ipEp);//ricevo byte
+                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(',');//converto in stringhe
+                        if (Program.luh.ispresent(cred[1] + cred[0])) {//controllo che la persona è gia presente nella lista
+                            Program.luh.resettimer(cred[1]+cred[0]);//se presente resetto il timer della persona
+                            done = true;//ricezione completata
                         }
-                        else
+                        else//se non è gia presente
                         { 
-                            Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);
-                            if (!p.isEqual(Program.luh.getAdmin()))
+                            Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);//creo una nuova persona
+                            if (!p.isEqual(luh.getAdmin()))//se non è uguale all'amministratore
                             {
-                            
-                                Program.luh.addUser(p);
-                                done = true;
+                                Program.luh.addUser(p);//inserisco nella lista delle persone
+                                done = true;//ricezione completata
                             }
                         }
                     }
@@ -118,14 +116,14 @@ namespace ApplicazioneCondivisione
 
         public void receiveFile()
         {
-            var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());
-            listener.Start();
+            var listener = new TcpListener(luh.getAdmin().getIp(), luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
+            listener.Start();//inizio ascolto
             Thread.Sleep(2000);
             while (true)
             {
-                using (var client = listener.AcceptTcpClient())
-                using (var stream = client.GetStream())
-                using (var output = File.Create("result.txt"))
+                using (var client = listener.AcceptTcpClient())//aspetta connessione
+                using (var stream = client.GetStream())//flusso di dati
+                using (var output = File.Create("result.txt"))//file di output
                 {
                     // Leggo il file a pezzi da 1KB
                     var buffer = new byte[1024];
