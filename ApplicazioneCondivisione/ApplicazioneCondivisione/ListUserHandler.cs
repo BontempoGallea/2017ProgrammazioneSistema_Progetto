@@ -24,33 +24,26 @@ namespace ApplicazioneCondivisione
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
         private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
 
+        // Persone di test
+        //private Person test1;
+        //private Person test2;
+
 
         public ListUserHandler()
         {
-            users = new Dictionary<string, Person>();//creo una dictionary di persone
+            /*
+             * Costruttore della classe ListUserHandler
+            */ 
+            users = new Dictionary<string, Person>(); //creo una dictionary di persone
             lastRefresh = -1;
-            admin = new Person("gianpaolo", "Bontempo", "online", getLocalIPAddress(), "3000");//imposto admin
-        }
+            admin = new Person("Admin", "MyPC", "online", getLocalIPAddress(), "3000"); //imposto admin
 
-        public void listaUsersInit()
-        {
+            // Persone aggiunte per test
             /*
-             * Funzione per inizializzare l'handler della lista di utenti
-             * 1) mi salvo il frame dell UI
-             * 2) salvo il mio admin
-            */ 
-            Program.ac.name.Text = admin.getName();
-            Program.ac.surname.Text = admin.getSurname();
-            Program.ac.state.Text = admin.getState();
-        }
-
-        public void changeAdminState(string s)
-        {
-            /*
-             * Funzione per settare lo stato dell'admin
-            */ 
-            this.admin.setState(s);
-            Program.ac.state.Text = s;
+            test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
+            test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
+            addUser(test1);
+            addUser(test2);*/
         }
 
         internal void clean()
@@ -60,20 +53,19 @@ namespace ApplicazioneCondivisione
             Dictionary<string, Person>.ValueCollection values = users.Values;
             try
             {
-                foreach (Person p in values)//per ogni persona
+                foreach (Person p in values) //per ogni persona
                 {
-                    var isnew = p.isNew();//true se non ha ancora un metrotile sul flowlayout
-                    var old = p.old();//true se la persona è deprecato
-                    if (old)
+                    var isNew = p.isNew(); //true se non ha ancora un metrotile sul flowlayout
+                    var old = p.old(); //true se la persona è deprecato
+                    if ( old )
                     {
                        // users.Remove(p.getCognome() + p.getNome());
-                        if (!isnew)
+                        if ( !isNew )
                         {
                             Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
-
                         }
                     }
-                    if ((p.getState().CompareTo( "offline")==0)&&(!isnew))
+                    if (( p.getState().CompareTo("offline") == 0 ) && ( !isNew ))
                     {
                         Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
                     }
@@ -99,8 +91,8 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi quando si clicca il refresh button
             */
-            int l = users.Count(); // Lunghezza attuale della lista, dopo il click
-            if ((l > lastRefresh))
+            int l = users.Keys.Count; // Lunghezza attuale della lista, dopo il click
+            if ( l > lastRefresh )
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
                 // utenti.
@@ -136,14 +128,13 @@ namespace ApplicazioneCondivisione
         internal void resetTimer(string v)
         {
             Person a;
-            users.TryGetValue(v,out a);//prova a ottenere la persona alla tale chiave v
-            a.reset();//fa il reset della persona
+            users.TryGetValue(v, out a); //prova a ottenere la persona alla tale chiave v
+            a.reset(); //fa il reset della persona
         }
 
         internal bool isPresent(string v)
         {
             return users.ContainsKey(v);//ritorna un bool per indicare se la lista di persone contiene un valore con la dadta chiave
-            throw new NotImplementedException();
         }
 
         private void changeState2_Click(object sender, EventArgs e)
@@ -162,21 +153,24 @@ namespace ApplicazioneCondivisione
             }
         }
 
-        public void condividiButtonClick(Client c)
+        public void condividiButtonClick()
         {
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
             if (selectedList.Count > 0)//se lista dei selezionati è > 0
             {
-                SendFile sd = new SendFile();//?
+                SendFile sd = new SendFile(); // Apro la finestra della barra di avanzamento
+                sd.Show();
+
                 foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
-                    Thread clientThread = new Thread(() => c.entryPoint(m.Name));//per ogni bottone selezionato creo un thread
-                    clientThread.Start();
-                    clientThread.Join();
+                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)); //per ogni bottone selezionato creo un thread
+                    //clientThread.Start();
+                    //clientThread.Join();
 
-                    sd.progressBar.Value += 100 / selectedList.Count; 
+                    sd.progressBar.Value += (100 / selectedList.Count);
+                    sd.progressBar.Text = sd.progressBar.Value.ToString() + "%";
                 }
             }
             else
@@ -188,15 +182,29 @@ namespace ApplicazioneCondivisione
         public void addUser(Person p)
         {
             /*
-             * Funzione per aggiungere un utente alla lista degli user
+             * Funzione per aggiungere un utente alla lista degli user.
+             * Prima di aggiungere, controllo se la tale persona non fosse già stata inserita nella
+             * collection degli users.
+             * Dopo la NUOVA aggiunta faccio il refresh della mia lista.
             */
-            if(!users.ContainsKey(p.getSurname()+p.getName()))//controllo per avere persone distinte
-            users.Add(p.getSurname() + p.getName(), p);
+            if (!users.ContainsKey(p.getSurname() + p.getName()))
+            {
+                users.Add(p.getSurname() + p.getName(), p);
+            }
         }
 
         public Person getAdmin()
         {
             return admin;
+        }
+
+        public void changeAdminState(string s)
+        {
+            /*
+             * Funzione per settare lo stato dell'admin
+            */
+            this.admin.setState(s);
+            Program.ac.state.Text = s;
         }
 
         public static string getLocalIPAddress()

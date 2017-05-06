@@ -14,6 +14,7 @@ namespace ApplicazioneCondivisione
         public static Thread serverThread;
         public static ListUserHandler luh;
         public static ApplicazioneCondivisione ac;
+        public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -21,7 +22,9 @@ namespace ApplicazioneCondivisione
         [MTAThread]
         static void Main()
         {
-             luh = new ListUserHandler();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            luh = new ListUserHandler();
 
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
@@ -33,8 +36,6 @@ namespace ApplicazioneCondivisione
             serverThread.Start();
 
             // Avvio l'appplicazione
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             ac = new ApplicazioneCondivisione();
             Application.Run(ac);
         }

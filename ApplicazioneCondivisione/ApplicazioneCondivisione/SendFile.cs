@@ -20,19 +20,20 @@ namespace ApplicazioneCondivisione
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            // Setto il testo della finestra
+            this.Text = "Invio in corso...";
+
+            // Setto opzioni della barra di caricamento
             progressBar.Value = 0;
-            label2.Text = "Percentale inviata: " + progressBar.Value + "%";
+            progressBar.Text = progressBar.Value.ToString();
+
+            // Setto il bottone per annullare
             button1.Text = "Interrompi";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void progressBar1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

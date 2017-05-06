@@ -33,7 +33,6 @@
             this.taskbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.condividiButton = new System.Windows.Forms.Button();
             this.annullaButton = new System.Windows.Forms.Button();
-            this.refresh = new MetroFramework.Controls.MetroTile();
             this.changeState = new MetroFramework.Controls.MetroTile();
             this.name = new MetroFramework.Controls.MetroLabel();
             this.surname = new MetroFramework.Controls.MetroLabel();
@@ -48,6 +47,7 @@
             this.offlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.esciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshButton = new MetroFramework.Controls.MetroTile();
             this.contextMenuStripTaskbarIcon.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,18 +84,6 @@
             this.annullaButton.Text = "Annulla";
             this.annullaButton.UseVisualStyleBackColor = true;
             this.annullaButton.Click += new System.EventHandler(this.annullaButton_Click);
-            // 
-            // refresh
-            // 
-            this.refresh.Location = new System.Drawing.Point(33, 113);
-            this.refresh.Name = "refresh";
-            this.refresh.Size = new System.Drawing.Size(108, 104);
-            this.refresh.TabIndex = 4;
-            this.refresh.TileImage = global::ApplicazioneCondivisione.Properties.Resources.refresh;
-            this.refresh.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.refresh.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
-            this.refresh.UseTileImage = true;
-            this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
             // changeState
             // 
@@ -142,7 +130,7 @@
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(720, 113);
+            this.metroLabel4.Location = new System.Drawing.Point(628, 113);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(81, 19);
             this.metroLabel4.TabIndex = 9;
@@ -222,11 +210,25 @@
             this.esciToolStripMenuItem.Text = "Esci";
             this.esciToolStripMenuItem.Click += new System.EventHandler(this.esciToolStripMenuItem_Click);
             // 
+            // refreshButton
+            // 
+            this.refreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.refreshButton.Location = new System.Drawing.Point(33, 113);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(108, 104);
+            this.refreshButton.TabIndex = 4;
+            this.refreshButton.TileImage = global::ApplicazioneCondivisione.Properties.Resources.refresh;
+            this.refreshButton.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.refreshButton.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
+            this.refreshButton.UseTileImage = true;
+            this.refreshButton.Click += new System.EventHandler(this.refresh_Click);
+            // 
             // ApplicazioneCondivisione
             // 
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(1178, 714);
             this.Controls.Add(this.didascalia);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -235,10 +237,12 @@
             this.Controls.Add(this.surname);
             this.Controls.Add(this.name);
             this.Controls.Add(this.changeState);
-            this.Controls.Add(this.refresh);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.annullaButton);
             this.Controls.Add(this.condividiButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ApplicazioneCondivisione";
+            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.None;
             this.Text = "Condividi con...";
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
             this.contextMenuStripTaskbarIcon.ResumeLayout(false);
@@ -251,13 +255,7 @@
         private System.Windows.Forms.NotifyIcon taskbarIcon;
         private System.Windows.Forms.Button condividiButton;
         private System.Windows.Forms.Button annullaButton;
-        private MetroFramework.Controls.MetroTile refresh;
         private MetroFramework.Controls.MetroTile changeState;
-        private MetroFramework.Controls.MetroLabel metroLabel4;
-        public MetroFramework.Controls.MetroLabel name;
-        public MetroFramework.Controls.MetroLabel surname;
-        public MetroFramework.Controls.MetroLabel state;
-        public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MetroFramework.Controls.MetroLabel didascalia;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripTaskbarIcon;
         private System.Windows.Forms.ToolStripMenuItem apriToolStripMenuItem;
@@ -266,6 +264,12 @@
         private System.Windows.Forms.ToolStripMenuItem offlineToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem esciToolStripMenuItem;
+        private MetroFramework.Controls.MetroTile refreshButton;
+        public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        public MetroFramework.Controls.MetroLabel metroLabel4;
+        public MetroFramework.Controls.MetroLabel name;
+        public MetroFramework.Controls.MetroLabel surname;
+        public MetroFramework.Controls.MetroLabel state;
     }
 }
 
