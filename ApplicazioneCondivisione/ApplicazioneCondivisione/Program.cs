@@ -15,6 +15,7 @@ namespace ApplicazioneCondivisione
         public static ListUserHandler luh;
         public static ApplicazioneCondivisione ac;
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
+        public static bool closeEverything = false;
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.

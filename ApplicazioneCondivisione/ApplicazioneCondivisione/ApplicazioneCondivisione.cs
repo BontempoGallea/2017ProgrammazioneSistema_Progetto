@@ -119,8 +119,8 @@ namespace ApplicazioneCondivisione
 
         private void esciToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.server.closeAllThreads();
-            Program.serverThread.Abort();
+            Program.closeEverything = true;
+            Program.serverThread.Join();
             Application.Exit();
         }
 
@@ -128,6 +128,13 @@ namespace ApplicazioneCondivisione
         {
             base.SetVisibleCore(true);
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void applicazioneCondivisione_Closing(object sender, FormClosingEventArgs e)
+        {
+            Program.closeEverything = true;
+            Program.serverThread.Join();
+            Application.Exit();
         }
     }
 }
