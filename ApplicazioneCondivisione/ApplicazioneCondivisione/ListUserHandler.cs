@@ -165,9 +165,9 @@ namespace ApplicazioneCondivisione
 
                 foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
-                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)); //per ogni bottone selezionato creo un thread
-                    //clientThread.Start();
-                    //clientThread.Join();
+                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)) { Name = "clientThread" }; //per ogni bottone selezionato creo un thread
+                    clientThread.Start();
+                    clientThread.Join();
 
                     sd.progressBar.Value += (100 / selectedList.Count);
                     sd.progressBar.Text = sd.progressBar.Value.ToString() + "%";
@@ -185,7 +185,6 @@ namespace ApplicazioneCondivisione
              * Funzione per aggiungere un utente alla lista degli user.
              * Prima di aggiungere, controllo se la tale persona non fosse già stata inserita nella
              * collection degli users.
-             * Dopo la NUOVA aggiunta faccio il refresh della mia lista.
             */
             if (!users.ContainsKey(p.getSurname() + p.getName()))
             {
