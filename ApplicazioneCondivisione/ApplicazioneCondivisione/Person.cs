@@ -93,7 +93,7 @@ namespace ApplicazioneCondivisione
 
         public  bool old()
         {
-            return isold;
+            return isOld;
         }
 
         public void setOld()

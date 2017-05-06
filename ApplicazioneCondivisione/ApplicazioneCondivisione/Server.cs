@@ -93,7 +93,7 @@ namespace ApplicazioneCondivisione
                         else//se non è gia presente
                         { 
                             Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]);//creo una nuova persona
-                            if (!p.isEqual(luh.getAdmin()))//se non è uguale all'amministratore
+                            if (!p.isEqual(Program.luh.getAdmin()))//se non è uguale all'amministratore
                             {
                                 Program.luh.addUser(p);//inserisco nella lista delle persone
                                 done = true;//ricezione completata
@@ -116,7 +116,7 @@ namespace ApplicazioneCondivisione
 
         public void receiveFile()
         {
-            var listener = new TcpListener(luh.getAdmin().getIp(), luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
+            var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
             listener.Start();//inizio ascolto
             Thread.Sleep(2000);
             while (true)
