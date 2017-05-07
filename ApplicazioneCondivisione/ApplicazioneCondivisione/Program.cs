@@ -23,8 +23,6 @@ namespace ApplicazioneCondivisione
         [MTAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine("Display name: " + System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName);
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();

@@ -21,8 +21,6 @@ namespace ApplicazioneCondivisione
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
             
-         
-            
             // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
             metroLabel4.Text = "Le tue credenziali: ";
             name.Text = Program.luh.getAdmin().getName();
