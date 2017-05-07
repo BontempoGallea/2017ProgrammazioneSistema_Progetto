@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
-
+using System.IO;
 namespace ApplicazioneCondivisione
 {
     static class Program
@@ -17,7 +17,12 @@ namespace ApplicazioneCondivisione
         public static ApplicazioneCondivisione ac;
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
+<<<<<<< HEAD
 
+=======
+        public static RegistryKey key;
+        
+>>>>>>> refs/remotes/origin/master
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -28,9 +33,16 @@ namespace ApplicazioneCondivisione
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();
 
+<<<<<<< HEAD
+=======
+            // Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
+            key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan");
+            key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan\\command");
+            key.SetValue("","\""+ Directory.GetCurrentDirectory() + "\\"+ "ApplicazioneCondivisione.exe"+"\"\""+"%1\"");
+>>>>>>> refs/remotes/origin/master
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
-
+            
             // Creo la classe server che verrà fatta girare nel rispettivo thread
             server = new Server();
             serverThread = new Thread(server.entryPoint){ Name = "serverThread" };

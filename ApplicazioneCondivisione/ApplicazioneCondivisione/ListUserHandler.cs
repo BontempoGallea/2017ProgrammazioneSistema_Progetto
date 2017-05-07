@@ -45,11 +45,16 @@ namespace ApplicazioneCondivisione
             addUser(test1);
             //addUser(test2);
         }
-
+        public void setadmin(string nome,string cognome)
+        {
+            admin.setName(nome);
+            admin.setSurname(cognome);
+        }
         internal void clean()
         {
             //funzione che controlla di togliere i bottoni delle persone non piu sulla rete
             //o semplicemnte non online
+
             Dictionary<string, Person>.ValueCollection values = users.Values;
             try
             {
