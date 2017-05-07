@@ -17,22 +17,16 @@ namespace ApplicazioneCondivisione
         public static ApplicazioneCondivisione ac;
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
-        public static RegistryKey key;
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
         [MTAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();
-
-            // Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
-            key = Registry.CurrentUser.CreateSubKey("ApplicazioneCondivione");
-            key = Registry.CurrentUser.CreateSubKey("ApplicazioneCondivione\\command");
-            key.SetValue("Share", "Share");
 
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
