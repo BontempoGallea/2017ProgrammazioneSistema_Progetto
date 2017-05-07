@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using MetroFramework.Controls;
+using System.Security.Principal;
 
 namespace ApplicazioneCondivisione
 {
@@ -39,7 +40,8 @@ namespace ApplicazioneCondivisione
             t.AutoReset = true;
             t.Start();
 
-            Console.WriteLine("Aggiunta una nuova persona: " + name + " " + surname);
+            Console.WriteLine("Credenziali: " + Environment.UserName);
+
         }
       
         public void reset()

@@ -28,8 +28,7 @@ namespace ApplicazioneCondivisione
             name.Text = Program.luh.getAdmin().getName();
             surname.Text = Program.luh.getAdmin().getSurname();
             state.Text = Program.luh.getAdmin().getState();
-            finestraadmin fa = new finestraadmin();
-            fa.Show();
+
             // Setto il colore iniziale del bottone di cambio stato
             if (Program.luh.getAdminState().CompareTo("online") == 0)
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
