@@ -36,7 +36,10 @@ namespace ApplicazioneCondivisione
             */ 
             users = new Dictionary<string, Person>(); //creo una dictionary di persone
             lastRefresh = -1;
-            admin = new Person("Admin", "MyPC", "online", getLocalIPAddress(), "3000"); //imposto admin
+            string name=System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName;
+
+            string[] st = name.Split(' ');
+            admin = new Person(st[0], st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
 
             // Persone aggiunte per test
             
