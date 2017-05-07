@@ -39,9 +39,6 @@ namespace ApplicazioneCondivisione
             t.Elapsed +=  onTimeElapse;
             t.AutoReset = true;
             t.Start();
-
-            Console.WriteLine("Credenziali: " + Environment.UserName);
-
         }
       
         public void reset()

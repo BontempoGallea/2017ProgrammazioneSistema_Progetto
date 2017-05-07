@@ -3,7 +3,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.IO;
-using System.Net;
 
 namespace ApplicazioneCondivisione
 {
@@ -24,6 +23,8 @@ namespace ApplicazioneCondivisione
         [MTAThread]
         static void Main(string[] args)
         {
+            Console.WriteLine("Display name: " + System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();
@@ -39,7 +40,7 @@ namespace ApplicazioneCondivisione
             // Creo la classe server che verrà fatta girare nel rispettivo thread
             server = new Server();
             serverThread = new Thread(server.entryPoint){ Name = "serverThread" };
-            serverThread.Start();
+            //serverThread.Start();
 
             // Avvio l'appplicazione
             ac = new ApplicazioneCondivisione();
