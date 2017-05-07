@@ -40,6 +40,7 @@ namespace ApplicazioneCondivisione
             Program.ac.name.Text = nome;
             Program.ac.surname.Text = cognome;
             this.Close();
+
         }
     }
 }
