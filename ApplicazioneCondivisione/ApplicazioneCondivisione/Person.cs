@@ -39,7 +39,7 @@ namespace ApplicazioneCondivisione
             t.AutoReset = true;
             t.Start();
 
-            Console.WriteLine("Aggiunta una nuova persona: " + name + " " + surname);
+          
         }
       
         public void reset()
