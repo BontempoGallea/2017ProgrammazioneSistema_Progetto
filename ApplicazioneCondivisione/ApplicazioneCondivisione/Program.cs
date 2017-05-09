@@ -28,11 +28,11 @@ namespace ApplicazioneCondivisione
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();
-
+            
             // Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
             key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan");
             key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan\\command");
-            key.SetValue("","\""+ Directory.GetCurrentDirectory() + "\\"+ "ApplicazioneCondivisione.exe"+"\"\""+"%1\"");
+            key.SetValue("", "\"" + Application.ExecutablePath +"\"\""+"%1\"");
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
             
