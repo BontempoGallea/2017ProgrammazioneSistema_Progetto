@@ -58,7 +58,7 @@ namespace ApplicazioneCondivisione
             {
                 // Mando pacchetti broadcast
                 clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);
-                Console.WriteLine("Multicast data sent.....");
+                //Console.WriteLine("Multicast data sent.....");
                 Thread.Sleep(5000);
             }
             catch (Exception e)

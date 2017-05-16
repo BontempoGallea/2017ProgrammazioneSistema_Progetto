@@ -16,7 +16,7 @@ namespace ApplicazioneCondivisione
         /*
          * Questa è la classe che si occupa di gestire la lista degli utenti attivi nella nostra LAN.  
         */
-        private Person admin; // Dove sta girando l'applicazione
+        private Person admin; // Utente sul quale sta girando l'applicazione
         private Dictionary<string,Person> users; // Lista degli utenti attivi dai quali ho ricevuto l'online
         private int lastRefresh; // Lunghezza della lista, l'ultima volta che ho fatto refresh
         private Dictionary<string, Person> selectedUsers = new Dictionary<string, Person>();
@@ -166,7 +166,7 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione che gestisce gli eventi di quando si clicca il pulsante per la condivisione
             */
-            if (selectedList.Count > 0)//se lista dei selezionati è > 0
+            if (selectedList.Count > 0) // Se lista dei selezionati è > 0
             {
                 SendFile sd = new SendFile(); // Apro la finestra della barra di avanzamento
                 sd.Show();

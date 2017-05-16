@@ -112,6 +112,7 @@ namespace ApplicazioneCondivisione
                     FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
                     Program.closeEverything = true;
                     Program.serverThread.Join();
+                    Program.pipeThread.Join();
                     base.OnFormClosing(fcea);
                     Application.Exit();
                     break;
