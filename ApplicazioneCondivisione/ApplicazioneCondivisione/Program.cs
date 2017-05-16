@@ -34,11 +34,11 @@ namespace ApplicazioneCondivisione
           
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
-            
+           
             // Creo la classe server che verrà fatta girare nel rispettivo thread
             server = new Server();
             serverThread = new Thread(server.entryPoint){ Name = "serverThread" };
-            //serverThread.Start();
+            serverThread.Start();
 
             // Avvio l'appplicazione
             ac = new ApplicazioneCondivisione();

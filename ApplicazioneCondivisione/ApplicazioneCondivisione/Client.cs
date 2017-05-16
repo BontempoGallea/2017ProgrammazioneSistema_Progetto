@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
@@ -39,22 +40,32 @@ namespace ApplicazioneCondivisione
 
             // Send file fileName to the remote host with preBuffer and postBuffer data.
             // There is a text file test.txt located in the root directory.
+          
             string fileName = "C:\\Users\\bitri\\Desktop\\canzone.txt"; // Da fare dinamico
 
+            string richiesta = String.Format(Program.luh.getAdmin().getName()+","+fileName, Environment.NewLine);
+            byte[] ansbyte= Encoding.ASCII.GetBytes("");
+            byte[] richbyte = Encoding.ASCII.GetBytes(richiesta);
+            client.Send(richbyte);
+            client.Receive(ansbyte);
+           string confermed= ASCIIEncoding.ASCII.GetString(ansbyte);
             // Create the preBuffer data.
-            string string1 = String.Format("This is text data that precedes the file.{0}", Environment.NewLine);
-            byte[] preBuf = Encoding.ASCII.GetBytes(string1);
+            if (confermed.CompareTo("ok") == 0)
+            {
+                string string1 = String.Format("This is text data that precedes the file.{0}", Environment.NewLine);
+                byte[] preBuf = Encoding.ASCII.GetBytes(string1);
 
-            // Create the postBuffer data.
-            string string2 = String.Format("This is text data that will follow the file.{0}", Environment.NewLine);
-            byte[] postBuf = Encoding.ASCII.GetBytes(string2);
+                // Create the postBuffer data.
+                string string2 = String.Format("This is text data that will follow the file.{0}", Environment.NewLine);
+                byte[] postBuf = Encoding.ASCII.GetBytes(string2);
 
-            //Send file fileName with buffers and default flags to the remote device.
-            client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
+                //Send file fileName with buffers and default flags to the remote device.
+                client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
 
-            // Release the socket.
-            client.Shutdown(SocketShutdown.Both);
-            client.Close();
+                // Release the socket.
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
+            }
         }
     }
 }
