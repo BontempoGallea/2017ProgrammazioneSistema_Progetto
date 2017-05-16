@@ -20,13 +20,9 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // Inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
-<<<<<<< HEAD
         public  static bool exists = false;
         public static string path;
 
-=======
-        public static NotifyIcon noty;
->>>>>>> refs/remotes/origin/master
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -43,8 +39,8 @@ namespace ApplicazioneCondivisione
 
             if (exists)
             {
-                MessageBox.Show("C'è già un altro processo che va");
-                Console.WriteLine("Argomenti arrivati: " + args[0]);
+                //MessageBox.Show("C'è già un altro processo che va");
+                //Console.WriteLine("Argomenti arrivati: " + args[0]);
                 startClient(args[0]);
                 closeEverything = true;
             }
@@ -56,8 +52,7 @@ namespace ApplicazioneCondivisione
                 luh = new ListUserHandler();
                 pipeThread = new Thread(startServer);
                 pipeThread.Start();
-          
-<<<<<<< HEAD
+
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN");
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN\\command");
@@ -81,17 +76,25 @@ namespace ApplicazioneCondivisione
         {
             using (var clientSide = new NamedPipeClientStream(".", "MyPipe", PipeDirection.InOut))
             {
-                //MessageBox.Show(path);
                 clientSide.Connect();
-                clientSide.ReadMode = PipeTransmissionMode.Message;
-                byte[] msg = Encoding.UTF8.GetBytes(path);
-                clientSide.Write(msg, 0, msg.Length);
+                try
+                {
+                    clientSide.ReadMode = PipeTransmissionMode.Message;
+                    Console.WriteLine("Messaggio inviato: " + path);
+                    byte[] msg = Encoding.UTF8.GetBytes(path);
+                    clientSide.Write(msg, 0, msg.Length);
+                    Thread.Sleep(5000);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
         }
 
         public static void startServer()
         {
-            while (!Program.closeEverything)
+            while (true)
             {
                 using (var serverSide = new NamedPipeServerStream("MyPipe", PipeDirection.InOut, 1, PipeTransmissionMode.Message))
                 {
@@ -99,6 +102,7 @@ namespace ApplicazioneCondivisione
                     serverSide.WaitForConnection();
                     path = Encoding.UTF8.GetString(readMessage(serverSide));
                     Console.WriteLine("Ho ricevuto un path: " + path);
+                    serverSide.Disconnect();
                 }
             }
         }
@@ -114,19 +118,6 @@ namespace ApplicazioneCondivisione
             } while (!ps.IsMessageComplete);
 
             return ms.ToArray();
-=======
-            // Creo la classe client che verrà fatta girare nel rispettivo thread
-            client = new Client();
-           
-            // Creo la classe server che verrà fatta girare nel rispettivo thread
-            server = new Server();
-            serverThread = new Thread(server.entryPoint){ Name = "serverThread" };
-            serverThread.Start();
-
-            // Avvio l'appplicazione
-            ac = new ApplicazioneCondivisione();
-            Application.Run(ac);
->>>>>>> refs/remotes/origin/master
         }
     }
 }

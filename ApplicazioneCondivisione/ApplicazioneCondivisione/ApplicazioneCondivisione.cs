@@ -21,9 +21,6 @@ namespace ApplicazioneCondivisione
            
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
-            Program.noty = taskbarIcon;
-            //
-            
 
             // Set up the delays for the ToolTip.
 

@@ -22,7 +22,7 @@ namespace ApplicazioneCondivisione
         private static Thread branchTCP;
         private static Thread talkUDP;
         private static Thread listenerUDP;
-        private static Boolean flag=false;
+
         public void entryPoint()
         {
             branchUDP = new Thread(entryUDP);
@@ -159,7 +159,6 @@ namespace ApplicazioneCondivisione
                         
                     case DialogResult.Yes:
                             client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("si"), 0, 2);
-                            flag = true;
                         break;
                     default:
                         break;
@@ -199,7 +198,6 @@ namespace ApplicazioneCondivisione
                     Application.Exit();
                     break;
             }
-            flag = true;
         }
     }
 }
