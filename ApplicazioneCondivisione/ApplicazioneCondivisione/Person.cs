@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using MetroFramework.Controls;
+using System.Security.Principal;
 
 namespace ApplicazioneCondivisione
 {
@@ -38,8 +39,6 @@ namespace ApplicazioneCondivisione
             t.Elapsed +=  onTimeElapse;
             t.AutoReset = true;
             t.Start();
-
-          
         }
       
         public void reset()

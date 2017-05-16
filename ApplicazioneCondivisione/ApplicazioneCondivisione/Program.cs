@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.IO;
+
 namespace ApplicazioneCondivisione
 {
     static class Program
@@ -25,21 +23,22 @@ namespace ApplicazioneCondivisione
         [MTAThread]
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
+            Application.EnableVisualStyles(); // Questa operazione deve essere fatta prima di inizializzare qualsiasi oggetto
             Application.SetCompatibleTextRenderingDefault(false);
             luh = new ListUserHandler();
             
             // Codice ancora da controllare per l'aggiunta dell'opzione al context menu di Windows
-            key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan");
-            key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\condividi in lan\\command");
-            key.SetValue("", "\"" + Application.ExecutablePath +"\"\""+"%1\"");
+            key = Registry.ClassesRoot.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN");
+            key = Registry.ClassesRoot.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN\\command");
+            key.SetValue("","\""+ Directory.GetCurrentDirectory() + "\\"+ "ApplicazioneCondivisione.exe"+"\"\""+"%1\"");
+          
             // Creo la classe client che verrà fatta girare nel rispettivo thread
             client = new Client();
             
             // Creo la classe server che verrà fatta girare nel rispettivo thread
             server = new Server();
             serverThread = new Thread(server.entryPoint){ Name = "serverThread" };
-            serverThread.Start();
+            //serverThread.Start();
 
             // Avvio l'appplicazione
             ac = new ApplicazioneCondivisione();
