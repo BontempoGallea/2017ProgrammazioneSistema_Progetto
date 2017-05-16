@@ -16,7 +16,7 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();// inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
-        
+        public static NotifyIcon noty;
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>

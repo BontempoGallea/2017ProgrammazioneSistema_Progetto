@@ -42,11 +42,12 @@ namespace ApplicazioneCondivisione
             // There is a text file test.txt located in the root directory.
           
             string fileName = "C:\\Users\\bitri\\Desktop\\canzone.txt"; // Da fare dinamico
-
+            client.SendBufferSize = 1024;
             string richiesta = String.Format(Program.luh.getAdmin().getName()+","+fileName, Environment.NewLine);
             byte[] ansbyte= Encoding.ASCII.GetBytes("");
             byte[] richbyte = Encoding.ASCII.GetBytes(richiesta);
             client.Send(richbyte);
+            
             client.Receive(ansbyte);
            string confermed= ASCIIEncoding.ASCII.GetString(ansbyte);
             // Create the preBuffer data.

@@ -14,13 +14,23 @@ namespace ApplicazioneCondivisione
 {
     public partial class ApplicazioneCondivisione : MetroFramework.Forms.MetroForm
     {
+        
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
-
+           
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
+            Program.noty = taskbarIcon;
+            //
             
+
+            // Set up the delays for the ToolTip.
+
+           
+            // Set up the ToolTip text for the Button and Checkbox.
+           
+            //
             // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
             metroLabel4.Text = "Le tue credenziali: ";
             name.Text = Program.luh.getAdmin().getName();
@@ -58,6 +68,7 @@ namespace ApplicazioneCondivisione
 
         private void annullaButton_Click(object sender, EventArgs e)
         {
+            taskbarIcon.ShowBalloonTip(10000);
             base.SetVisibleCore(false);
             this.WindowState = FormWindowState.Minimized;
         }
