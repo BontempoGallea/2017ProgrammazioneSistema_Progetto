@@ -65,7 +65,6 @@ namespace ApplicazioneCondivisione
 
         private void annullaButton_Click(object sender, EventArgs e)
         {
-            taskbarIcon.ShowBalloonTip(10000);
             base.SetVisibleCore(false);
             this.WindowState = FormWindowState.Minimized;
         }
@@ -91,7 +90,16 @@ namespace ApplicazioneCondivisione
             this.timer_Tick(sender,e);
 
         }
-        
+
+        private void settingsButton_Click(object sender, MouseEventArgs e)
+        {
+            // Devo aprire la finestra delle impostazioni
+            Settings s = new Settings();
+            s.StartPosition = FormStartPosition.CenterScreen;
+            s.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
+            s.Show();
+        }
+
         // Click sulla taskbar
         private void taskbarIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -152,6 +160,5 @@ namespace ApplicazioneCondivisione
         {
             base.SetVisibleCore(false);
         }
-
     }
 }
