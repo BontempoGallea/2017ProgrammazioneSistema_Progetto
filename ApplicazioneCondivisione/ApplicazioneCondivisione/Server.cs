@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
@@ -26,8 +27,9 @@ namespace ApplicazioneCondivisione
         {
             branchUDP = new Thread(entryUDP);
             branchUDP.Start();
-
+           
             branchTCP = new Thread(entryTCP);
+            branchTCP.SetApartmentState(ApartmentState.STA);
             branchTCP.Start();
         }
 
@@ -131,12 +133,16 @@ namespace ApplicazioneCondivisione
             Thread.Sleep(2000);
             while (!Program.closeEverything)
             {
-                if (!listener.Pending())
-                    continue;
-
-                using (var client = listener.AcceptTcpClient()) // aspetta connessione
+                // if (!listener.Pending())
+                //    continue;
+                TcpClient client = null;// listener.AcceptTcpClient();
+                // aspetta connessione
+                SaveFileDialog a= new SaveFileDialog();
+                a.FileName = "nome file";
+                a.Filter = " text |*.txt";
+                a.ShowDialog();
                 using (var stream = client.GetStream()) // flusso di dati
-                using (var output = File.Create("result.txt")) // file di output
+                using (var output = File.Create(a.FileName)) // file di output
                 {
                     // Leggo il file a pezzi da 1KB
                     var buffer = new byte[1024];
