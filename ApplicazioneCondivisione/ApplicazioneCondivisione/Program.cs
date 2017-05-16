@@ -20,9 +20,13 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // Inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
+<<<<<<< HEAD
         public  static bool exists = false;
         public static string path;
 
+=======
+        public static NotifyIcon noty;
+>>>>>>> refs/remotes/origin/master
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -53,6 +57,7 @@ namespace ApplicazioneCondivisione
                 pipeThread = new Thread(startServer);
                 pipeThread.Start();
           
+<<<<<<< HEAD
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN");
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN\\command");
@@ -109,6 +114,19 @@ namespace ApplicazioneCondivisione
             } while (!ps.IsMessageComplete);
 
             return ms.ToArray();
+=======
+            // Creo la classe client che verrà fatta girare nel rispettivo thread
+            client = new Client();
+           
+            // Creo la classe server che verrà fatta girare nel rispettivo thread
+            server = new Server();
+            serverThread = new Thread(server.entryPoint){ Name = "serverThread" };
+            serverThread.Start();
+
+            // Avvio l'appplicazione
+            ac = new ApplicazioneCondivisione();
+            Application.Run(ac);
+>>>>>>> refs/remotes/origin/master
         }
     }
 }

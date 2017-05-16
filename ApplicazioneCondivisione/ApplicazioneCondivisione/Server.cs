@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ApplicazioneCondivisione
 {
@@ -21,13 +22,14 @@ namespace ApplicazioneCondivisione
         private static Thread branchTCP;
         private static Thread talkUDP;
         private static Thread listenerUDP;
-
+        private static Boolean flag=false;
         public void entryPoint()
         {
             branchUDP = new Thread(entryUDP);
             branchUDP.Start();
-
+           
             branchTCP = new Thread(entryTCP);
+            branchTCP.SetApartmentState(ApartmentState.STA);
             branchTCP.Start();
         }
 
@@ -131,22 +133,73 @@ namespace ApplicazioneCondivisione
             Thread.Sleep(2000);
             while (!Program.closeEverything)
             {
-                if (!listener.Pending())
-                    continue;
-
-                using (var client = listener.AcceptTcpClient()) // aspetta connessione
-                using (var stream = client.GetStream()) // flusso di dati
-                using (var output = File.Create("result.txt")) // file di output
+                // if (!listener.Pending())
+                //    continue;
+                // listener.AcceptTcpClient();
+                // aspetta connessione
+               
+               
+               
+                
+                using (var client = listener.AcceptTcpClient()) {
+                    //
+                    byte[] buf= Encoding.ASCII.GetBytes("");
+                    client.GetStream().Read(buf, 0, 1024);
+                    string[] vet = Encoding.ASCII.GetString(buf).Split(',');
+                    string admin = vet[0];
+                    string nomefile = Path.GetFileName(vet[1]);
+                   switch (MessageBox.Show(admin+"sta tentando di inviarti il file",nomefile, MessageBoxButtons.YesNo))
                 {
-                    // Leggo il file a pezzi da 1KB
-                    var buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        output.Write(buffer, 0, bytesRead);
-                    }
+                    case DialogResult.No:
+                            {
+                                
+                                client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("no"), 0, 2);
+                                return;
+                            }
+                        
+                    case DialogResult.Yes:
+                            client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("si"), 0, 2);
+                            flag = true;
+                        break;
+                    default:
+                        break;
                 }
+                   
+                    SaveFileDialog a = new SaveFileDialog();
+                    a.FileName = "nome file";
+                    a.Filter = " text |*.txt";
+                    a.ShowDialog();
+                    using (var stream = client.GetStream()) // flusso di dati
+                    using (var output = File.Create(a.FileName)) // file di output
+                    {
+
+                        // Leggo il file a pezzi da 1KB
+                        var buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            output.Write(buffer, 0, bytesRead);
+                        }
+                    } }
+                
             }
+        }
+
+        private void scarica(object sender, MouseEventArgs e)
+        {
+            switch (MessageBox.Show( "Sei sicuro di volere uscire?", "Esci dall'applicazione", MessageBoxButtons.YesNo))
+            {
+                case DialogResult.No:
+                    break;
+                default:
+                    FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
+                    Program.closeEverything = true;
+                    Program.serverThread.Join();
+                    
+                    Application.Exit();
+                    break;
+            }
+            flag = true;
         }
     }
 }

@@ -112,6 +112,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="ConfermWIndow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfermWIndow.Designer.cs">
+      <DependentUpon>ConfermWIndow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListUserHandler.cs" />
     <Compile Include="SendFile.cs">
       <SubType>Form</SubType>
@@ -131,6 +137,9 @@
     <Compile Include="Server.cs" />
     <EmbeddedResource Include="ApplicazioneCondivisione.resx">
       <DependentUpon>ApplicazioneCondivisione.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfermWIndow.resx">
+      <DependentUpon>ConfermWIndow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SendFile.resx">
       <DependentUpon>SendFile.cs</DependentUpon>
