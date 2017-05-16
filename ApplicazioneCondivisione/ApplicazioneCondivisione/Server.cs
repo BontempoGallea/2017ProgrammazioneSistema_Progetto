@@ -137,9 +137,6 @@ namespace ApplicazioneCondivisione
                 //    continue;
                 // listener.AcceptTcpClient();
                 // aspetta connessione
-               
-               
-               
                 
                 using (var client = listener.AcceptTcpClient()) {
                     //
