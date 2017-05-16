@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ApplicazioneCondivisione
 {
@@ -21,7 +22,7 @@ namespace ApplicazioneCondivisione
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
         public  static bool exists = false;
-        public static string path;
+        public static List<string> path;
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -100,7 +101,7 @@ namespace ApplicazioneCondivisione
                 {
                     Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
                     serverSide.WaitForConnection();
-                    path = Encoding.UTF8.GetString(readMessage(serverSide));
+                    path.Add(Encoding.UTF8.GetString(readMessage(serverSide)));
                     Console.WriteLine("Ho ricevuto un path: " + path);
                     serverSide.Disconnect();
                 }
