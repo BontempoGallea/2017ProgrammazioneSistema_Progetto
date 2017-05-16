@@ -21,9 +21,6 @@ namespace ApplicazioneCondivisione
            
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
-            Program.noty = taskbarIcon;
-            //
-            
 
             // Set up the delays for the ToolTip.
 
@@ -123,6 +120,7 @@ namespace ApplicazioneCondivisione
                     FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
                     Program.closeEverything = true;
                     Program.serverThread.Join();
+                    Program.pipeThread.Join();
                     base.OnFormClosing(fcea);
                     Application.Exit();
                     break;
