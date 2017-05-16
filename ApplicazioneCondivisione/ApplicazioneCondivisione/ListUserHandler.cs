@@ -28,7 +28,6 @@ namespace ApplicazioneCondivisione
         //private Person test1;
         //private Person test2;
 
-
         public ListUserHandler()
         {
             /*
@@ -36,23 +35,24 @@ namespace ApplicazioneCondivisione
             */ 
             users = new Dictionary<string, Person>(); //creo una dictionary di persone
             lastRefresh = -1;
-            string name=System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName;
+            string name = System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName; // Nome dell'utente che ha effettuato l'accesso
 
             string[] st = name.Split(' ');
             admin = new Person(st[0], st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
 
             // Persone aggiunte per test
-            /*
-            test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
-            test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
-            addUser(test1);
-            addUser(test2);*/
+            //test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
+            //test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
+            //addUser(test1);
+            //addUser(test2);
         }
+
         public void setadmin(string nome,string cognome)
         {
             admin.setName(nome);
             admin.setSurname(cognome);
         }
+
         internal void clean()
         {
             //funzione che controlla di togliere i bottoni delle persone non piu sulla rete
@@ -103,7 +103,7 @@ namespace ApplicazioneCondivisione
             if ( l > lastRefresh )
             {
                 // Entro qui se la lunghezza è aumentata, che vuol dire che sono stati aggiunti altri
-                // utenti.
+                // utenti
                 try
                 {
                     Dictionary<string,Person>.ValueCollection values = users.Values;
@@ -136,13 +136,13 @@ namespace ApplicazioneCondivisione
         internal void resetTimer(string v)
         {
             Person a;
-            users.TryGetValue(v, out a); //prova a ottenere la persona alla tale chiave v
-            a.reset(); //fa il reset della persona
+            users.TryGetValue(v, out a); // Prova a ottenere la persona alla tale chiave v
+            a.reset(); // Fa il reset della persona
         }
 
         internal bool isPresent(string v)
         {
-            return users.ContainsKey(v);//ritorna un bool per indicare se la lista di persone contiene un valore con la dadta chiave
+            return users.ContainsKey(v); // Ritorna un bool per indicare se la lista di persone contiene un valore con la dadta chiave
         }
 
         private void changeState2_Click(object sender, EventArgs e)
