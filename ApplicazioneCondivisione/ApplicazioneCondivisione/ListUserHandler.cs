@@ -27,7 +27,7 @@ namespace ApplicazioneCondivisione
         // Persone di test
         //private Person test1;
         //private Person test2;
-
+        
         public ListUserHandler()
         {
             /*
@@ -36,7 +36,6 @@ namespace ApplicazioneCondivisione
             users = new Dictionary<string, Person>(); //creo una dictionary di persone
             lastRefresh = -1;
             string name = System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName; // Nome dell'utente che ha effettuato l'accesso
-
             string[] st = name.Split(' ');
             admin = new Person(st[0], st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
 
@@ -47,44 +46,40 @@ namespace ApplicazioneCondivisione
             //addUser(test2);
         }
 
-        public void setadmin(string nome,string cognome)
-        {
-            admin.setName(nome);
-            admin.setSurname(cognome);
-        }
-
         internal void clean()
         {
-            //funzione che controlla di togliere i bottoni delle persone non piu sulla rete
-            //o semplicemnte non online
+            // Funzione che controlla di togliere i bottoni delle persone non piu sulla rete
+            // o semplicemnte non online
 
             Dictionary<string, Person>.ValueCollection values = users.Values;
             try
             {
-                foreach (Person p in values) //per ogni persona
+                foreach (Person p in values) // Per ogni persona
                 {
-                    var isNew = p.isNew(); //true se non ha ancora un metrotile sul flowlayout
-                    var old = p.old(); //true se la persona è deprecato
+                    var isNew = p.isNew(); // True se non ha ancora un metrotile sul flowlayout
+                    var old = p.old(); // True se la persona è deprecato
+
                     if ( old )
                     {
-                       // users.Remove(p.getCognome() + p.getNome());
                         if ( !isNew )
                         {
                             Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
                         }
                     }
+
                     if (( p.getState().CompareTo("offline") == 0 ) && ( !isNew ))
                     {
                         Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
+                        users.Remove(p.getSurname() + p.getName());
                     }
                 }
-            }catch(Exception e)
+            } catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
         }
 
-        public Dictionary<String,Person> getlist() { return users; }//ritorna la lista di persone
+        public Dictionary<String,Person> getList() { return users; } // Ritorna la lista di persone
 
         public string getAdminState()
         {
@@ -129,7 +124,8 @@ namespace ApplicazioneCondivisione
                 }catch(Exception e) {
                     Console.WriteLine(e.ToString());
                 }
-                lastRefresh = l; //Aggiorno la lunghezza della lista all'ultimo refresh
+
+                lastRefresh = l; // Aggiorno la lunghezza della lista all'ultimo refresh
             }
         }
 
@@ -169,11 +165,12 @@ namespace ApplicazioneCondivisione
             if (selectedList.Count > 0) // Se lista dei selezionati è > 0
             {
                 SendFile sd = new SendFile(); // Apro la finestra della barra di avanzamento
+                sd.StartPosition = FormStartPosition.CenterScreen;
                 sd.Show();
 
                 foreach(MetroFramework.Controls.MetroTile m in selectedList)
                 {
-                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)) { Name = "clientThread" }; //per ogni bottone selezionato creo un thread
+                    Thread clientThread = new Thread(() => Program.client.entryPoint(m.Name)) { Name = "clientThread" }; // Per ogni bottone selezionato creo un thread
                     clientThread.Start();
                     clientThread.Join();
 

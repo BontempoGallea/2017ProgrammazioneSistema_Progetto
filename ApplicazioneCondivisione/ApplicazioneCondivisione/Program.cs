@@ -21,10 +21,11 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // Inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
-        public  static bool exists = false;
-        public static List<string> pathSend = new List<string>();
-        public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download";
+        public  static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
+        public static List<string> pathSend = new List<string>(); // Lista dei paths dei file da inviare
+        public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
         public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
+        private static bool pipeClosed = false;
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -53,7 +54,10 @@ namespace ApplicazioneCondivisione
                 Application.EnableVisualStyles(); // Questa operazione deve essere fatta prima di inizializzare qualsiasi oggetto
                 Application.SetCompatibleTextRenderingDefault(false);
                 luh = new ListUserHandler();
+
+                // Pipe thread per ascoltare
                 pipeThread = new Thread(startServer);
+                pipeThread.SetApartmentState(ApartmentState.STA);
                 pipeThread.Start();
 
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
@@ -75,6 +79,7 @@ namespace ApplicazioneCondivisione
             }
         }
 
+        // Zona per la pipe
         public static void startClient(string path)
         {
             using (var clientSide = new NamedPipeClientStream(".", "MyPipe", PipeDirection.InOut))
@@ -83,10 +88,10 @@ namespace ApplicazioneCondivisione
                 try
                 {
                     clientSide.ReadMode = PipeTransmissionMode.Message;
-                    Console.WriteLine("Messaggio inviato: " + path);
+                    //Console.WriteLine("Messaggio inviato: " + path);
                     byte[] msg = Encoding.UTF8.GetBytes(path);
                     clientSide.Write(msg, 0, msg.Length);
-                    Thread.Sleep(5000);
+                    //Thread.Sleep(5000);
                 }
                 catch(Exception e)
                 {
@@ -97,16 +102,46 @@ namespace ApplicazioneCondivisione
 
         public static void startServer()
         {
-            while (true)
+            try
             {
-                using (var serverSide = new NamedPipeServerStream("MyPipe", PipeDirection.InOut, 1, PipeTransmissionMode.Message))
+                while (!closeEverything)
                 {
-                    Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
-                    serverSide.WaitForConnection();
-                    pathSend.Add(Encoding.UTF8.GetString(readMessage(serverSide)));
-                    Console.WriteLine("Ho ricevuto un path: " + pathSend);
-                    serverSide.Disconnect();
+                    using (var serverSide = new NamedPipeServerStream("MyPipe", PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous))
+                    {
+                        Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
+                        IAsyncResult ar = serverSide.BeginWaitForConnection(new AsyncCallback(callBack), serverSide);
+
+                        while (!pipeClosed && !closeEverything)
+                        {
+                            Thread.Sleep(5000);
+                            Console.WriteLine("Aspetto di ricevere qualcosa . . .");
+                        }
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public static void callBack(IAsyncResult iar)
+        {
+            try
+            {
+                NamedPipeServerStream serverPipe = (NamedPipeServerStream)iar.AsyncState;
+                serverPipe.EndWaitForConnection(iar);
+
+                byte[] buffer = readMessage(serverPipe);
+
+                pathSend.Add(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
+                serverPipe.Close();
+                pipeClosed = true;
+                return;
+            }
+            catch (Exception e)
+            {
+                return;
             }
         }
 

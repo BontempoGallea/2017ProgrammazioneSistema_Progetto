@@ -18,22 +18,23 @@ namespace ApplicazioneCondivisione
         public ApplicazioneCondivisione()
         {
             InitializeComponent();
-           
+
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
+        }
 
-            // Set up the delays for the ToolTip.
+        private void applicazioneCondivisione_Load(object sender, EventArgs e)
+        {   
+            Program.timer.Interval = (2 * 1000); // 2 secs
+            Program.timer.Tick += new EventHandler(timer_Tick);
+            Program.timer.Start();
 
-           
-            // Set up the ToolTip text for the Button and Checkbox.
-           
-            //
             // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
             metroLabel4.Text = "Le tue credenziali: ";
             name.Text = Program.luh.getAdmin().getName();
             surname.Text = Program.luh.getAdmin().getSurname();
             state.Text = Program.luh.getAdmin().getState();
-			
+
             // Setto il colore iniziale del bottone di cambio stato
             if (Program.luh.getAdminState().CompareTo("online") == 0)
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
@@ -42,13 +43,6 @@ namespace ApplicazioneCondivisione
 
             // Setto il colore di sfondo del refresh button
             refreshButton.Style = MetroFramework.MetroColorStyle.White;
-        }
-
-        private void applicazioneCondivisione_Load(object sender, EventArgs e)
-        {   
-            Program.timer.Interval = (2 * 1000); // 2 secs
-            Program.timer.Tick += new EventHandler(timer_Tick);
-            Program.timer.Start();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -86,9 +80,7 @@ namespace ApplicazioneCondivisione
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            Program.luh.refreshButtonClick();
-            this.timer_Tick(sender,e);
-
+            this.timer_Tick(sender, e);
         }
 
         private void settingsButton_Click(object sender, MouseEventArgs e)
@@ -159,6 +151,12 @@ namespace ApplicazioneCondivisione
         protected override void SetVisibleCore(bool value)
         {
             base.SetVisibleCore(false);
+        }
+
+        private void ApplicazioneCondivisione_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program.pipeThread.Abort();
+            this.Dispose();
         }
     }
 }
