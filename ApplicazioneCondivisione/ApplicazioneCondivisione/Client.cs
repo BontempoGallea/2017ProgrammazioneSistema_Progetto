@@ -45,8 +45,8 @@ namespace ApplicazioneCondivisione
 
             // Manda fileName all'host remoto
           
-            string fileName = Program.pathSend.First(); // Prendo il primo path
-            Program.pathSend.RemoveAt(0); // 1 o 0 ?
+            string fileName = Program.pathSend; // Prendo il primo path
+            Program.pathSend = string.Empty;
             client.SendBufferSize = 1024;
             string richiesta = String.Format(Program.luh.getAdmin().getName()+","+fileName, Environment.NewLine); // Stringa per avvisare chi sono, se lui mi accetta io mando il file
             byte[] ansbyte = Encoding.ASCII.GetBytes("");

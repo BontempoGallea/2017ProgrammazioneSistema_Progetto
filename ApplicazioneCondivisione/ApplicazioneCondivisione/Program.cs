@@ -25,8 +25,12 @@ namespace ApplicazioneCondivisione
         public static string pathSend = null; // Path del file / della cartella da inviare
         public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
         public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
+<<<<<<< HEAD
         private static bool pipeClosed = false;
         public static bool AnnullaBoolean = false;
+=======
+
+>>>>>>> refs/remotes/origin/master
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
