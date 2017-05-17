@@ -22,7 +22,9 @@ namespace ApplicazioneCondivisione
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
         public  static bool exists = false;
-        public static List<string> path;
+        public static List<string> pathSend = new List<string>();
+        public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download";
+        public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -67,7 +69,7 @@ namespace ApplicazioneCondivisione
                 serverThread = new Thread(server.entryPoint) { Name = "serverThread" };
                 serverThread.Start();
 
-                // Avvio l'appplicazione
+                // Avvio l'applicazione
                 ac = new ApplicazioneCondivisione();
                 Application.Run(ac);
             }
@@ -101,8 +103,8 @@ namespace ApplicazioneCondivisione
                 {
                     Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
                     serverSide.WaitForConnection();
-                    path.Add(Encoding.UTF8.GetString(readMessage(serverSide)));
-                    Console.WriteLine("Ho ricevuto un path: " + path);
+                    pathSend.Add(Encoding.UTF8.GetString(readMessage(serverSide)));
+                    Console.WriteLine("Ho ricevuto un path: " + pathSend);
                     serverSide.Disconnect();
                 }
             }
