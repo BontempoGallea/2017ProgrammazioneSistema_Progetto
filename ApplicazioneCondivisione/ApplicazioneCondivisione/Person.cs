@@ -26,7 +26,9 @@ namespace ApplicazioneCondivisione
         private System.Timers.Timer t;
         private MetroTile a;
         //private static string time;
-       
+
+        public Person() { }
+
         public Person(string n, string c, string s, string ip, string port)
         {
             t = new System.Timers.Timer(5000);

@@ -144,7 +144,7 @@
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(23, 287);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1101, 302);
             this.flowLayoutPanel1.TabIndex = 11;
@@ -258,6 +258,7 @@
             this.Name = "ApplicazioneCondivisione";
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.None;
             this.Text = "Condividi con...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ApplicazioneCondivisione_FormClosing);
             this.Load += new System.EventHandler(this.onlineOptionIconContextMenu_Click);
             this.contextMenuStripTaskbarIcon.ResumeLayout(false);
             this.ResumeLayout(false);
