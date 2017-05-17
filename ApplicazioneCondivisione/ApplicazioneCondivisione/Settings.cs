@@ -34,8 +34,8 @@ namespace ApplicazioneCondivisione
             description.Text = desc;
 
             // Inizializzazione delle checkboxes
-            if (Program.automaticSave) checkBoxYes.Checked = true;
-            else checkBoxNo.Checked = true;
+            if (Program.automaticSave) radioButtonSi.Checked = true;
+            else radioButtonNo.Checked = true;
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -72,12 +72,12 @@ namespace ApplicazioneCondivisione
 
         private void salvaModifiche_Click(object sender, EventArgs e)
         {
-            if (checkBoxNo.Checked && checkBoxYes.Checked)
-                MessageBox.Show("ERRORE SALVATAGGIO AUTOMATICO:\nNon puoi selezionare due opzioni contemporaneamente!");
+            if (!radioButtonNo.Checked && !radioButtonSi.Checked)
+                MessageBox.Show("ERRORE SALVATAGGIO AUTOMATICO:\nseleziona si o no");
             else
             {
                 // Salvo lo stato delle checkboxes
-                if (checkBoxNo.Checked) Program.automaticSave = false;
+                if (radioButtonNo.Checked) Program.automaticSave = false;
                 else Program.automaticSave = true;
 
                 // Salvo il nuovo path per il salvataggio dei files
