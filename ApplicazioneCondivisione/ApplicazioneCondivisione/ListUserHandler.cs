@@ -46,12 +46,6 @@ namespace ApplicazioneCondivisione
             //addUser(test2);
         }
 
-        public void setAdmin(string nome, string cognome)
-        {
-            admin.setName(nome);
-            admin.setSurname(cognome);
-        }
-
         internal void clean()
         {
             // Funzione che controlla di togliere i bottoni delle persone non piu sulla rete
