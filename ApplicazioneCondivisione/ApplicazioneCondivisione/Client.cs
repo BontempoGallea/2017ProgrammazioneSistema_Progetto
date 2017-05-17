@@ -68,7 +68,15 @@ namespace ApplicazioneCondivisione
 
                 // Mando fileName con i buffers e i flag di default all'endpoint remoto
                 client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
-
+                client.Receive(ansbyte);
+                if (Program.AnnullaBoolean)
+                {
+                    client.Send(Encoding.ASCII.GetBytes("annulla"));
+                }
+                else
+                {
+                    client.Send(Encoding.ASCII.GetBytes("fine"));
+                }
                 // Faccio il free del socket
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();

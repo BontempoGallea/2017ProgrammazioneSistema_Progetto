@@ -187,6 +187,14 @@ namespace ApplicazioneCondivisione
                         while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
                         {
                             output.Write(buffer, 0, bytesRead);
+                            
+                        }
+                        client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("fine?"), 0, 2);
+                        client.GetStream().Read(buf, 0, 1024);
+                        String risposta = Encoding.ASCII.GetString(buf);
+                        if (risposta.CompareTo("annulla")==0)
+                        {
+                            File.Delete(a.FileName);
                         }
                     }
                 }

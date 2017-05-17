@@ -33,6 +33,7 @@ namespace ApplicazioneCondivisione
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Program.AnnullaBoolean = true;
             this.Close();
         }
     }

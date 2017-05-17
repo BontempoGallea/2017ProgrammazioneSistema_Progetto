@@ -26,7 +26,7 @@ namespace ApplicazioneCondivisione
         public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
         public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
         private static bool pipeClosed = false;
-
+        public static bool AnnullaBoolean = false;
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -57,9 +57,9 @@ namespace ApplicazioneCondivisione
 
                 // Pipe thread per ascoltare
                 pipeThread = new Thread(startServer);
-                pipeThread.SetApartmentState(ApartmentState.STA);
+              //  pipeThread.SetApartmentState(ApartmentState.STA);
                 pipeThread.Start();
-
+                
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN");
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN\\command");
@@ -110,7 +110,7 @@ namespace ApplicazioneCondivisione
                     {
                         Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
                         IAsyncResult ar = serverSide.BeginWaitForConnection(new AsyncCallback(callBack), serverSide);
-
+                        
                         while (!pipeClosed && !closeEverything)
                         {
                             Thread.Sleep(5000);
