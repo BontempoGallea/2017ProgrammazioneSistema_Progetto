@@ -22,6 +22,7 @@ namespace ApplicazioneCondivisione
         private static Thread branchTCP;
         private static Thread talkUDP;
         private static Thread listenerUDP;
+        private int numberAutoSaved = 0;
 
         public void entryPoint()
         {
@@ -49,19 +50,22 @@ namespace ApplicazioneCondivisione
         {
             while (!Program.closeEverything)
             {
-                BroadcastMessage(Program.luh.getAdmin().getString());
+                // Mando pacchetti broadcast ogni 5s, SOLO SE sono ONLINE
+                if (Program.luh.getAdmin().getState().CompareTo("online") == 0)
+                    BroadcastMessage(Program.luh.getAdmin().getString());
+
+                Thread.Sleep(5000);
             }
         }
 
         static void BroadcastMessage(string message)
         {
             IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);  
+
             try
             {
-                // Mando pacchetti broadcast
                 clientUDP.Send(ASCIIEncoding.ASCII.GetBytes(message), ASCIIEncoding.ASCII.GetBytes(message).Length, ipEP);
                 //Console.WriteLine("Multicast data sent.....");
-                Thread.Sleep(5000);
             }
             catch (Exception e)
             {
@@ -74,7 +78,8 @@ namespace ApplicazioneCondivisione
         */ 
         public void entryListen()
         {
-            while (!Program.closeEverything)  ReceiveBroadcastMessages();
+            while (!Program.closeEverything)
+                ReceiveBroadcastMessages();
         }
 
         private static void ReceiveBroadcastMessages()
@@ -82,24 +87,24 @@ namespace ApplicazioneCondivisione
             /*
              * Funzione per ricevere un messaggio in broadcast
             */
-            bool done = false; //variabile per terminare la ricezione del pacchetto
-            byte[] bytes = new Byte[4096]; //buffer
+            bool done = false; // Variabile per terminare la ricezione del pacchetto
+            byte[] bytes = new Byte[4096]; // Buffer
             IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort); // Endpoint dal quale sto ricevendo dati, accetto qualsiasi indirizzo con la senderPort
             try
             {
                 while ( !done && !Program.closeEverything )
                 {
-                    if ( clientUDP.Available > 0 ) //controllo che sul canale ci siano dei byte disponibili
+                    if ( clientUDP.Available > 0 ) // Controllo che sul canale ci siano dei byte disponibili
                     {
-                        bytes = clientUDP.Receive(ref ipEp); //ricevo byte
-                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(','); //converto in stringhe
+                        bytes = clientUDP.Receive(ref ipEp); // Ricevo byte
+                        string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(','); // Converto in stringhe
                         if (Program.luh.isPresent(cred[1] + cred[0]) && !( cred[2].CompareTo("offline") == 0 ))
                         {   
-                            //controllo che la persona è gia presente nella lista e lo stato inviatomi sia ONLINE
-                            Program.luh.resetTimer( cred[1] + cred[0] ); //se presente resetto il timer della persona
-                            done = true; //ricezione completata
+                            // Controllo che la persona è gia presente nella lista e lo stato inviatomi sia ONLINE
+                            Program.luh.resetTimer( cred[1] + cred[0] ); // Se presente resetto il timer della persona
+                            done = true; // Ricezione completata
                         }
-                        else //se non è gia presente
+                        else // Se non è gia presente
                         { 
                             Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]); //creo una nuova persona
                             if ( !p.isEqual(Program.luh.getAdmin()) && !( cred[2].CompareTo("offline") == 0 ) ) //se non è uguale all'amministratore
@@ -128,47 +133,54 @@ namespace ApplicazioneCondivisione
 
         public void receiveFile()
         {
-            var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());//imposto  tcplistener con le credenziali della persona
-            listener.Start(); // inizio ascolto
+            var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());// Imposto tcplistener con le credenziali della persona
+            listener.Start(); // Inizio ascolto
             Thread.Sleep(2000);
             while (!Program.closeEverything)
             {
-                // if (!listener.Pending())
-                //    continue;
-                // listener.AcceptTcpClient();
-                // aspetta connessione
-                
-                using (var client = listener.AcceptTcpClient()) {
-                    //
+                if (!listener.Pending()) // Se non c'è nessuno che vuole inviarmi nulla, continuo col prossimo ciclo
+                    continue;
+
+                using (var client = listener.AcceptTcpClient()) { // Bloccante
                     byte[] buf= Encoding.ASCII.GetBytes("");
                     client.GetStream().Read(buf, 0, 1024);
                     string[] vet = Encoding.ASCII.GetString(buf).Split(',');
                     string admin = vet[0];
-                    string nomefile = Path.GetFileName(vet[1]);
-                   switch (MessageBox.Show(admin+"sta tentando di inviarti il file",nomefile, MessageBoxButtons.YesNo))
-                {
-                    case DialogResult.No:
-                            {
-                                
-                                client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("no"), 0, 2);
-                                return;
-                            }
+                    string nomeFile = Path.GetFileName(vet[1]);
+
+                    switch (MessageBox.Show(admin+"sta tentando di inviarti il file",nomeFile, MessageBoxButtons.YesNo))
+                    {
+                        case DialogResult.No:
+                            client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("no"), 0, 2);
+                            return;
                         
-                    case DialogResult.Yes:
-                            client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("si"), 0, 2);
-                        break;
-                    default:
-                        break;
-                }
-                   
+                        case DialogResult.Yes:
+                            client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("ok"), 0, 2);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
                     SaveFileDialog a = new SaveFileDialog();
-                    a.FileName = "nome file";
+                    a.InitialDirectory = Program.pathSave;
+                    numberAutoSaved = a.FileNames.Count(s => s.CompareTo(nomeFile) == 0);
+
+                    if (numberAutoSaved != 0)
+                        a.FileName = nomeFile + "(" + numberAutoSaved + ")";
+                    else
+                        a.FileName = nomeFile;
+
                     a.Filter = " text |*.txt";
-                    a.ShowDialog();
+
+                    if (!Program.automaticSave)
+                        a.ShowDialog();
+                    else
+                        numberAutoSaved++;
+
                     using (var stream = client.GetStream()) // flusso di dati
                     using (var output = File.Create(a.FileName)) // file di output
                     {
-
                         // Leggo il file a pezzi da 1KB
                         var buffer = new byte[1024];
                         int bytesRead;
@@ -176,24 +188,9 @@ namespace ApplicazioneCondivisione
                         {
                             output.Write(buffer, 0, bytesRead);
                         }
-                    } }
+                    }
+                }
                 
-            }
-        }
-
-        private void scarica(object sender, MouseEventArgs e)
-        {
-            switch (MessageBox.Show( "Sei sicuro di volere uscire?", "Esci dall'applicazione", MessageBoxButtons.YesNo))
-            {
-                case DialogResult.No:
-                    break;
-                default:
-                    FormClosingEventArgs fcea = new FormClosingEventArgs(CloseReason.WindowsShutDown, false);
-                    Program.closeEverything = true;
-                    Program.serverThread.Join();
-                    
-                    Application.Exit();
-                    break;
             }
         }
     }

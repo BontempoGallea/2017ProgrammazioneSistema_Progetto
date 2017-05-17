@@ -18,15 +18,20 @@ namespace ApplicazioneCondivisione
         */
         public void entryPoint(string user)
         {
-            //ottengo indirizzo ip e porta della persona a cui voglio inviare il file
+            // Ottengo indirizzo ip e porta della persona a cui voglio inviare il file
             string[] cred = user.Split(',');
-            if(Program.luh.getlist().ContainsKey(cred[1]+cred[0]))
-            SendFileTo(cred[2], cred[3]);
+            Person p = new Person();
+            Program.luh.getList().TryGetValue(cred[1] + cred[0], out p);
+
+            if (p.isOnline())
+                SendFileTo(cred[2], cred[3]);
+            else
+                MessageBox.Show("La persona a cui vuoi inviare non è più online!");
         }
 
         private static void SendFileTo(string ip, string port)
         {
-            // stabilisce l'endpoint locale per il socket
+            // Stabilisce l'endpoint locale per il socket
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddr = ipHost.AddressList[0];
             IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ip), int.Parse(port));
@@ -35,35 +40,36 @@ namespace ApplicazioneCondivisione
             Socket client = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream, ProtocolType.Tcp);
 
-            // Connect the socket to the remote endpoint.
+            // Connette il socket all'endpoint remoto
             client.Connect(ipEndPoint);
 
-            // Send file fileName to the remote host with preBuffer and postBuffer data.
-            // There is a text file test.txt located in the root directory.
+            // Manda fileName all'host remoto
           
-            string fileName = "C:\\Users\\bitri\\Desktop\\canzone.txt"; // Da fare dinamico
+            string fileName = Program.pathSend.First(); // Prendo il primo path
+            Program.pathSend.RemoveAt(0); // 1 o 0 ?
             client.SendBufferSize = 1024;
-            string richiesta = String.Format(Program.luh.getAdmin().getName()+","+fileName, Environment.NewLine);
-            byte[] ansbyte= Encoding.ASCII.GetBytes("");
+            string richiesta = String.Format(Program.luh.getAdmin().getName()+","+fileName, Environment.NewLine); // Stringa per avvisare chi sono, se lui mi accetta io mando il file
+            byte[] ansbyte = Encoding.ASCII.GetBytes("");
             byte[] richbyte = Encoding.ASCII.GetBytes(richiesta);
+            client.ReceiveBufferSize = 2;
             client.Send(richbyte);
             
             client.Receive(ansbyte);
-           string confermed= ASCIIEncoding.ASCII.GetString(ansbyte);
-            // Create the preBuffer data.
+            string confermed= ASCIIEncoding.ASCII.GetString(ansbyte);
+
+            // Creo prebuffer e postbuffer per scrivere all'inizio e alla fine del file
             if (confermed.CompareTo("ok") == 0)
             {
-                string string1 = String.Format("This is text data that precedes the file.{0}", Environment.NewLine);
+                string string1 = String.Format(""); // Modifico qua se voglio aggiungere qualcosa prima del file
                 byte[] preBuf = Encoding.ASCII.GetBytes(string1);
 
-                // Create the postBuffer data.
-                string string2 = String.Format("This is text data that will follow the file.{0}", Environment.NewLine);
+                string string2 = String.Format(""); // Modifico qua se voglio aggiungere qualcosa dopo il file
                 byte[] postBuf = Encoding.ASCII.GetBytes(string2);
 
-                //Send file fileName with buffers and default flags to the remote device.
+                // Mando fileName con i buffers e i flag di default all'endpoint remoto
                 client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
 
-                // Release the socket.
+                // Faccio il free del socket
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();
             }
