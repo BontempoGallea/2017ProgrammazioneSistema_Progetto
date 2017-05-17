@@ -21,6 +21,12 @@ namespace ApplicazioneCondivisione
 
             // Associa il menu alla tray icon nella taskbar, per quando clicchi con il tasto destro
             this.taskbarIcon.ContextMenuStrip = contextMenuStripTaskbarIcon;
+
+            // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
+            metroLabel4.Text = "Le tue credenziali: ";
+            name.Text = Program.luh.getAdmin().getName();
+            surname.Text = Program.luh.getAdmin().getSurname();
+            state.Text = Program.luh.getAdmin().getState();
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
@@ -28,13 +34,7 @@ namespace ApplicazioneCondivisione
             Program.timer.Interval = (2 * 1000); // 2 secs
             Program.timer.Tick += new EventHandler(timer_Tick);
             Program.timer.Start();
-
-            // Associo le credenziali dell'admin, ossia dove si sta facendo girare l'applicazione
-            metroLabel4.Text = "Le tue credenziali: ";
-            name.Text = Program.luh.getAdmin().getName();
-            surname.Text = Program.luh.getAdmin().getSurname();
-            state.Text = Program.luh.getAdmin().getState();
-
+            
             // Setto il colore iniziale del bottone di cambio stato
             if (Program.luh.getAdminState().CompareTo("online") == 0)
                 changeState.Style = MetroFramework.MetroColorStyle.Green;
