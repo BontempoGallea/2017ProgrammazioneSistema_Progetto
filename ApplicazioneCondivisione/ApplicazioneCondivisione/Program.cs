@@ -21,16 +21,11 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // Inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
-        public  static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
+        public static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
         public static string pathSend = null; // Path del file / della cartella da inviare
         public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
-        public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
-<<<<<<< HEAD
-        private static bool pipeClosed = false;
+        public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file  
         public static bool AnnullaBoolean = false;
-=======
-
->>>>>>> refs/remotes/origin/master
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -60,14 +55,9 @@ namespace ApplicazioneCondivisione
                 luh = new ListUserHandler();
 
                 // Pipe thread per ascoltare
-<<<<<<< HEAD
-                pipeThread = new Thread(startServer);
-              //  pipeThread.SetApartmentState(ApartmentState.STA);
-=======
-                pipeThread = new Thread(Listen) { Name = "pipeThread"};
->>>>>>> refs/remotes/origin/master
+                pipeThread = new Thread(Listen) { Name = "pipeThread" };
                 pipeThread.Start();
-                
+
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN");
                 key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\\Classes\\*\\Shell\\Condividi in LAN\\command");
@@ -120,26 +110,12 @@ namespace ApplicazioneCondivisione
                 pipeServer = null;
                 if (!closeEverything)
                 {
-<<<<<<< HEAD
-                    using (var serverSide = new NamedPipeServerStream("MyPipe", PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous))
-                    {
-                        Console.WriteLine("Aspetto che qualcuno scriva nella pipe . . .");
-                        IAsyncResult ar = serverSide.BeginWaitForConnection(new AsyncCallback(callBack), serverSide);
-                        
-                        while (!pipeClosed && !closeEverything)
-                        {
-                            Thread.Sleep(5000);
-                            Console.WriteLine("Aspetto di ricevere qualcosa . . .");
-                        }
-                    }
-=======
                     pipeServer = new NamedPipeServerStream("MyPipe", PipeDirection.In, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
                     pipeServer.BeginWaitForConnection(new AsyncCallback(AsynWaitCallBack), pipeServer);
                     Console.WriteLine("[Server]: Ho iniziato ad ascoltare...");
->>>>>>> refs/remotes/origin/master
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -156,7 +132,7 @@ namespace ApplicazioneCondivisione
                 pipeClient.Write(buffer, 0, buffer.Length);
                 Console.WriteLine("[Client] Ho mandato questo: " + Encoding.ASCII.GetString(buffer));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -173,7 +149,7 @@ namespace ApplicazioneCondivisione
                 pipeClient.Close();
                 pipeClient.Dispose();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
