@@ -82,7 +82,7 @@ namespace ApplicazioneCondivisione
             // Salvo le modifiche a nome e cognome dell'admin
             Program.luh.getAdmin().setName(textBoxNome.Text);
             Program.luh.getAdmin().setSurname(textBoxCognome.Text);
-
+            
             salvaModifiche.Enabled = false;
             this.Close();
         }

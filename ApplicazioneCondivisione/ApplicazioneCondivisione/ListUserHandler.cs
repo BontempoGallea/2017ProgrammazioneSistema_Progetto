@@ -23,7 +23,7 @@ namespace ApplicazioneCondivisione
         private MetroFramework.Controls.MetroTile btn; // Bottone per selezionare il tale utente
         private List<MetroFramework.Controls.MetroTile> listBTN = new List<MetroFramework.Controls.MetroTile>();
         private List<MetroFramework.Controls.MetroTile> selectedList = new List<MetroFramework.Controls.MetroTile>();
-
+        
         // Persone di test
         //private Person test1;
         //private Person test2;

@@ -21,11 +21,11 @@ namespace ApplicazioneCondivisione
         public static System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // Inizializzo timer
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
-        public  static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
+        public static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
         public static string pathSend = null; // Path del file / della cartella da inviare
         public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
-        public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file   
-
+        public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file  
+        public static bool AnnullaBoolean = false;
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -55,7 +55,7 @@ namespace ApplicazioneCondivisione
                 luh = new ListUserHandler();
 
                 // Pipe thread per ascoltare
-                pipeThread = new Thread(Listen) { Name = "pipeThread"};
+                pipeThread = new Thread(Listen) { Name = "pipeThread" };
                 pipeThread.Start();
 
                 // Codice per l'aggiunta dell'opzione al context menu di Windows
@@ -115,7 +115,7 @@ namespace ApplicazioneCondivisione
                     Console.WriteLine("[Server]: Ho iniziato ad ascoltare...");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -132,7 +132,7 @@ namespace ApplicazioneCondivisione
                 pipeClient.Write(buffer, 0, buffer.Length);
                 Console.WriteLine("[Client] Ho mandato questo: " + Encoding.ASCII.GetString(buffer));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -149,7 +149,7 @@ namespace ApplicazioneCondivisione
                 pipeClient.Close();
                 pipeClient.Dispose();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
