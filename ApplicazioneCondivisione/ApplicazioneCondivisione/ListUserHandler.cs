@@ -38,6 +38,7 @@ namespace ApplicazioneCondivisione
                 string name = System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName; // Nome dell'utente che ha effettuato l'accesso
                 string[] st = name.Split(' ');
                 admin = new Person(st[0], st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
+
             // Persone aggiunte per test
             //test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
             //test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
