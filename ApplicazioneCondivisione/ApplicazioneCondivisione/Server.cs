@@ -64,8 +64,9 @@ namespace ApplicazioneCondivisione
         {
             while (!Program.closeEverything)
             {
+                while (Program.luh.getAdmin() == null) { }
                 // Mando pacchetti broadcast ogni 5s, SOLO SE sono ONLINE
-                if (Program.luh.getAdmin().getState().CompareTo("online") == 0)
+                if (Program.luh.getAdmin().getState().CompareTo("online") == 0)//da fare un lock
                     BroadcastMessage(Program.luh.getAdmin().getString());
 
                 Thread.Sleep(5000);
@@ -141,6 +142,7 @@ namespace ApplicazioneCondivisione
         */ 
         public void entryTCP()
         {
+            while (Program.luh.getAdmin() == null) { }
             while (Program.luh.getAdmin().isOnline() && !Program.closeEverything)
                 receiveFile();
         }
