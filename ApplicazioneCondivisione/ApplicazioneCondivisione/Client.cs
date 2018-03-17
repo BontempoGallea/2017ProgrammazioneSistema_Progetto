@@ -21,7 +21,7 @@ namespace ApplicazioneCondivisione
             // Ottengo indirizzo ip e porta della persona a cui voglio inviare il file
             string[] cred = user.Split(',');
             Person p = new Person();
-            
+
             Program.luh.getList().TryGetValue(cred[1] + cred[0], out p);
 
             if (p.isOnline())
@@ -34,6 +34,7 @@ namespace ApplicazioneCondivisione
         {
             try
             {
+
                 // Stabilisce l'endpoint locale per il socket
                 IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
                 IPAddress ipAddr = ipHost.AddressList[0];
@@ -152,14 +153,14 @@ namespace ApplicazioneCondivisione
             catch (EncoderFallbackException e) { }
             catch (ArgumentException e) { }
             catch (SocketException e) { }
-            catch(ObjectDisposedException e) { }
-            catch(System.Security.SecurityException e) { }
-            catch(FileNotFoundException e) { }
-            catch(InvalidOperationException e) { }
-            catch(DirectoryNotFoundException e) { }
-            catch(PathTooLongException e) { }
-            catch(IOException e) { }
-            catch(UnauthorizedAccessException e) { }
+            catch (ObjectDisposedException e) { }
+            catch (System.Security.SecurityException e) { }
+            catch (FileNotFoundException e) { }
+            catch (InvalidOperationException e) { }
+            catch (DirectoryNotFoundException e) { }
+            catch (PathTooLongException e) { }
+            catch (IOException e) { }
+            catch (UnauthorizedAccessException e) { }
         }
     }
 }

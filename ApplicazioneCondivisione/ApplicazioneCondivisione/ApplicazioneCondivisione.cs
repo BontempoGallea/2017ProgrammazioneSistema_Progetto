@@ -31,6 +31,7 @@ namespace ApplicazioneCondivisione
         }
 
         private void applicazioneCondivisione_Load(object sender, EventArgs e)
+
         {   
             Program.timer.Interval = (2 * 1000); // 2 secs
             Program.timer.Tick += new EventHandler(timer_Tick);
@@ -47,16 +48,35 @@ namespace ApplicazioneCondivisione
             refreshButton.Style = MetroFramework.MetroColorStyle.White;
         }
 
+        {
+            int w = listaUsers.Width / 5;
+            
+            listaUsers.View = View.Details;
+            imageList1.ImageSize = new Size(32, 32);
+
+            imageList1.Images.Add("key", Image.FromFile("C:\\ProgramData\\Microsoft\\User Account Pictures\\user.bmp"));
+            listaUsers.Columns.Add("Nome", w*2, HorizontalAlignment.Center);
+            listaUsers.Columns.Add("Cognome", w*2, HorizontalAlignment.Center);
+            listaUsers.Columns.Add("Stato", w, HorizontalAlignment.Center);
+            listaUsers.CheckBoxes = true;
+
+
         private void timer_Tick(object sender, EventArgs e)
         {
             Program.luh.clean();
             Program.luh.refreshButtonClick();
         }
 
+
         // Bottoni dentro al form
         private void condividiButton_Click(object sender, EventArgs e)
         {
             Program.luh.condividiButtonClick();
+
+            listaUsers.Items.Add(item1);
+            listaUsers.Items.Add(item2);
+            listaUsers.StateImageList = this.imageList1;
+
         }
 
         private void annullaButton_Click(object sender, EventArgs e)
@@ -67,8 +87,10 @@ namespace ApplicazioneCondivisione
 
         private void changeState_Click(object sender, EventArgs e)
         {
+
             MetroFramework.Controls.MetroTile changeState = sender as MetroFramework.Controls.MetroTile;
             if (Program.luh.getAdminState().Equals("online"))
+            if (listaUsers.SelectedIndices.Count > 0)
             {
                 Program.luh.changeAdminState("offline");
                 changeState.Style = MetroFramework.MetroColorStyle.Red;
