@@ -35,10 +35,10 @@ namespace ApplicazioneCondivisione
                 branchTCP.SetApartmentState(ApartmentState.STA);
                 branchTCP.Start();
             }
-            catch(ArgumentException e) { }
-            catch(ThreadStateException e) { }
-            catch(OutOfMemoryException e) { }
-            catch(InvalidOperationException e) { }
+            catch (ArgumentException e) { }
+            catch (ThreadStateException e) { }
+            catch (OutOfMemoryException e) { }
+            catch (InvalidOperationException e) { }
         }
 
         public void entryUDP()
@@ -54,12 +54,12 @@ namespace ApplicazioneCondivisione
             catch (ThreadStateException e) { }
             catch (OutOfMemoryException e) { }
             catch (InvalidOperationException e) { }
-        } 
+        }
 
         /*
          * Sezione del ramo UDP dove sono elencate le funzioni che il server userà quando dovrà inviare pacchetti 
          * broadcast sulla LAN.
-        */ 
+        */
         public void entryTalk()
         {
             while (!Program.closeEverything)
@@ -75,7 +75,7 @@ namespace ApplicazioneCondivisione
 
         static void BroadcastMessage(string message)
         {
-            IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);  
+            IPEndPoint ipEP = new IPEndPoint(IPAddress.Broadcast, senderPort);
 
             try
             {
@@ -90,7 +90,7 @@ namespace ApplicazioneCondivisione
 
         /*
          * Sezione del ramo UDP che elenca le funzioni usate dal server per agire come receiver di pacchetti
-        */ 
+        */
         public void entryListen()
         {
             while (!Program.closeEverything)
@@ -107,22 +107,22 @@ namespace ApplicazioneCondivisione
             IPEndPoint ipEp = new IPEndPoint(IPAddress.Any, senderPort); // Endpoint dal quale sto ricevendo dati, accetto qualsiasi indirizzo con la senderPort
             try
             {
-                while ( !done && !Program.closeEverything )
+                while (!done && !Program.closeEverything)
                 {
-                    if ( clientUDP.Available > 0 ) // Controllo che sul canale ci siano dei byte disponibili
+                    if (clientUDP.Available > 0) // Controllo che sul canale ci siano dei byte disponibili
                     {
                         bytes = clientUDP.Receive(ref ipEp); // Ricevo byte
                         string[] cred = Encoding.ASCII.GetString(bytes, 0, bytes.Length).Split(','); // Converto in stringhe
-                        if (Program.luh.isPresent(cred[1] + cred[0]) && !( cred[2].CompareTo("offline") == 0 ))
-                        {   
+                        if (Program.luh.isPresent(cred[1] + cred[0]) && !(cred[2].CompareTo("offline") == 0))
+                        {
                             // Controllo che la persona è gia presente nella lista e lo stato inviatomi sia ONLINE
-                            Program.luh.resetTimer( cred[1] + cred[0] ); // Se presente resetto il timer della persona
+                            Program.luh.resetTimer(cred[1] + cred[0]); // Se presente resetto il timer della persona
                             done = true; // Ricezione completata
                         }
                         else // Se non è gia presente
-                        { 
+                        {
                             Person p = new Person(cred[0], cred[1], cred[2], cred[3], cred[4]); //creo una nuova persona
-                            if ( !p.isEqual(Program.luh.getAdmin()) && !( cred[2].CompareTo("offline") == 0 ) ) //se non è uguale all'amministratore
+                            if (!p.isEqual(Program.luh.getAdmin()) && !(cred[2].CompareTo("offline") == 0)) //se non è uguale all'amministratore
                             {
                                 Program.luh.addUser(p);//inserisco nella lista delle persone
                                 done = true;//ricezione completata
@@ -139,7 +139,7 @@ namespace ApplicazioneCondivisione
 
         /*
          * Sezione del tamo TCP dove si elencano le funzioni usate dal server per ricevere files.
-        */ 
+        */
         public void entryTCP()
         {
             while (Program.luh.getAdmin() == null) { }
@@ -149,6 +149,15 @@ namespace ApplicazioneCondivisione
 
         public void receiveFile()
         {
+            string admin;
+            string[] vet;
+            int byteletti;
+            string nomeFile;
+            int numFile;
+            byte[] autorizzo = new byte[1024];
+            byte[] bufferfile = new byte[1024];
+            string pathDir;
+            SaveFileDialog datifile = new SaveFileDialog();
             try
             {
                 var listener = new TcpListener(Program.luh.getAdmin().getIp(), Program.luh.getAdmin().getPort());// Imposto tcplistener con le credenziali della persona
@@ -159,33 +168,39 @@ namespace ApplicazioneCondivisione
                     if (!listener.Pending()) // Se non c'è nessuno che vuole inviarmi nulla, continuo col prossimo ciclo
                         continue;
 
-                    using (var client = listener.AcceptTcpClient())
+                    using (var client = listener.AcceptTcpClient()) //accetto tcpclient
                     { // Bloccante
                         //ricevo pacchetto di informazione
-                        byte[] buf = Encoding.ASCII.GetBytes("");
-                        client.GetStream().Read(buf, 0, 1024);
-                        string[] vet = Encoding.ASCII.GetString(buf).Split(',');
-                        string admin = vet[0];
-                        string nomeFile = Path.GetFileName(vet[1]);
+                        byte[] buf = new byte[1024];
+
+                        byteletti = client.GetStream().Read(buf, 0, 1024);//leggo in buf 1024 byte dallo stream del client
+                        vet = Encoding.ASCII.GetString(buf).Split(',');//scompongo le parole separate da virgola
+                        admin = vet[0];
+                        nomeFile = Path.GetFileName(vet[1]);
                         string tipo = vet[2];
                         //
                         if (tipo.CompareTo("cartella") == 0)
                         {
-                            int numFile;
-                            if (!int.TryParse(vet[3], out numFile))
+
+                            if (!int.TryParse(vet[3], out numFile))//salvo in numfile quanti file scaricare
                             {
                                 return;
                             }
-                            if (!Program.automaticSave)
+                            if (Program.automaticSave)//se il salvataggio non è automatico
                             {
+                                //se il salvataggio non è automatico allora chiedi all'utente se scaricare
+                                //la cartella o no in ogni caso informo il mittente della decisione presa
                                 switch (MessageBox.Show(admin + "sta tentando di inviarti la cartella", nomeFile, MessageBoxButtons.YesNo))
                                 {
                                     case DialogResult.No:
-                                        client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("no"), 0, 2);
+                                        //nel caso di risposta negativa informo mittente
+                                        autorizzo = ASCIIEncoding.ASCII.GetBytes("no");
+                                        client.GetStream().Write(autorizzo, 0, autorizzo.Length);
                                         return;
 
                                     case DialogResult.Yes:
-                                        client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("ok"), 0, 2);
+                                        autorizzo = ASCIIEncoding.ASCII.GetBytes("ok");
+                                        client.GetStream().Write(autorizzo, 0, autorizzo.Length);
                                         break;
 
                                     default:
@@ -194,45 +209,46 @@ namespace ApplicazioneCondivisione
                             }
                             else
                             {
-                                client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("ok"), 0, 2);
+                                autorizzo = ASCIIEncoding.ASCII.GetBytes("ok");
+                                client.GetStream().Write(autorizzo, 0, autorizzo.Length);
                             }
                             Directory.CreateDirectory(Program.pathSave + "/" + nomeFile);
-                            string pathDir = Program.pathSave + "/" + nomeFile;
+                            pathDir = Program.pathSave + "/" + nomeFile;
                             for (int j = 0; j < numFile; j++)
                             {
-                                SaveFileDialog a = new SaveFileDialog();
-                                a.InitialDirectory = Program.pathSave;
-                                numberAutoSaved = a.FileNames.Count(s => s.CompareTo(nomeFile) == 0);
+
+                                datifile.InitialDirectory = Program.pathSave;
+                                numberAutoSaved = datifile.FileNames.Count(s => s.CompareTo(nomeFile) == 0);
 
                                 if (numberAutoSaved != 0)
-                                    a.FileName = pathDir + "/" + vet[4 + j] + "(" + numberAutoSaved + ")";
+                                    datifile.FileName = pathDir + "/" + vet[4 + j] + "(" + numberAutoSaved + ")";
                                 else
-                                    a.FileName = pathDir + "/" + vet[4 + j];
+                                    datifile.FileName = pathDir + "/" + vet[4 + j];
 
-                                a.Filter = " text |*.txt";
+                                datifile.Filter = " text |*.txt";
 
                                 if (!Program.automaticSave)
-                                    a.ShowDialog();
+                                    datifile.ShowDialog();
                                 else
                                     numberAutoSaved++;
 
                                 using (var stream = client.GetStream()) // flusso di dati
-                                using (var output = File.Create(a.FileName)) // file di output
+                                using (var output = File.Create(datifile.FileName)) // file di output
                                 {
                                     // Leggo il file a pezzi da 1KB
-                                    var buffer = new byte[1024];
+                                    bufferfile = new byte[1024];
                                     int bytesRead;
-                                    while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                                    while ((bytesRead = stream.Read(bufferfile, 0, bufferfile.Length)) > 0)
                                     {
-                                        output.Write(buffer, 0, bytesRead);
+                                        output.Write(bufferfile, 0, bytesRead);
 
                                     }
                                     client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("fine?"), 0, 2);
-                                    client.GetStream().Read(buf, 0, 1024);
+                                    byteletti = client.GetStream().Read(buf, 0, 1024);
                                     String risposta = Encoding.ASCII.GetString(buf);
                                     if (risposta.CompareTo("annulla") == 0)
                                     {
-                                        File.Delete(a.FileName);
+                                        File.Delete(datifile.FileName);
                                         foreach (String b in Directory.GetFiles(pathDir))
                                         {
                                             File.Delete(b);
@@ -246,56 +262,73 @@ namespace ApplicazioneCondivisione
                         }
                         else if (tipo.CompareTo("file") == 0)
                         {
-                            switch (MessageBox.Show(admin + "sta tentando di inviarti il file", nomeFile, MessageBoxButtons.YesNo))
+                            if (!Program.automaticSave)//se il salvataggio non è automatico
                             {
-                                case DialogResult.No:
-                                    client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("no"), 0, 2);
-                                    return;
+                                switch (MessageBox.Show(admin + "sta tentando di inviarti il file", nomeFile, MessageBoxButtons.YesNo))
+                                {
+                                    case DialogResult.No:
+                                        autorizzo = ASCIIEncoding.ASCII.GetBytes("no");
+                                        client.GetStream().Write(autorizzo, 0, autorizzo.Length);
+                                        return;
 
-                                case DialogResult.Yes:
-                                    client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("ok"), 0, 2);
-                                    break;
+                                    case DialogResult.Yes:
+                                        autorizzo = ASCIIEncoding.ASCII.GetBytes("ok");
+                                        client.GetStream().Write(autorizzo, 0, autorizzo.Length);
+                                        break;
 
-                                default:
-                                    break;
+                                    default:
+                                        break;
+                                }
                             }
-
-                            SaveFileDialog a = new SaveFileDialog();
-                            a.InitialDirectory = Program.pathSave;
-                            numberAutoSaved = a.FileNames.Count(s => s.CompareTo(nomeFile) == 0);
-
-                            if (numberAutoSaved != 0)
-                                a.FileName = Program.pathSave + "/" + nomeFile + "(" + numberAutoSaved + ")";
                             else
-                                a.FileName = nomeFile;
+                            {
+                                autorizzo = ASCIIEncoding.ASCII.GetBytes("ok");
+                                client.GetStream().Write(autorizzo, 0, autorizzo.Length);
+                            }
+                            string[] vett2 = nomeFile.Split('.');
+                            numberAutoSaved = 0;
+                            datifile.FileName = Program.pathSave + @"\" + nomeFile;
+                            while (File.Exists(datifile.FileName))
+                            {
+                                numberAutoSaved++;
+                                datifile.FileName = Program.pathSave + @"\" + vett2[0] + "(" + numberAutoSaved + ")" + "." + vett2[1];
 
-                            a.Filter = " text |*.txt";
+                            }
+                            datifile.InitialDirectory = Program.pathSave;
+
+
+
+                            datifile.Filter = " text |*.txt";
 
                             if (!Program.automaticSave)
-                                a.ShowDialog();
+                                datifile.ShowDialog();
                             else
                                 numberAutoSaved++;
 
                             using (var stream = client.GetStream()) // flusso di dati
-                            using (var output = File.Create(a.FileName)) // file di output
+                            using (var output = File.Create(datifile.FileName)) // file di output
                             {
                                 // Leggo il file a pezzi da 1KB
-                                var buffer = new byte[1024];
-                                int bytesRead;
-                                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-                                {
-                                    output.Write(buffer, 0, bytesRead);
 
+                                int bytesRead;
+                                while ((bytesRead = stream.Read(bufferfile, 0, 1024)) > 0)
+                                {
+                                    output.Write(bufferfile, 0, bytesRead);
+                                    if (bytesRead < 1024)
+                                        break;
                                 }
-                                client.GetStream().Write(ASCIIEncoding.ASCII.GetBytes("fine?"), 0, 2);
+                                buf = ASCIIEncoding.ASCII.GetBytes("fine?");
+                                client.GetStream().Write(buf, 0, 2);
+                                buf = new byte[1024];
                                 client.GetStream().Read(buf, 0, 1024);
                                 String risposta = Encoding.ASCII.GetString(buf);
                                 if (risposta.CompareTo("annulla") == 0)
                                 {
-                                    File.Delete(a.FileName);
+                                    File.Delete(datifile.FileName);
                                 }
                             }
                         }
+                        client.Close();
                     }
 
 
@@ -315,6 +348,5 @@ namespace ApplicazioneCondivisione
             catch (IOException e) { }
             catch (UnauthorizedAccessException e) { }
         }
-        }
     }
-
+}
