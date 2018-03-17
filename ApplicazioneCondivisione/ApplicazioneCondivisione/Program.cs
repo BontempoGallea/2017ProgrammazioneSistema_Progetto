@@ -22,7 +22,7 @@ namespace ApplicazioneCondivisione
         public static bool closeEverything = false; // Questo è il flag al quale i thread fanno riferimento per sapere se devono chiudere tutto o no
         public static RegistryKey key;
         public static bool exists = false; // Flag per vedere se ci sono altre istanze dello stesso progetto
-        public static string pathSend = null; // Path del file / della cartella da inviare
+        public static string pathSend = "C:\\Users\\host1\\Documents\\catia.txt"; // Path del file / della cartella da inviare
         public static string pathSave = "C:\\Users\\" + Environment.UserName + "\\Download"; // Path di default per il salvataggio dei files in arrivo
         public static bool automaticSave = true; // True = non popparmi la finestra di accetazione quando mi arriva un file  
         public static bool AnnullaBoolean = false;

@@ -32,13 +32,17 @@ namespace ApplicazioneCondivisione
         {
             /*
              * Costruttore della classe ListUserHandler
-            */ 
-            users = new Dictionary<string, Person>(); //creo una dictionary di persone
-            lastRefresh = -1;
-            string name = System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName; // Nome dell'utente che ha effettuato l'accesso
-            string[] st = name.Split(' ');
-            admin = new Person(st[0], st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
-
+            */
+            try
+            {
+                users = new Dictionary<string, Person>(); //creo una dictionary di persone
+                lastRefresh = -1;
+                //string name = System.DirectoryServices.AccountManagement.UserPrincipal.Current.DisplayName; // Nome dell'utente che ha effettuato l'accesso
+                string name = "gianpaolo bontempo";
+                string[] st = name.Split(' ');
+                admin = new Person("host2", st[1], "online", getLocalIPAddress(), "3000"); //imposto admin
+            }
+            catch(Exception e) { }
             // Persone aggiunte per test
             //test1 = new Person("Mario", "Rossi", "online", getLocalIPAddress(), "5000");
             //test2 = new Person("Luca", "Verdi", "online", getLocalIPAddress(), "1650");
@@ -70,7 +74,7 @@ namespace ApplicazioneCondivisione
                     if (( p.getState().CompareTo("offline") == 0 ) && ( !isNew ))
                     {
                         Program.ac.flowLayoutPanel1.Controls.Remove(p.getButton());
-                        users.Remove(p.getSurname() + p.getName());
+                            users.Remove(p.getSurname() + p.getName());
                     }
                 }
             } catch (Exception e)

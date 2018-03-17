@@ -56,7 +56,7 @@ namespace ApplicazioneCondivisione
                     string fileName = Program.pathSend; // Prendo il primo path
                     string[] files = Directory.GetFiles(fileName);
 
-                    Program.pathSend = string.Empty;
+                    //Program.pathSend = string.Empty;
                     client.SendBufferSize = 1024;
                     string pacchettoInfo = Program.luh.getAdmin().getName() + "," + fileName + ",cartella," + files.Count<String>();
                     foreach (string b in files)
@@ -105,12 +105,14 @@ namespace ApplicazioneCondivisione
                 else
                 {
                     string fileName = Program.pathSend; // Prendo il primo path
-                    Program.pathSend = string.Empty;
-                    client.SendBufferSize = 1024;
+                    //Program.pathSend = string.Empty;
+                    byte[] ansbyte = new byte[1024];
+                    byte[] richbyte = new byte[1024];
                     string richiesta = String.Format(Program.luh.getAdmin().getName() + "," + fileName + ",file", Environment.NewLine); // Stringa per avvisare chi sono, se lui mi accetta io mando il file
-                    byte[] ansbyte = Encoding.ASCII.GetBytes("");
-                    byte[] richbyte = Encoding.ASCII.GetBytes(richiesta);
-                    client.ReceiveBufferSize = 2;
+                    //ansbyte = Encoding.ASCII.GetBytes("");
+                    richbyte = Encoding.ASCII.GetBytes(richiesta);
+                    client.SendBufferSize = richbyte.Length;
+                    client.ReceiveBufferSize = 1024;
                     client.Send(richbyte);
 
                     client.Receive(ansbyte);
@@ -120,21 +122,25 @@ namespace ApplicazioneCondivisione
                     if (confermed.CompareTo("ok") == 0)
                     {
                         string string1 = String.Format(""); // Modifico qua se voglio aggiungere qualcosa prima del file
-                        byte[] preBuf = Encoding.ASCII.GetBytes(string1);
+                        byte[] preBuf = new byte[1024];
+                        preBuf = Encoding.ASCII.GetBytes(string1);
 
                         string string2 = String.Format(""); // Modifico qua se voglio aggiungere qualcosa dopo il file
-                        byte[] postBuf = Encoding.ASCII.GetBytes(string2);
+                        byte[] postBuf = new byte[1024];
+                        postBuf = Encoding.ASCII.GetBytes(string2);
 
                         // Mando fileName con i buffers e i flag di default all'endpoint remoto
                         client.SendFile(fileName, preBuf, postBuf, TransmitFileOptions.UseDefaultWorkerThread);
                         client.Receive(ansbyte);
                         if (Program.AnnullaBoolean)
                         {
-                            client.Send(Encoding.ASCII.GetBytes("annulla"));
+                            preBuf = Encoding.ASCII.GetBytes("annulla");
+                            client.Send(preBuf);
                         }
                         else
                         {
-                            client.Send(Encoding.ASCII.GetBytes("fine"));
+                            preBuf = Encoding.ASCII.GetBytes("fine");
+                            client.Send(preBuf);
                         }
                         // Faccio il free del socket
                         client.Shutdown(SocketShutdown.Both);
